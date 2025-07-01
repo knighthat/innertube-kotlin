@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    kotlin("jvm")
 }
 
 repositories {
@@ -8,10 +9,11 @@ repositories {
     maven {
         url = uri( "https://repo.maven.apache.org/maven2/" )
     }
+    mavenCentral()
 }
 
 group = "me.knighthat"
-version = "1.0-SNAPSHOT"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
@@ -34,8 +36,13 @@ dependencies {
     annotationProcessor( libs.jetbrains.annotations )
     testCompileOnly( libs.jetbrains.annotations )
     testAnnotationProcessor( libs.jetbrains.annotations )
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(21)
 }
