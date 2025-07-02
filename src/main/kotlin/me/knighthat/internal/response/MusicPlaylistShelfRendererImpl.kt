@@ -2,10 +2,9 @@ package me.knighthat.internal.response
 
 import kotlinx.serialization.Serializable
 import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
-import me.knighthat.innertube.response.MusicResponsiveListItemRenderer
 
 @Serializable
-class MusicPlaylistShelfRendererImpl(
+internal data class MusicPlaylistShelfRendererImpl(
     override val playlistId: String,
     override val contents: List<ContentImpl> = emptyList(),
     override val collapsedItemCount: Int,
@@ -14,24 +13,24 @@ class MusicPlaylistShelfRendererImpl(
 ): MusicPlaylistShelfRenderer {
 
     @Serializable
-    data class ContentImpl(
-        override val musicResponsiveListItemRenderer: MusicResponsiveListItemRenderer?,
-        override val continuationItemRenderer: MusicPlaylistShelfRenderer.Content.ContinuationItemRenderer?
+    internal data class ContentImpl(
+        override val musicResponsiveListItemRenderer: MusicResponsiveListItemRendererImpl?,
+        override val continuationItemRenderer: ContinuationItemRendererImpl?
     ): MusicPlaylistShelfRenderer.Content {
 
         @Serializable
-        data class ContinuationItemRendererImpl(
+        internal data class ContinuationItemRendererImpl(
             override val trigger: String,
-            override val continuationEndpoint: MusicPlaylistShelfRenderer.Content.ContinuationItemRenderer.Continuation
+            override val continuationEndpoint: ContinuationImpl
         ): MusicPlaylistShelfRenderer.Content.ContinuationItemRenderer {
 
             @Serializable
-            data class ContinuationImpl(
-                override val continuationCommand: MusicPlaylistShelfRenderer.Content.ContinuationItemRenderer.Continuation.Command
+            internal data class ContinuationImpl(
+                override val continuationCommand: CommandImpl
             ): MusicPlaylistShelfRenderer.Content.ContinuationItemRenderer.Continuation {
 
                 @Serializable
-                data class CommandImpl(
+                internal data class CommandImpl(
                     override val token: String,
                     override val request: String
                 ): MusicPlaylistShelfRenderer.Content.ContinuationItemRenderer.Continuation.Command

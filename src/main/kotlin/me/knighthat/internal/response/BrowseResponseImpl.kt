@@ -10,7 +10,7 @@ internal data class BrowseResponseImpl(
     override val maxAgeStoreSeconds: Int?,
     override val microformat: MicroformatImpl?,
     override val background: ThumbnailImpl?,
-    override val onResponseReceivedActions: List<ResponseReceivedActionImpl>,
+    override val onResponseReceivedActions: List<ResponseReceivedActionImpl> = emptyList(),
     override val responseContext: InnertubeResponseImpl.ContextImpl
 ): BrowseResponse {
 
@@ -23,7 +23,7 @@ internal data class BrowseResponseImpl(
 
         @Serializable
         internal data class TwoColumnBrowseResultsRendererImpl(
-            override val tabs: List<TabsImpl.TabImpl>,
+            override val tabs: List<TabsImpl.TabImpl> = emptyList(),
             override val secondaryContents: SecondaryContentsImpl?
         ): BrowseResponse.Contents.TwoColumnBrowseResultsRenderer {
 
@@ -62,7 +62,7 @@ internal data class BrowseResponseImpl(
 
         @Serializable
         internal data class AppendContinuationItemsActionImpl(
-            override val continuationItems: List<MusicPlaylistShelfRendererImpl.ContentImpl>
+            override val continuationItems: List<MusicPlaylistShelfRendererImpl.ContentImpl> = emptyList()
         ): BrowseResponse.ResponseReceivedAction.AppendContinuationItemsAction
     }
 }

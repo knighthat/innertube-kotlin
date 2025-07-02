@@ -18,16 +18,16 @@ internal data class MusicCarouselShelfRendererImpl(
 
         @Serializable
         data class MusicCarouselShelfBasicHeaderRendererImpl(
-            override val title: Runs,
-            override val strapline: Runs?,
-            override val accessibilityData: Accessibility?,
+            override val title: RunsImpl,
+            override val strapline: RunsImpl?,
+            override val accessibilityData: AccessibilityImpl?,
             override val headerStyle: String
         ): MusicCarouselShelfRenderer.Header.MusicCarouselShelfBasicHeaderRenderer
     }
 
     @Serializable
     data class ContentImpl(
-        override val musicResponsiveListItemRenderer: MusicResponsiveListItemRenderer?,
-        override val musicTwoRowItemRenderer: MusicTwoRowItemRenderer?
+        override val musicResponsiveListItemRenderer: MusicResponsiveListItemRendererImpl?,
+        override val musicTwoRowItemRenderer: MusicTwoRowItemRendererImpl?
     ): MusicCarouselShelfRenderer.Content
 }

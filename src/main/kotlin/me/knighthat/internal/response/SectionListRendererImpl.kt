@@ -1,9 +1,7 @@
 package me.knighthat.internal.response
 
 import kotlinx.serialization.Serializable
-import me.knighthat.innertube.response.Runs
 import me.knighthat.innertube.response.SectionListRenderer
-import me.knighthat.innertube.response.Thumbnail
 
 @Serializable
 internal data class SectionListRendererImpl(
@@ -25,20 +23,20 @@ internal data class SectionListRendererImpl(
 
         @Serializable
         data class MusicDescriptionShelfRendererImpl(
-            override val header: Runs?,
-            override val subheader: Runs?,
-            override val description: Runs,
+            override val header: RunsImpl?,
+            override val subheader: RunsImpl?,
+            override val description: RunsImpl,
             override val shelfStyle: String?,
             override val maxCollapsedLines: Int?,
             override val maxExpandedLines: Int?,
-            override val footer: Runs?
+            override val footer: RunsImpl?
         ): SectionListRenderer.Content.MusicDescriptionShelfRenderer
 
         @Serializable
         internal data class MusicTastebuilderShelfRendererImpl(
             override val thumbnail: ThumbnailImpl,
-            override val primaryText: Runs,
-            override val secondaryText: Runs,
+            override val primaryText: RunsImpl,
+            override val secondaryText: RunsImpl,
             override val isVisible: Boolean?
         ): SectionListRenderer.Content.MusicTastebuilderShelfRenderer {
 
@@ -50,12 +48,12 @@ internal data class SectionListRendererImpl(
 
         @Serializable
         internal data class MusicResponsiveHeaderRendererImpl(
-            override val thumbnail: Thumbnail,
+            override val thumbnail: ThumbnailImpl,
             override val title: RunsImpl,
             override val subtitle: RunsImpl,
             override val description: DescriptionImpl?,
             override val straplineTextOne: RunsImpl?,
-            override val straplineThumbnail: Thumbnail?,
+            override val straplineThumbnail: ThumbnailImpl?,
             override val subtitleBadge: List<BadgeImpl> = emptyList(),
             override val secondSubtitle: RunsImpl?
         ): SectionListRenderer.Content.MusicResponsiveHeaderRenderer {

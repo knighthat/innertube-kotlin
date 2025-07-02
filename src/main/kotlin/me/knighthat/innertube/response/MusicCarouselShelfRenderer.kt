@@ -6,7 +6,7 @@ interface MusicCarouselShelfRenderer {
     val header: Header
     val contents: List<Content>
     val itemSize: String
-    val numItemsPerColumn: String
+    val numItemsPerColumn: String?
 
     interface Header {
 

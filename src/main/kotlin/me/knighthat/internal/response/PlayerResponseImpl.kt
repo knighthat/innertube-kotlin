@@ -19,13 +19,13 @@ internal data class PlayerResponseImpl(
         override val status: String,
         override val reason: String?,
         override val playableInEmbed: Boolean,
-        override val audioOnlyPlayability: PlayerResponse.PlayabilityStatus.AudioOnlyPlayability?,
+        override val audioOnlyPlayability: AudioOnlyPlayabilityImpl?,
         override val contextParams: String?
     ): PlayerResponse.PlayabilityStatus {
 
         @Serializable
         data class AudioOnlyPlayabilityImpl(
-            override val audioOnlyPlayabilityRenderer: PlayerResponse.PlayabilityStatus.AudioOnlyPlayability.AudioOnlyPlayabilityRenderer
+            override val audioOnlyPlayabilityRenderer: AudioOnlyPlayabilityRendererImpl
         ): PlayerResponse.PlayabilityStatus.AudioOnlyPlayability {
 
             @Serializable
@@ -76,7 +76,7 @@ internal data class PlayerResponseImpl(
         override val channelId: String,
         override val isOwnerViewing: Boolean,
         override val isCrawlable: Boolean,
-        override val thumbnail: Thumbnails,
+        override val thumbnail: ThumbnailsImpl,
         override val allowRatings: Boolean,
         override val viewCount: String,
         override val author: String,
@@ -88,7 +88,7 @@ internal data class PlayerResponseImpl(
 
     @Serializable
     data class PlayerConfigImpl(
-        override val audioConfig: PlayerResponse.PlayerConfig.AudioConfig
+        override val audioConfig: AudioConfigImpl
     ): PlayerResponse.PlayerConfig {
 
         @Serializable
