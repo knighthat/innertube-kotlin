@@ -10,7 +10,7 @@ interface MusicResponsiveListItemRenderer {
     val badges: List<Badge>
     val playlistItemData: PlaylistItemData?
     val flexColumnDisplayStyle: String?
-    val navigationEndpoint: Endpoint
+    val navigationEndpoint: Endpoint?
     val itemHeight: String?
     val index: Runs?
 

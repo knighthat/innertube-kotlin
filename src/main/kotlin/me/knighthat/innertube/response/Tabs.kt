@@ -14,7 +14,7 @@ interface Tabs {
             val endpoint: Endpoint?
             val title: String?
             val selected: Boolean?
-            val content: Content
+            val content: Content?
             val tabIdentifier: String?
 
             interface Content {

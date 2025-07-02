@@ -1,8 +1,10 @@
 package me.knighthat.internal.response
 
-import me.knighthat.innertube.response.*
+import kotlinx.serialization.Serializable
+import me.knighthat.innertube.response.PlaylistPanelRenderer
 
-data class PlaylistPanelRendererImpl(
+@Serializable
+internal data class PlaylistPanelRendererImpl(
     override val contents: List<ContentImpl> = emptyList(),
     override val playlistId: String,
     override val isInfinite: Boolean,
@@ -10,23 +12,25 @@ data class PlaylistPanelRendererImpl(
     override val numItemsToShow: Short
 ): PlaylistPanelRenderer {
 
-    data class ContentImpl(
-        override val playlistPanelVideoRenderer: PlaylistPanelRenderer.Content.VideoRenderer?
+    @Serializable
+    internal data class ContentImpl(
+        override val playlistPanelVideoRenderer: VideoRendererImpl?
     ): PlaylistPanelRenderer.Content {
 
-        data class VideoRendererImpl(
-            override val title: Runs,
-            override val longBylineText: Runs,
-            override val thumbnail: Thumbnails,
-            override val lengthText: Runs,
+        @Serializable
+        internal data class VideoRendererImpl(
+            override val title: RunsImpl,
+            override val longBylineText: RunsImpl,
+            override val thumbnail: ThumbnailsImpl,
+            override val lengthText: RunsImpl,
             override val selected: Boolean,
-            override val navigationEndpoint: Endpoint,
+            override val navigationEndpoint: EndpointImpl,
             override val videoId: String,
-            override val shortBylineText: Runs,
-            override val badges: List<Badge> = emptyList(),
-            override val playlistSetVideoId: String,
+            override val shortBylineText: RunsImpl,
+            override val badges: List<BadgeImpl> = emptyList(),
+            override val playlistSetVideoId: String?,
             override val canReorder: Boolean,
-            override val queueNavigationEndpoint: Endpoint?
+            override val queueNavigationEndpoint: EndpointImpl?
         ): PlaylistPanelRenderer.Content.VideoRenderer
     }
 }

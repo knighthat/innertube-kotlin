@@ -2,7 +2,6 @@ package me.knighthat.internal.response
 
 import kotlinx.serialization.Serializable
 import me.knighthat.innertube.response.PlayerResponse
-import me.knighthat.innertube.response.Thumbnails
 
 @Serializable
 internal data class PlayerResponseImpl(
@@ -49,20 +48,20 @@ internal data class PlayerResponseImpl(
             override val url: String?,
             override val mimeType: String,
             override val bitrate: Int,
-            override val width: Short,
-            override val height: Short,
+            override val width: Short?,
+            override val height: Short?,
             override val lastModified: String,
             override val contentLength: String?,
             override val quality: String,
-            override val fps: Byte,
-            override val qualityLabel: String,
+            override val fps: Byte?,
+            override val qualityLabel: String?,
             override val projectionType: String,
             override val averageBitrate: Int?,
             override val highReplication: Boolean?,
-            override val audioQuality: String,
+            override val audioQuality: String?,
             override val approxDurationMs: String,
-            override val audioSampleRate: String,
-            override val audioChannels: Byte,
+            override val audioSampleRate: String?,
+            override val audioChannels: Byte?,
             override val loudnessDb: Float?,
             override val signatureCipher: String?
         ): PlayerResponse.StreamingData.Format

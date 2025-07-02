@@ -37,24 +37,53 @@ interface PlayerResponse : InnertubeResponse {
 
         interface Format {
 
+            /**
+             *  Unique ID of this format
+             *
+             *  Visit [this page](https://gist.github.com/AgentOak/34d47c65b1d28829bb17c24c04a0096f) for details
+             */
             val itag: Short
             val url: String?
             val mimeType: String
             val bitrate: Int
-            val width: Short
-            val height: Short
+
+            /**
+             * Horizontal pixel count
+             *
+             * **NOTE:** Not available on audio formats
+             */
+            val width: Short?
+
+            /**
+             * Vertical pixel count
+             *
+             * **NOTE:** Not available on audio formats
+             */
+            val height: Short?
             val lastModified: String
             val contentLength: String?
             val quality: String
-            val fps: Byte
-            val qualityLabel: String
+
+            /**
+             * **_F_**rames **_P_**er **_S_**econd
+             *
+             * **NOTE:** Not available on audio formats
+             */
+            val fps: Byte?
+
+            /**
+             * Video quality tag
+             *
+             * **NOTE:** Not available on audio formats
+             */
+            val qualityLabel: String?
             val projectionType: String
             val averageBitrate: Int?
             val highReplication: Boolean?
-            val audioQuality: String
+            val audioQuality: String?
             val approxDurationMs: String
-            val audioSampleRate: String
-            val audioChannels: Byte
+            val audioSampleRate: String?
+            val audioChannels: Byte?
             val loudnessDb: Float?
             val signatureCipher: String?
         }

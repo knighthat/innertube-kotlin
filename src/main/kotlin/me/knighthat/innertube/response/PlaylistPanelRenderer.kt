@@ -24,7 +24,7 @@ interface PlaylistPanelRenderer {
             val videoId: String
             val shortBylineText: Runs
             val badges: List<Badge>
-            val playlistSetVideoId: String
+            val playlistSetVideoId: String?
             val canReorder: Boolean
             val queueNavigationEndpoint: Endpoint?
         }

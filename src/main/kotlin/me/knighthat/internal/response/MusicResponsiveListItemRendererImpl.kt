@@ -12,7 +12,7 @@ internal data class MusicResponsiveListItemRendererImpl(
     override val badges: List<BadgeImpl> = emptyList(),
     override val playlistItemData: PlaylistItemDataImpl?,
     override val flexColumnDisplayStyle: String?,
-    override val navigationEndpoint: EndpointImpl,
+    override val navigationEndpoint: EndpointImpl?,
     override val itemHeight: String?,
     override val index: RunsImpl?
 ): MusicResponsiveListItemRenderer {

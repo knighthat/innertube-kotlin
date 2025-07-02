@@ -18,7 +18,7 @@ internal data class TabsImpl(
             override val endpoint: EndpointImpl?,
             override val title: String?,
             override val selected: Boolean?,
-            override val content: ContentImpl,
+            override val content: ContentImpl?,
             override val tabIdentifier: String?
         ): Tabs.Tab.Renderer {
 
