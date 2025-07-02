@@ -37,12 +37,7 @@ interface SectionListRenderer {
 
             interface Thumbnail {
 
-                val musicTastebuilderShelfThumbnailRenderer: MusicTastebuilderShelfThumbnailRenderer
-
-                interface MusicTastebuilderShelfThumbnailRenderer {
-
-                    val thumbnail: Thumbnails
-                }
+                val musicTastebuilderShelfThumbnailRenderer: Thumbnail.Renderer
             }
         }
 

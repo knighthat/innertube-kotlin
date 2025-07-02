@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import me.knighthat.innertube.response.Runs
 import me.knighthat.innertube.response.SectionListRenderer
 import me.knighthat.innertube.response.Thumbnail
-import me.knighthat.innertube.response.Thumbnails
 
 @Serializable
 internal data class SectionListRendererImpl(
@@ -45,14 +44,8 @@ internal data class SectionListRendererImpl(
 
             @Serializable
             internal data class ThumbnailImpl(
-                override val musicTastebuilderShelfThumbnailRenderer: MusicTastebuilderShelfThumbnailRendererImpl
-            ): SectionListRenderer.Content.MusicTastebuilderShelfRenderer.Thumbnail {
-
-                @Serializable
-                internal data class MusicTastebuilderShelfThumbnailRendererImpl(
-                    override val thumbnail: Thumbnails
-                ): SectionListRenderer.Content.MusicTastebuilderShelfRenderer.Thumbnail.MusicTastebuilderShelfThumbnailRenderer
-            }
+                override val musicTastebuilderShelfThumbnailRenderer: ThumbnailImpl.RendererImpl
+            ): SectionListRenderer.Content.MusicTastebuilderShelfRenderer.Thumbnail
         }
 
         @Serializable

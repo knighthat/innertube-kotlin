@@ -29,15 +29,15 @@ internal data class PrimaryResultsImpl(
 
                 @Serializable
                 data class ViewCountImpl(
-                    override val videoViewCountRenderer: VideoViewCountRendererImpl
+                    override val videoViewCountRenderer: RendererImpl
                 ): PrimaryResults.Results.Contents.VideoPrimaryInfoRenderer.ViewCount {
 
                     @Serializable
-                    data class VideoViewCountRendererImpl(
+                    data class RendererImpl(
                         override val viewCount: SimpleText?,
                         override val shortViewCount: SimpleText?,
                         override val originalViewCount: String?
-                    ): PrimaryResults.Results.Contents.VideoPrimaryInfoRenderer.ViewCount.VideoViewCountRenderer
+                    ): PrimaryResults.Results.Contents.VideoPrimaryInfoRenderer.ViewCount.Renderer
                 }
             }
 

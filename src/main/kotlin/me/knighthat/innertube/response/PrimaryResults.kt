@@ -23,9 +23,9 @@ interface PrimaryResults {
 
                 interface ViewCount {
 
-                    val videoViewCountRenderer: VideoViewCountRenderer
+                    val videoViewCountRenderer: Renderer
 
-                    interface VideoViewCountRenderer {
+                    interface Renderer {
 
                         val viewCount: SimpleText?
                         val shortViewCount: SimpleText?
