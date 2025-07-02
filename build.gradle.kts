@@ -1,14 +1,11 @@
 plugins {
-    `java-library`
-    `maven-publish`
-    kotlin("jvm")
+    java
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 repositories {
     mavenLocal()
-    maven {
-        url = uri( "https://repo.maven.apache.org/maven2/" )
-    }
     mavenCentral()
 }
 
@@ -22,6 +19,7 @@ repositories {
 dependencies {
     compileOnly( libs.ktor.serialization.json )
 
+    testImplementation(libs.ktor.serialization.json)
     testImplementation( libs.junit5.jupiter.api )
     testImplementation( libs.junit5.jupiter.engine )
     testImplementation( libs.okhttp3.okhttp )
@@ -36,13 +34,8 @@ dependencies {
     annotationProcessor( libs.jetbrains.annotations )
     testCompileOnly( libs.jetbrains.annotations )
     testAnnotationProcessor( libs.jetbrains.annotations )
-    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks.test {
     useJUnitPlatform()
-}
-
-kotlin {
-    jvmToolchain(21)
 }
