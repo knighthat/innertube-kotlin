@@ -1,0 +1,32 @@
+package me.knighthat.innertube.request.body;
+
+import me.knighthat.innertube.request.body.search.suggestions.Builder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+class SearchSuggestionsBodyBuilder implements Builder {
+
+    private final Context context;
+    private       String  input;
+
+    SearchSuggestionsBodyBuilder( @NotNull Context context ) {
+        this.context = context;
+    }
+
+    @Override
+    public @NotNull Builder input( @NotNull String input ) {
+        this.input = input;
+        return this;
+    }
+
+    @Override
+    public @NotNull SearchSuggestionsBodyBuilder params( @Nullable String params ) {
+        return this;
+    }
+
+    @Override
+    public @NotNull SearchSuggestionsBody build() {
+        assert input != null;
+        return new SearchSuggestionsBody( input, context );
+    }
+}
