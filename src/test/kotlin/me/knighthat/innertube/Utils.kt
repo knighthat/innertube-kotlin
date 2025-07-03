@@ -5,6 +5,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import java.io.InputStream
 
+@JvmField
 val JSON: Json = Json {
     ignoreUnknownKeys = true
     explicitNulls = false
