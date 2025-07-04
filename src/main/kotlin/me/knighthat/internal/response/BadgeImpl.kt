@@ -13,6 +13,13 @@ internal data class BadgeImpl(
     internal data class RendererImpl(
         override val style: String?,
         override val tooltip: String?,
-        override val accessibilityData: AccessibilityImpl?
-    ): Badge.Renderer
+        override val accessibilityData: AccessibilityImpl?,
+        override val icon: IconImpl
+    ): Badge.Renderer {
+
+        @Serializable
+        internal data class IconImpl(
+            override val iconType: String
+        ): Badge.Renderer.Icon
+    }
 }
