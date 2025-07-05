@@ -37,7 +37,7 @@ interface SectionListRenderer {
 
             interface Thumbnail {
 
-                val musicTastebuilderShelfThumbnailRenderer: Thumbnail.Renderer
+                val musicTastebuilderShelfThumbnailRenderer: me.knighthat.innertube.response.Thumbnail.Renderer
             }
         }
 
