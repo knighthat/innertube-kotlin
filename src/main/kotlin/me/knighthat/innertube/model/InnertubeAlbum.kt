@@ -1,6 +1,6 @@
 package me.knighthat.innertube.model
 
-import me.knighthat.innertube.response.Endpoint
+import me.knighthat.innertube.response.Runs
 
 
 interface InnertubeAlbum: InnertubeItem, ContentRating {
@@ -8,7 +8,7 @@ interface InnertubeAlbum: InnertubeItem, ContentRating {
     /**
      * Artists featured in this album
      */
-    val artists: List<Endpoint.Browse>
+    val artists: List<Runs.Run>
 
     /**
      * The year in which this album was released
