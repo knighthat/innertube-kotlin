@@ -39,11 +39,15 @@ interface InnertubeArtist: InnertubeItem, Descriptive {
 
     val sections: List<Section>
 
-    @Serializable
-    data class Section(
-        @Localized val title: String,
-        val browseId: String?,
-        val params: String?,
+    interface Section {
+
+        @get:Localized
+        val title: String
+
+        val browseId: String?
+
+        val params: String?
+
         val contents: List<InnertubeItem>
-    )
+    }
 }
