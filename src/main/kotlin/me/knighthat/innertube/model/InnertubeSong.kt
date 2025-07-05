@@ -7,7 +7,7 @@ interface InnertubeSong: InnertubeItem, ContentRating {
     /**
      * Plain text representation of duration, in short format
      */
-    val durationText: String
+    val durationText: String?
 
     /**
      * Contains information about this song's album
@@ -17,10 +17,10 @@ interface InnertubeSong: InnertubeItem, ContentRating {
     /**
      * List of artists featured in this song
      */
-    val authors: List<Runs.Run>
+    val artists: List<Runs.Run>
 
     /**
      * All authors listed in 1 line, with delimiter in between
      */
-    val authorsText: String
+    val artistsText: String
 }

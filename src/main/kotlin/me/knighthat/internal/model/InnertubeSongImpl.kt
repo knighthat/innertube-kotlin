@@ -17,8 +17,8 @@ internal data class InnertubeSongImpl(
     override val name: String,
     override val thumbnails: List<Thumbnails.Thumbnail>,
     override val isExplicit: Boolean,
-    override val durationText: String,
+    override val durationText: String?,
     override val album: Runs.Run?,
-    override val authors: List<Runs.Run>,
-    override val authorsText: String
 ): InnertubeSong
+    override val artists: List<Runs.Run>,
+    override val artistsText: String
