@@ -9,4 +9,27 @@ import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
 internal data class ContinuedPlaylistImpl(
     override val continuation: String?,
     override val songs: List<InnertubeSong>
-): ContinuedPlaylist
+): ContinuedPlaylist {
+
+    companion object {
+
+        fun from( items: List<MusicPlaylistShelfRenderer.Content> ): ContinuedPlaylist {
+            var continuation: String? = null
+            val songs = ArrayList<InnertubeSong>(items.size)
+
+            for(item in items) {
+                item.continuationItemRenderer
+                    ?.continuationEndpoint
+                    ?.continuationCommand
+                    ?.token
+                    ?.also { continuation = it }
+
+                item.musicResponsiveListItemRenderer
+                    ?.let( InnertubeSongImpl::from )
+                    ?.also( songs::add )
+            }
+
+            return ContinuedPlaylistImpl(continuation, songs)
+        }
+    }
+}
