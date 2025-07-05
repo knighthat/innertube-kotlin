@@ -14,13 +14,13 @@ interface InnertubePlaylist: InnertubeItem, Descriptive {
      * - Total duration
      * - Or all above
      */
-    var subtitle: Runs?
+    val subtitle: Runs?
 
-    var continuations: List<Continuation>
+    val continuations: List<Continuation>
 
-    var songs: List<InnertubeSong>
+    val songs: List<InnertubeSong>
 
-    var songContinuation: String?
+    val songContinuation: String?
 
-    var visitorData: String?
+    val visitorData: String?
 }
