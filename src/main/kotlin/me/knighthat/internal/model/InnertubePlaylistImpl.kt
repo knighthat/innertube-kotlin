@@ -23,4 +23,7 @@ internal data class InnertubePlaylistImpl(
     override var songs: List<InnertubeSong>,
     override var songContinuation: String?,
     override var visitorData: String?
-): InnertubePlaylist
+): InnertubePlaylist {
+
+    override val subtitleText: String? by lazy { subtitle?.runs?.joinToString( "" ) { it.text } }
+}

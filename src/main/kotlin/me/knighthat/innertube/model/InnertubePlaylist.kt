@@ -16,6 +16,8 @@ interface InnertubePlaylist: InnertubeItem, Descriptive {
      */
     val subtitle: Runs?
 
+    val subtitleText: String?
+
     val continuations: List<Continuation>
 
     val songs: List<InnertubeSong>
