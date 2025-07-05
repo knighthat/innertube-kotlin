@@ -25,5 +25,55 @@ internal data class InnertubePlaylistImpl(
     override var visitorData: String?
 ): InnertubePlaylist {
 
+    companion object {
+
+        fun from( renderer: MusicTwoRowItemRenderer ): InnertubePlaylist {
+            val run = renderer.title.runs.first()       // Requires not null to proceed
+            return InnertubePlaylistImpl(
+                // [id] must be a non-null value
+                run.navigationEndpoint!!.browseEndpoint!!.browseId,
+                run.text,
+                renderer.thumbnailRenderer.toThumbnailList(),
+                null,
+                null,
+                emptyList(),
+                emptyList(),
+                null,
+                null
+            )
+        }
+
+        fun from( visitorData: String, renderer: TwoColumnBrowseResultsRenderer ): InnertubePlaylist {
+            val headerRenderer = requireNotNull(
+                renderer.tabs
+                        .first()
+                        .tabRenderer
+                        .content
+                        ?.sectionListRenderer
+                        ?.contents
+                        ?.first()
+                        ?.musicResponsiveHeaderRenderer
+            )
+            val sectionListRenderer = renderer.secondaryContents!!.sectionListRenderer
+            val playlistShelfRenderer = sectionListRenderer.contents.first().musicPlaylistShelfRenderer
+            val playlistId = playlistShelfRenderer!!.playlistId
+            val continuedPlaylist = ContinuedPlaylistImpl.from( playlistShelfRenderer.contents )
+            val description = headerRenderer.description?.musicDescriptionShelfRenderer?.description?.firstText
+
+            return InnertubePlaylistImpl(
+                // Add "VL" in case it's not there
+                if( playlistId.startsWith("VL") ) playlistId else "VL$playlistId",
+                headerRenderer.title.firstText,
+                headerRenderer.thumbnail.toThumbnailList(),
+                description,
+                headerRenderer.secondSubtitle,      // Contains delimiters by default
+                sectionListRenderer.continuations,
+                continuedPlaylist.songs,
+                continuedPlaylist.continuation,
+                visitorData
+            )
+        }
+    }
+
     override val subtitleText: String? by lazy { subtitle?.runs?.joinToString( "" ) { it.text } }
 }
