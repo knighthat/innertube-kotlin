@@ -1,13 +1,13 @@
 package me.knighthat.internal.model
 
 import me.knighthat.innertube.decode
-import me.knighthat.innertube.response.MusicTwoRowItemRenderer
 import me.knighthat.internal.response.BrowseResponseImpl
+import me.knighthat.internal.response.MusicTwoRowItemRendererImpl
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 
 class InnertubeArtistImplTest {
 
@@ -17,7 +17,7 @@ class InnertubeArtistImplTest {
         ClassLoader.getSystemResourceAsStream( fileName )
                    .also( ::assertNotNull )
                    ?.use { inStream ->
-                       val renderer = inStream.decode<MusicTwoRowItemRenderer>()
+                       val renderer = inStream.decode<MusicTwoRowItemRendererImpl>()
                        assertNotNull( renderer )
 
                        val artist = InnertubeArtistImpl.from( renderer )
