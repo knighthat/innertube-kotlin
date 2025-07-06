@@ -23461,7 +23461,7 @@
                     }
                   },
                   {
-                    "W": {
+                    "musicDescriptionShelfRenderer": {
                       "header": {
                         "runs": [
                           {
