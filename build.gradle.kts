@@ -1,7 +1,7 @@
 plugins {
     java
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.serialization)
+    alias( libs.plugins.kotlin.jvm )
+    alias( libs.plugins.kotlin.serialization )
 }
 
 repositories {
@@ -11,10 +11,6 @@ repositories {
 
 group = "me.knighthat"
 version = "0.0.1"
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     compileOnly( libs.ktor.serialization.json )
