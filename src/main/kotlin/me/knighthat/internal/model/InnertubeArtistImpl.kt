@@ -5,11 +5,7 @@ import me.knighthat.innertube.PageType
 import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubeSong
-import me.knighthat.innertube.response.BrowseResponse
-import me.knighthat.innertube.response.MusicCarouselShelfRenderer
-import me.knighthat.innertube.response.MusicShelfRenderer
-import me.knighthat.innertube.response.MusicTwoRowItemRenderer
-import me.knighthat.innertube.response.Thumbnails
+import me.knighthat.innertube.response.*
 
 @Serializable
 internal data class InnertubeArtistImpl(
@@ -96,8 +92,9 @@ internal data class InnertubeArtistImpl(
                         ?.contents
             )
 
-            val sections = ArrayList<InnertubeArtist.Section>(8)
-            var description: String? = null
+            // There are (typically) 8 sections, but description is excluded here
+            val sections = ArrayList<InnertubeArtist.Section>(7)
+            var description: String? = response.header?.musicImmersiveHeaderRenderer?.description?.firstText
             for( content in contents ) {
                 content.musicShelfRenderer?.also { musicSection ->
                     val browse = musicSection.bottomEndpoint?.browseEndpoint
@@ -113,7 +110,10 @@ internal data class InnertubeArtistImpl(
                 content.musicDescriptionShelfRenderer
                        ?.description
                        ?.firstText
-                       ?.also { description = it }
+                       ?.also {
+                           if( description == null )
+                               description = it
+                       }
 
                 // This section contains Albums, Single & EPs, related Artists, and Playlists.
                 content.musicCarouselShelfRenderer
