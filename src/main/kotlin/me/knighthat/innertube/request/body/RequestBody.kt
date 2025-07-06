@@ -1,6 +1,9 @@
 package me.knighthat.innertube.request.body
 
-interface RequestBody {
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed interface RequestBody {
 
     val context: Context
 }
