@@ -8,8 +8,6 @@ import me.knighthat.innertube.response.MusicTwoRowItemRenderer
 import me.knighthat.innertube.response.PlaylistPanelRenderer
 import me.knighthat.innertube.response.Runs
 import me.knighthat.innertube.response.Thumbnails
-import java.util.Objects
-import java.util.stream.Collectors
 
 
 @Serializable
@@ -151,7 +149,7 @@ internal data class InnertubeSongImpl(
         isExplicit: Boolean,
         durationText: String?,
         album: Runs.Run?,
-        authors: List<Runs.Run>
+        artists: List<Runs.Run>
     ): this (
         id,
         name,
@@ -159,7 +157,7 @@ internal data class InnertubeSongImpl(
         isExplicit,
         durationText,
         album,
-        authors,
-        authors.joinToString( ", " ) { it.text }
+        artists,
+        artists.joinToString { it.text }
     )
 }
