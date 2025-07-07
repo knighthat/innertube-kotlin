@@ -20,7 +20,7 @@ import org.intellij.lang.annotations.MagicConstant
 // Ripped from NewPipeExtractor
 data class Request(
     @MagicConstant(valuesFromClass = Request::class)
-    val httpMethod: String? = null,
+    val httpMethod: String,
     val headers: Map<String, List<String>>,
     val url: String,
     val dataToSend: RequestBody?
