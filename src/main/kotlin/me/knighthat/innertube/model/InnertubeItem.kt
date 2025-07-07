@@ -6,7 +6,7 @@ import me.knighthat.innertube.response.Thumbnails
 interface InnertubeItem {
 
     /**
-     * Unique identifier used to distinguish it from other songs in a database
+     * Unique identifier used to distinguish it from other items in a database
      */
     val id: String
 
