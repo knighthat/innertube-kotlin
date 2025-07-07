@@ -26,8 +26,7 @@ internal data class InnertubeAlbumImpl(
 
         fun from( renderer: MusicTwoRowItemRenderer ): InnertubeAlbum {
             val run = renderer.title.runs.first()       // Requires not null to proceed
-            val artistsAndAlbum = renderer.subtitle.extractArtistAndAlbum()
-            artistsAndAlbum.removeFirst()
+            val subtitle = renderer.subtitle
 
             return InnertubeAlbumImpl(
                 // [id] must be a non-null value
@@ -35,8 +34,8 @@ internal data class InnertubeAlbumImpl(
                 run.text,
                 renderer.thumbnailRenderer.toThumbnailList(),
                 renderer.subtitleBadges.containsExplicitBadge,
-                artistsAndAlbum.filterNotNull(),
-                renderer.subtitle.year
+                subtitle.extractArtistAndAlbum().artists,
+                subtitle.year
             )
         }
 
@@ -45,9 +44,7 @@ internal data class InnertubeAlbumImpl(
             // Requires at least 2 columns, 1 for title, and 1 for artist(s) (and maybe release year)
             assert( columns.size >= 2 )
 
-            val artistsRuns = columns[1].musicResponsiveListItemFlexColumnRenderer!!.text!!
-            val artists = artistsRuns.extractArtistAndAlbum()
-            artists.removeFirst()
+            val flexColumns = columns[1].musicResponsiveListItemFlexColumnRenderer!!.text!!
 
             return InnertubeAlbumImpl(
                 // [id] must not be null in any circumstances
@@ -55,8 +52,8 @@ internal data class InnertubeAlbumImpl(
                 columns.first().musicResponsiveListItemFlexColumnRenderer!!.text!!.firstText,
                 renderer.thumbnail.toThumbnailList(),
                 renderer.badges.containsExplicitBadge,
-                artists.filterNotNull(),
-                artistsRuns.year
+                flexColumns.extractArtistAndAlbum().artists,
+                flexColumns.year
             )
         }
     }

@@ -124,7 +124,7 @@ internal data class InnertubeSongImpl(
         }
 
         fun from( renderer: MusicTwoRowItemRenderer ): InnertubeSong {
-            val albumAndArtist = renderer.subtitle.extractArtistAndAlbum()
+            val albumAndArtists = renderer.subtitle.extractArtistAndAlbum()
 
             return InnertubeSongImpl(
                 renderer.navigationEndpoint.watchEndpoint!!.videoId,
@@ -132,8 +132,8 @@ internal data class InnertubeSongImpl(
                 renderer.thumbnailRenderer.toThumbnailList(),
                 false,              // Currently there's no json has explicit badge
                 renderer.subtitle.runs.duration,
-                albumAndArtist.removeFirst(),
-                albumAndArtist.filterNotNull()
+                albumAndArtists.album,
+                albumAndArtists.artists
             )
         }
     }

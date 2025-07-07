@@ -7,6 +7,11 @@ import me.knighthat.innertube.response.Runs
 import me.knighthat.innertube.response.Thumbnail
 import me.knighthat.innertube.response.Thumbnails
 
+internal data class AlbumAndArtists(
+    val album: Runs.Run?,
+    val artists: List<Runs.Run>
+)
+
 internal val Runs.firstText: String
     get() = runs.firstOrNull()?.text.orEmpty()
 
@@ -15,16 +20,14 @@ internal val Runs.firstText: String
  *
  * Album or artist is filtered by their respected [PageType].
  *
- * Album will always located at the beginning of the list,
- * if album browse endpoint doesn't exist in [Runs], then
- * list will be appended with a `null`.
+ * Album will always located at the first element of the pair - [Pair.first]
  *
- * If the list only contains 1 `null` element, it means
- * nor album or artists found.
+ * Artists list will never be null (nor contain null elements) only empty
+ * when there's no artist found
  *
  * @return album's and artists' browse endpoints in 1 list
  */
-internal fun Runs.extractArtistAndAlbum(): LinkedHashSet<Runs.Run?> {
+internal fun Runs.extractArtistAndAlbum(): AlbumAndArtists {
     val artists = mutableListOf<Runs.Run>()
     var album: Runs.Run? = null
 
@@ -35,7 +38,7 @@ internal fun Runs.extractArtistAndAlbum(): LinkedHashSet<Runs.Run?> {
             else            -> continue
         }
 
-    return linkedSetOf( album, *artists.toTypedArray() )
+    return AlbumAndArtists(album, artists)
 }
 
 internal val List<Badge>.containsExplicitBadge: Boolean
