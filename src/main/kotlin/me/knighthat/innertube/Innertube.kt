@@ -108,7 +108,7 @@ object Innertube {
         }
     }
 
-    interface Provider {
+    fun interface Provider {
 
         @Blocking
         @Throws(IOException::class)
