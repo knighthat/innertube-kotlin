@@ -1,10 +1,9 @@
 package me.knighthat.innertube.model
 
-import kotlinx.serialization.Serializable
 import me.knighthat.innertube.Localized
 
 
-interface InnertubeArtist: InnertubeItem, Descriptive {
+interface InnertubeArtist: InnertubeItem, Descriptive, AccessibleViaUrl {
 
     /**
      * Number of subscribers in **short** format:

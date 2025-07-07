@@ -1,16 +1,13 @@
 package me.knighthat.internal.model
 
 import kotlinx.serialization.Serializable
-import me.knighthat.innertube.model.ContinuedPlaylist
 import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.response.BrowseResponse.Contents.TwoColumnBrowseResultsRenderer
 import me.knighthat.innertube.response.Continuation
 import me.knighthat.innertube.response.MusicTwoRowItemRenderer
 import me.knighthat.innertube.response.Runs
-import me.knighthat.innertube.response.SectionListRenderer
 import me.knighthat.innertube.response.Thumbnails
-import java.util.Objects
 
 @Serializable
 internal data class InnertubePlaylistImpl(
@@ -76,4 +73,10 @@ internal data class InnertubePlaylistImpl(
     }
 
     override val subtitleText: String? by lazy { subtitle?.runs?.joinToString( "" ) { it.text } }
+
+    override fun shareUrl( host: String ): String {
+        require( host.isYouTubeHost )
+
+        return "$host/playlist?list=$id"
+    }
 }

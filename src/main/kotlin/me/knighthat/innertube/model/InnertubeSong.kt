@@ -2,7 +2,7 @@ package me.knighthat.innertube.model
 
 import me.knighthat.innertube.response.Runs
 
-interface InnertubeSong: InnertubeItem, ContentRating {
+interface InnertubeSong: InnertubeItem, ContentRating, AccessibleViaUrl {
 
     /**
      * Plain text representation of duration, in short format

@@ -4,7 +4,7 @@ import me.knighthat.innertube.response.Continuation
 import me.knighthat.innertube.response.Runs
 
 
-interface InnertubePlaylist: InnertubeItem, Descriptive {
+interface InnertubePlaylist: InnertubeItem, Descriptive, AccessibleViaUrl {
 
     /**
      * Usually contains:

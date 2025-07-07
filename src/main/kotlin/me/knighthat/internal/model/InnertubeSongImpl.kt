@@ -156,4 +156,10 @@ internal data class InnertubeSongImpl(
         artists,
         artists.joinToString { it.text }
     )
+
+    override fun shareUrl( host: String ): String {
+        require( host.isYouTubeHost )
+
+        return "$host/watch?v=$id"
+    }
 }

@@ -1,12 +1,11 @@
 package me.knighthat.internal.model
 
+import me.knighthat.innertube.Constants
 import me.knighthat.innertube.PageType
 import me.knighthat.innertube.response.Badge
-import me.knighthat.innertube.response.Endpoint
 import me.knighthat.innertube.response.Runs
 import me.knighthat.innertube.response.Thumbnail
 import me.knighthat.innertube.response.Thumbnails
-import java.util.LinkedList
 
 internal val Runs.firstText: String
     get() = runs.firstOrNull()?.text.orEmpty()
@@ -50,3 +49,6 @@ internal val Runs.Run.pageType: String?
                               ?.browseEndpointContextSupportedConfigs
                               ?.browseEndpointContextMusicConfig
                               ?.pageType
+
+internal val String.isYouTubeHost: Boolean
+    get() = this == Constants.YOUTUBE_URL || this == Constants.YOUTUBE_MUSIC_URL
