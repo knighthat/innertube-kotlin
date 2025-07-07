@@ -111,10 +111,6 @@ internal data class InnertubeSongImpl(
                 }
             }
 
-            val merged = (renderer.flexColumns + renderer.fixedColumns).mapNotNull {
-                it.musicResponsiveListItemFlexColumnRenderer ?: it.musicResponsiveListItemFixedColumnRenderer
-            }
-
             return InnertubeSongImpl(
                 // [id] must not be null under any circumstances
                 id ?: renderer.playlistItemData!!.videoId!!,
