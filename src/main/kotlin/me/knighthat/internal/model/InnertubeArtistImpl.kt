@@ -87,7 +87,7 @@ internal data class InnertubeArtistImpl(
         fun from( response: BrowseResponse ): InnertubeArtist {
             val contents = requireNotNull(
                 response.contents
-                        .singleColumnBrowseResultsRenderer
+                        ?.singleColumnBrowseResultsRenderer
                         ?.tabs
                         ?.firstOrNull()
                         ?.tabRenderer

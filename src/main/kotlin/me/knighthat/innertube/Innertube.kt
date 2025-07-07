@@ -64,7 +64,7 @@ object Innertube {
 
             InnertubePlaylistImpl.from(
                 browseResponse.responseContext.visitorData!!,
-                browseResponse.contents.twoColumnBrowseResultsRenderer!!
+                browseResponse.contents!!.twoColumnBrowseResultsRenderer!!
             )
         }
     }
@@ -86,7 +86,6 @@ object Innertube {
         localization: Localization,
         params: String?
     ): Result<ContinuedPlaylist> {
-
         val context = Context(
             Context.WEB_REMIX_DEFAULT.client.copy(
                 hl = localization.languageCode,

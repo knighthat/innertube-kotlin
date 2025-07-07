@@ -3,7 +3,7 @@ package me.knighthat.innertube.response
 
 interface BrowseResponse : InnertubeResponse {
 
-    val contents: Contents
+    val contents: Contents?
     val header: Header?
     val maxAgeStoreSeconds: Int?
     val microformat: Microformat?

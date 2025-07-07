@@ -2,11 +2,10 @@ package me.knighthat.internal.response
 
 import kotlinx.serialization.Serializable
 import me.knighthat.innertube.response.BrowseResponse
-import me.knighthat.innertube.response.Button
 
 @Serializable
 internal data class BrowseResponseImpl(
-    override val contents: ContentsImpl,
+    override val contents: ContentsImpl?,
     override val header: HeaderImpl?,
     override val maxAgeStoreSeconds: Int?,
     override val microformat: MicroformatImpl?,
