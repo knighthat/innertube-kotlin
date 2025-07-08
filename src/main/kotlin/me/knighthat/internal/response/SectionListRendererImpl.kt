@@ -42,7 +42,7 @@ internal data class SectionListRendererImpl(
 
             @Serializable
             internal data class ThumbnailImpl(
-                override val musicTastebuilderShelfThumbnailRenderer: ThumbnailImpl.RendererImpl
+                override val musicTastebuilderShelfThumbnailRenderer: me.knighthat.internal.response.ThumbnailImpl.RendererImpl
             ): SectionListRenderer.Content.MusicTastebuilderShelfRenderer.Thumbnail
         }
 
