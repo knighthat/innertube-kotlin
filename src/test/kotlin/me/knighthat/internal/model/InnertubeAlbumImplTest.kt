@@ -2,6 +2,7 @@ package me.knighthat.internal.model
 
 import me.knighthat.innertube.decode
 import me.knighthat.innertube.model.InnertubeAlbum
+import me.knighthat.innertube.request.Localization
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.MusicResponsiveListItemRendererImpl
 import me.knighthat.internal.response.MusicTwoRowItemRendererImpl
@@ -197,7 +198,7 @@ class InnertubeAlbumImplTest {
 
     @ParameterizedTest
     @MethodSource("browseResponseProvider")
-    fun testFromBrowseResponse(
+    suspend fun testFromBrowseResponse(
         fileName: String,
         id: String,
         name: String,
@@ -218,7 +219,7 @@ class InnertubeAlbumImplTest {
                        assertNotNull( renderer )
 
                        assertProperties(
-                           InnertubeAlbumImpl.from( id, renderer ),
+                           InnertubeAlbumImpl.from( id, Localization.EN_US, renderer ),
                            id,
                            name,
                            thumbnailCount,
