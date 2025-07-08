@@ -32,7 +32,7 @@ object Innertube {
     @VisibleForTesting
     @Blocking
     @Throws(IOException::class)
-    fun sendRequest(
+    private fun sendRequest(
         @MagicConstant(valuesFromClass = Request::class) method: String,
         host: String,
         @MagicConstant(valuesFromClass = Endpoints::class) endpoint: String,
@@ -42,11 +42,9 @@ object Innertube {
         Request(method, headers, "$host/$endpoint", requestBody)
     )
 
-
-    // END: Static fields/functions
     @Throws(IOException::class)
-    private fun ytmBrowse( browseBody: BrowseBody, headers: Map<String, List<String>> ): Response =
-        sendRequest(Request.POST, Constants.YOUTUBE_MUSIC_URL, Endpoints.BROWSE, browseBody, headers )
+    internal fun ytmBrowse( browseBody: BrowseBody, headers: Map<String, List<String>> ): Response =
+        sendRequest( Request.POST, Constants.YOUTUBE_MUSIC_URL, Endpoints.BROWSE, browseBody, headers )
 
     fun browsePlaylist(
         playlistId: String,
