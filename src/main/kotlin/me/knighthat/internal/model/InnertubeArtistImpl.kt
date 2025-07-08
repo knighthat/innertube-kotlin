@@ -107,7 +107,7 @@ internal data class InnertubeArtistImpl(
                                                                  .map( InnertubeSongImpl::from )
 
                     sections.add(
-                        SectionImpl(musicSection.title.firstText, browse?.browseId, browse?.params, songs)
+                        SectionImpl(musicSection.title?.firstText.orEmpty(), browse?.browseId, browse?.params, songs)
                     )
                 }
 

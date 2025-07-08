@@ -3,7 +3,7 @@ package me.knighthat.innertube.response
 
 interface MusicShelfRenderer {
 
-    val title: Runs
+    val title: Runs?
     val contents: List<Content>
     val bottomText: Runs?
     val bottomEndpoint: Endpoint?
