@@ -55,10 +55,10 @@ internal data class InnertubeSongImpl(
             var album: Runs.Run? = null
 
             renderer.longBylineText.runs.forEach {  run ->
-                when( run.pageType ) {
+                when( run.navigationEndpoint.pageType ) {
                     PageType.ALBUM  -> album = run
                     PageType.ARTIST -> artists.add( run )
-                    else            -> {}
+                    else            -> { /* Does nothing */ }
                 }
             }
 
@@ -93,7 +93,7 @@ internal data class InnertubeSongImpl(
                     continue
                 }
 
-                when( run.pageType ) {
+                when( run.navigationEndpoint.pageType ) {
                     PageType.ALBUM  -> album = run
                     PageType.ARTIST -> artists.add( run )
                     else            -> {}

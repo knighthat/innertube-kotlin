@@ -3,6 +3,7 @@ package me.knighthat.internal.model
 import me.knighthat.innertube.Constants
 import me.knighthat.innertube.PageType
 import me.knighthat.innertube.response.Badge
+import me.knighthat.innertube.response.Endpoint
 import me.knighthat.innertube.response.Runs
 import me.knighthat.innertube.response.Thumbnail
 import me.knighthat.innertube.response.Thumbnails
@@ -32,7 +33,7 @@ internal fun Runs.extractArtistAndAlbum(): AlbumAndArtists {
     var album: Runs.Run? = null
 
     for( run in runs )
-        when( run.pageType ) {
+        when( run.navigationEndpoint.pageType ) {
             PageType.ALBUM  -> album = run
             PageType.ARTIST -> artists.add( run )
             else            -> continue
@@ -47,11 +48,11 @@ internal val List<Badge>.containsExplicitBadge: Boolean
 internal fun Thumbnail?.toThumbnailList(): List<Thumbnails.Thumbnail> =
     this?.musicThumbnailRenderer?.thumbnail?.thumbnails.orEmpty()
 
-internal val Runs.Run.pageType: String?
-    get() = navigationEndpoint?.browseEndpoint
-                              ?.browseEndpointContextSupportedConfigs
-                              ?.browseEndpointContextMusicConfig
-                              ?.pageType
+internal val Endpoint?.pageType: String?
+    get() = this?.browseEndpoint
+                ?.browseEndpointContextSupportedConfigs
+                ?.browseEndpointContextMusicConfig
+                ?.pageType
 
 internal val String.isYouTubeHost: Boolean
     get() = this == Constants.YOUTUBE_URL || this == Constants.YOUTUBE_MUSIC_URL
