@@ -1,17 +1,21 @@
 package me.knighthat.internal.model
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.serialization.Serializable
+import me.knighthat.innertube.Innertube
 import me.knighthat.innertube.PageType
 import me.knighthat.innertube.model.InnertubeAlbum
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubeSong
+import me.knighthat.innertube.request.Localization
 import me.knighthat.innertube.response.BrowseResponse
 import me.knighthat.innertube.response.MusicCarouselShelfRenderer
 import me.knighthat.innertube.response.MusicResponsiveListItemRenderer
 import me.knighthat.innertube.response.MusicShelfRenderer
 import me.knighthat.innertube.response.MusicTwoRowItemRenderer
 import me.knighthat.innertube.response.Runs
-import me.knighthat.innertube.response.SectionListRenderer
 import me.knighthat.innertube.response.Thumbnails
 import java.net.URI
 
@@ -33,6 +37,7 @@ internal data class InnertubeAlbumImpl(
     companion object {
 
         private val YEAR_REGEX = Regex("\\d{4}")
+        private val ALBUM_PLAYLIST_ID_REGEX = Regex("(?:playlist\\?list=|list=)?(OLAK5uy_[A-Za-z0-9_-]{32}|[A-Za-z0-9_-]+)(?:&|\$)")
 
         private val Runs.year: String
             get() = runs.firstOrNull { it.text.matches( YEAR_REGEX ) }?.text.orEmpty()
@@ -80,7 +85,28 @@ internal data class InnertubeAlbumImpl(
             )
         }
 
-        fun from( browseId: String, browseResponse: BrowseResponse ): InnertubeAlbum {
+        suspend fun from( browseId: String, localization: Localization, browseResponse: BrowseResponse ): InnertubeAlbum {
+            val urlCanonical: String? = browseResponse.microformat
+                                                      ?.microformatDataRenderer
+                                                      ?.urlCanonical
+
+            // This will start the job but won't block it
+            // allows subsequent tasks to run while fetching for songs
+            val fetchSongsJob = CoroutineScope( Dispatchers.IO ).async {
+                val captured = ALBUM_PLAYLIST_ID_REGEX.find( urlCanonical.orEmpty() )?.groups?.get( 1 )?.value
+                if( captured.isNullOrBlank() ) return@async emptyList()
+
+                val playlistId = "%s$captured".format( if( captured.startsWith( "VL" ) ) "" else "VL" )
+                Innertube.browsePlaylistSongs( playlistId, localization )
+                         .fold(
+                             onSuccess = { it },
+                             onFailure = {
+                                 it.printStackTrace()
+                                 emptyList()
+                             }
+                         )
+            }
+            //<editor-fold desc="Parser">
             val renderer = requireNotNull(
                 browseResponse.contents
                               ?.twoColumnBrowseResultsRenderer
@@ -93,47 +119,39 @@ internal data class InnertubeAlbumImpl(
                               ?.firstOrNull()
                               ?.musicResponsiveHeaderRenderer
             )
-            val contents: List<SectionListRenderer.Content> = browseResponse.contents
-                                                                            ?.twoColumnBrowseResultsRenderer
-                                                                            ?.secondaryContents
-                                                                            ?.sectionListRenderer
-                                                                            ?.contents
-                                                                            .orEmpty()
+            val thumbnails = renderer.thumbnail.toThumbnailList()
+            val artists = renderer.straplineTextOne?.extractArtistAndAlbum()?.artists.orEmpty()
+            val description: String? = renderer.description
+                                               ?.musicDescriptionShelfRenderer
+                                               ?.description
+                                               ?.runs
+                                               ?.joinToString( "" ) { it.text }
+            val subtitle: String? = renderer.secondSubtitle
+                                            ?.runs
+                                            ?.joinToString( "" ) { it.text }
+            val sections: List<InnertubeAlbum.Section> =  browseResponse.contents
+                                                                        ?.twoColumnBrowseResultsRenderer
+                                                                        ?.secondaryContents
+                                                                        ?.sectionListRenderer
+                                                                        ?.contents
+                                                                        ?.mapNotNull {
+                                                                            it.musicCarouselShelfRenderer?.let( SectionImpl::from )
+                                                                        }
+                                                                        .orEmpty()
+            //</editor-fold>
 
             return InnertubeAlbumImpl(
                 id = browseId,
-                name = renderer.title
-                               .firstText,
-                thumbnails = renderer.thumbnail
-                                     .toThumbnailList(),
-                isExplicit = renderer.subtitleBadge
-                                     .containsExplicitBadge,
-                artists = renderer.straplineTextOne
-                                  ?.extractArtistAndAlbum()
-                                  ?.artists
-                                  .orEmpty(),
-                year = renderer.subtitle
-                               .year,
-                urlCanonical = browseResponse.microformat
-                                             ?.microformatDataRenderer
-                                             ?.urlCanonical,
-                description = renderer.description
-                                      ?.musicDescriptionShelfRenderer
-                                      ?.description
-                                      ?.runs
-                                      ?.joinToString( "" ) { it.text },
-                subtitle = renderer.secondSubtitle
-                                   ?.runs
-                                   ?.joinToString( "" ) { it.text },
-                songs = contents.mapNotNull( SectionListRenderer.Content::musicShelfRenderer )
-                                .flatMap {
-                                    it.contents
-                                      .mapNotNull( MusicShelfRenderer.Content::musicResponsiveListItemRenderer )
-                                      .map( InnertubeSongImpl::from )
-                                },
-                sections = contents.mapNotNull {
-                    it.musicCarouselShelfRenderer?.let( SectionImpl::from )
-                }
+                name = renderer.title.firstText,
+                thumbnails = thumbnails,
+                isExplicit = renderer.subtitleBadge.containsExplicitBadge,
+                artists = artists,
+                year = renderer.subtitle.year,
+                urlCanonical = urlCanonical,
+                description = description,
+                subtitle = subtitle,
+                songs = fetchSongsJob.await(),
+                sections = sections
             )
         }
     }
