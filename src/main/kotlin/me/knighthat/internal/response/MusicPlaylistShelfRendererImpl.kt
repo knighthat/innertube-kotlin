@@ -5,11 +5,11 @@ import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
 
 @Serializable
 internal data class MusicPlaylistShelfRendererImpl(
-    override val playlistId: String,
+    override val playlistId: String?,
     override val contents: List<ContentImpl> = emptyList(),
     override val collapsedItemCount: Int,
     override val contentsMultiSelectable: Boolean,
-    override val targetId: String
+    override val targetId: String?
 ): MusicPlaylistShelfRenderer {
 
     @Serializable

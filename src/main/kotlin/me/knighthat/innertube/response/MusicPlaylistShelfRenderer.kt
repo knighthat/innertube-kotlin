@@ -3,11 +3,11 @@ package me.knighthat.innertube.response
 
 interface MusicPlaylistShelfRenderer {
 
-    val playlistId: String
+    val playlistId: String?
     val contents: List<Content>
     val collapsedItemCount: Int
     val contentsMultiSelectable: Boolean
-    val targetId: String
+    val targetId: String?
 
     interface Content {
 

@@ -53,7 +53,7 @@ internal data class InnertubePlaylistImpl(
             )
             val sectionListRenderer = renderer.secondaryContents!!.sectionListRenderer
             val playlistShelfRenderer = sectionListRenderer.contents.first().musicPlaylistShelfRenderer
-            val playlistId = playlistShelfRenderer!!.playlistId
+            val playlistId = playlistShelfRenderer!!.playlistId!!
             val continuedPlaylist = ContinuedPlaylistImpl.from( playlistShelfRenderer.contents )
             val description = headerRenderer.description?.musicDescriptionShelfRenderer?.description?.firstText
 
