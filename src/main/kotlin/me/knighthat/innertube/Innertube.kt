@@ -2,6 +2,7 @@ package me.knighthat.innertube
 
 import kotlinx.serialization.json.Json
 import me.knighthat.innertube.model.ContinuedPlaylist
+import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.request.Localization
 import me.knighthat.innertube.request.Request
@@ -10,6 +11,7 @@ import me.knighthat.innertube.request.body.Context
 import me.knighthat.innertube.request.body.RequestBody
 import me.knighthat.innertube.response.Response
 import me.knighthat.internal.model.ContinuedPlaylistImpl
+import me.knighthat.internal.model.InnertubeArtistImpl
 import me.knighthat.internal.model.InnertubePlaylistImpl
 import me.knighthat.internal.response.BrowseResponseImpl
 import org.intellij.lang.annotations.MagicConstant
@@ -105,6 +107,27 @@ object Innertube {
                               .appendContinuationItemsAction
                               .continuationItems
             )
+        }
+    }
+
+    fun browseArtist(
+        artistId: String,
+        localization: Localization,
+        params: String?
+    ): Result<InnertubeArtist> {
+        val context = Context(
+            Context.WEB_REMIX_DEFAULT.client.copy(
+                hl = localization.languageCode,
+                gl = localization.regionCode
+            )
+        )
+        val browseBody = BrowseBody.builder( context ).browseId( artistId ).params( params ).build()
+
+        return runCatching {
+            val response = ytmBrowse( browseBody, Constants.JSON_HEADERS )
+            val browseResponse = JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
+
+            InnertubeArtistImpl.from( browseResponse )
         }
     }
 
