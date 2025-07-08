@@ -38,7 +38,7 @@ object Innertube {
     @VisibleForTesting
     @Blocking
     @Throws(IOException::class)
-    private fun sendRequest(
+    internal fun sendRequest(
         @MagicConstant(valuesFromClass = Request::class) method: String,
         host: String,
         @MagicConstant(valuesFromClass = Endpoints::class) endpoint: String,
