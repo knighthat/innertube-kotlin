@@ -20,6 +20,7 @@ interface Tabs {
             interface Content {
 
                 val sectionListRenderer: SectionListRenderer?
+                val musicQueueRenderer: MusicQueueRenderer?
             }
         }
     }

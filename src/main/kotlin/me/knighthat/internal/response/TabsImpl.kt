@@ -24,7 +24,8 @@ internal data class TabsImpl(
 
             @Serializable
             internal data class ContentImpl(
-                override val sectionListRenderer: SectionListRendererImpl?
+                override val sectionListRenderer: SectionListRendererImpl?,
+                override val musicQueueRenderer: MusicQueueRendererImpl?
             ): Tabs.Tab.Renderer.Content
         }
     }
