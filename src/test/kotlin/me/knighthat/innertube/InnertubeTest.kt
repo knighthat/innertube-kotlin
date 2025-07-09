@@ -64,10 +64,15 @@ class InnertubeTest {
 
     class InnertubeProvider: Innertube.Provider {
 
-        private val HEADER_INTERCEPTOR = HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.HEADERS )
-        private val BODY_INTERCEPTOR = HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.BODY )
-
-        val CLIENT = OkHttpClient.Builder().addInterceptor( HEADER_INTERCEPTOR ).addInterceptor( BODY_INTERCEPTOR ).build()
+        val CLIENT: OkHttpClient =
+            OkHttpClient.Builder()
+                        .addInterceptor(
+                            HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.HEADERS )
+                        )
+                        .addInterceptor(
+                            HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.BODY )
+                        )
+                        .build()
 
         @Throws(IOException::class)
         override fun execute( request: Request ): Response {

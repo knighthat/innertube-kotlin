@@ -10,8 +10,11 @@ import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.request.Localization
 import me.knighthat.innertube.request.Request
 import me.knighthat.innertube.request.body.BrowseBody
+import me.knighthat.innertube.request.body.Builder
 import me.knighthat.innertube.request.body.Context
 import me.knighthat.innertube.request.body.RequestBody
+import me.knighthat.innertube.request.body.browse.TypeBuilder
+import me.knighthat.innertube.response.BrowseResponse
 import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
 import me.knighthat.innertube.response.Response
 import me.knighthat.internal.model.ContinuedPlaylistImpl
@@ -48,48 +51,47 @@ object Innertube {
         Request(method, headers, "$host/$endpoint", requestBody)
     )
 
+    @VisibleForTesting
     @Throws(IOException::class)
-    internal fun ytmBrowse( browseBody: BrowseBody, headers: Map<String, List<String>> ): Response =
-        sendRequest( Request.POST, Constants.YOUTUBE_MUSIC_URL, Endpoints.BROWSE, browseBody, headers )
+    internal fun ytmBrowse(
+        localization: Localization,
+        visitorData: String = Constants.VISITOR_DATA,
+        builder: TypeBuilder.() -> Builder<BrowseBody>
+    ): BrowseResponse {
+        val context = Context(
+            Context.WEB_REMIX_DEFAULT.client.copy(
+                hl = localization.languageCode,
+                gl = localization.regionCode,
+                visitorData = visitorData
+            )
+        )
+        val browseBody = BrowseBody.builder( context ).builder().build()
+        val response = sendRequest(
+            Request.POST, Constants.YOUTUBE_MUSIC_URL, Endpoints.BROWSE, browseBody, Constants.JSON_HEADERS
+        )
+
+        return JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
+    }
 
     fun browsePlaylist(
         playlistId: String,
         localization: Localization
-    ): Result<InnertubePlaylist> {
-        val context = Context(
-            Context.WEB_REMIX_DEFAULT.client.copy(
-                hl = localization.languageCode,
-                gl = localization.regionCode
-            )
-        )
-        val browseBody = BrowseBody.builder( context ).browseId( playlistId ).build()
-
-        return runCatching {
-            val response = ytmBrowse( browseBody, Constants.JSON_HEADERS )
-            val browseResponse = JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
+    ): Result<InnertubePlaylist> =
+        runCatching {
+            val browseResponse = ytmBrowse( localization ) { browseId( playlistId ) }
 
             InnertubePlaylistImpl.from(
                 browseResponse.responseContext.visitorData!!,
                 browseResponse.contents!!.twoColumnBrowseResultsRenderer!!
             )
         }
-    }
 
     fun browsePlaylistSongs(
         playlistId: String,
         localization: Localization
-    ): Result<List<InnertubeSong>> {
-        val context = Context(
-            Context.WEB_REMIX_DEFAULT.client.copy(
-                hl = localization.languageCode,
-                gl = localization.regionCode
-            )
-        )
-        val browseBody = BrowseBody.builder( context ).browseId( playlistId ).build()
-
-        return runCatching {
-            val response = ytmBrowse( browseBody, Constants.JSON_HEADERS )
-            val browseResponse = JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
+    ): Result<List<InnertubeSong>> =
+        runCatching {
+            val browseResponse = ytmBrowse( localization ) { browseId( playlistId ) }
 
             browseResponse.contents
                           ?.twoColumnBrowseResultsRenderer
@@ -103,7 +105,6 @@ object Innertube {
                           ?.map( InnertubeSongImpl::from )
                           .orEmpty()
         }
-    }
 
     /**
      * Request for more songs in a playlist.
@@ -121,19 +122,11 @@ object Innertube {
         continuation: String,
         localization: Localization,
         params: String?
-    ): Result<ContinuedPlaylist> {
-        val context = Context(
-            Context.WEB_REMIX_DEFAULT.client.copy(
-                hl = localization.languageCode,
-                gl = localization.regionCode,
-                visitorData = visitorData
-            )
-        )
-        val browseBody = BrowseBody.builder( context ).continuation( continuation ).params( params ).build()
-
-        return runCatching {
-            val response = ytmBrowse( browseBody, Constants.JSON_HEADERS )
-            val browseResponse = JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
+    ): Result<ContinuedPlaylist> =
+        runCatching {
+            val browseResponse = ytmBrowse( localization, visitorData ) {
+                continuation( continuation ).params( params )
+            }
 
             ContinuedPlaylistImpl.from(
                 browseResponse.onResponseReceivedActions
@@ -142,51 +135,34 @@ object Innertube {
                               .continuationItems
             )
         }
-    }
 
     fun browseArtist(
         artistId: String,
         localization: Localization,
         params: String?
-    ): Result<InnertubeArtist> {
-        val context = Context(
-            Context.WEB_REMIX_DEFAULT.client.copy(
-                hl = localization.languageCode,
-                gl = localization.regionCode
-            )
-        )
-        val browseBody = BrowseBody.builder( context ).browseId( artistId ).params( params ).build()
-
-        return runCatching {
-            val response = ytmBrowse( browseBody, Constants.JSON_HEADERS )
-            val browseResponse = JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
+    ): Result<InnertubeArtist> =
+        runCatching {
+            val browseResponse = ytmBrowse( localization ) {
+                browseId( artistId ).params( params )
+            }
 
             InnertubeArtistImpl.from( browseResponse )
         }
-    }
 
     fun browseAlbum(
         albumId: String,
         localization: Localization,
         params: String?
-    ): Result<InnertubeAlbum> {
-        val context = Context(
-            Context.WEB_REMIX_DEFAULT.client.copy(
-                hl = localization.languageCode,
-                gl = localization.regionCode
-            )
-        )
-        val browseBody = BrowseBody.builder( context ).browseId( albumId ).params( params ).build()
-
-        return runCatching {
-            val response = ytmBrowse( browseBody, Constants.JSON_HEADERS )
-            val browseResponse = JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
+    ): Result<InnertubeAlbum> =
+        runCatching {
+            val browseResponse = ytmBrowse( localization ) {
+                browseId( albumId ).params( params )
+            }
 
             runBlocking {
                 InnertubeAlbumImpl.from( albumId, localization, browseResponse )
             }
         }
-    }
 
     fun interface Provider {
 
