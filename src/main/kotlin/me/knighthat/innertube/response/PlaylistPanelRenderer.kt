@@ -4,10 +4,10 @@ package me.knighthat.innertube.response
 interface PlaylistPanelRenderer {
 
     val contents: List<Content>
-    val playlistId: String
+    val playlistId: String?
     val isInfinite: Boolean
     val continuations: List<Continuation>
-    val numItemsToShow: Short
+    val numItemsToShow: Short?
 
     interface Content {
 

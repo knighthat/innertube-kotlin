@@ -6,10 +6,10 @@ import me.knighthat.innertube.response.PlaylistPanelRenderer
 @Serializable
 internal data class PlaylistPanelRendererImpl(
     override val contents: List<ContentImpl> = emptyList(),
-    override val playlistId: String,
+    override val playlistId: String?,
     override val isInfinite: Boolean,
     override val continuations: List<ContinuationImpl> = emptyList(),
-    override val numItemsToShow: Short
+    override val numItemsToShow: Short?
 ): PlaylistPanelRenderer {
 
     @Serializable
