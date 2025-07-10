@@ -12,10 +12,13 @@ import me.knighthat.innertube.request.Request
 import me.knighthat.innertube.request.body.BrowseBody
 import me.knighthat.innertube.request.body.Builder
 import me.knighthat.innertube.request.body.Context
+import me.knighthat.innertube.request.body.NextBody
 import me.knighthat.innertube.request.body.RequestBody
 import me.knighthat.innertube.request.body.browse.TypeBuilder
 import me.knighthat.innertube.response.BrowseResponse
 import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
+import me.knighthat.innertube.response.NextResponse
+import me.knighthat.innertube.response.PlaylistPanelRenderer
 import me.knighthat.innertube.response.Response
 import me.knighthat.internal.model.ContinuedPlaylistImpl
 import me.knighthat.internal.model.InnertubeAlbumImpl
@@ -23,6 +26,7 @@ import me.knighthat.internal.model.InnertubeArtistImpl
 import me.knighthat.internal.model.InnertubePlaylistImpl
 import me.knighthat.internal.model.InnertubeSongImpl
 import me.knighthat.internal.response.BrowseResponseImpl
+import me.knighthat.internal.response.NextResponseImpl
 import org.intellij.lang.annotations.MagicConstant
 import org.jetbrains.annotations.Blocking
 import org.jetbrains.annotations.VisibleForTesting
@@ -71,6 +75,28 @@ object Innertube {
         )
 
         return JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
+    }
+
+    @VisibleForTesting
+    @Throws(IOException::class)
+    internal fun ytmNext(
+        localization: Localization,
+        visitorData: String = Constants.VISITOR_DATA,
+        builder: me.knighthat.innertube.request.body.next.Builder.() -> Builder<NextBody>
+    ): NextResponse {
+        val context = Context(
+            Context.WEB_REMIX_DEFAULT.client.copy(
+                hl = localization.languageCode,
+                gl = localization.regionCode,
+                visitorData = visitorData
+            )
+        )
+        val nextBody = NextBody.builder( context ).builder().build()
+        val response = sendRequest(
+            Request.POST, Constants.YOUTUBE_MUSIC_URL, Endpoints.NEXT, nextBody, Constants.JSON_HEADERS
+        )
+
+        return JSON.decodeFromString<NextResponseImpl>( response.responseBody )
     }
 
     fun browsePlaylist(
@@ -162,6 +188,67 @@ object Innertube {
             runBlocking {
                 InnertubeAlbumImpl.from( albumId, localization, browseResponse )
             }
+        }
+
+    fun songBasicInfo(
+        songId: String,
+        localization: Localization,
+        params: String? = null
+    ): Result<InnertubeSong> =
+        runCatching {
+            val nextResponse = ytmNext( localization ) {
+                videoId( songId ).params( params )
+            }
+            val renderer = requireNotNull(
+                nextResponse.contents
+                            .singleColumnMusicWatchNextResultsRenderer
+                            ?.tabbedRenderer
+                            ?.watchNextTabbedResultsRenderer
+                            ?.tabs
+                            ?.firstOrNull()
+                            ?.tabRenderer
+                            ?.content
+                            ?.musicQueueRenderer
+                            ?.content
+                            ?.playlistPanelRenderer
+                            ?.contents
+                            ?.first()
+                            ?.playlistPanelVideoRenderer
+            )
+
+            InnertubeSongImpl.from( renderer )
+        }
+
+    fun radio(
+        songId: String,
+        localization: Localization,
+        playlistId: String = "RDAMVM$songId",
+        params: String? = null,
+        includeProvidedSong: Boolean = false
+    ): Result<List<InnertubeSong>> =
+        runCatching {
+            val nextResponse = ytmNext( localization ) {
+                if( includeProvidedSong )
+                    videoId( songId )
+
+                playlistId( playlistId ).params( params )
+            }
+
+            nextResponse.contents
+                        .singleColumnMusicWatchNextResultsRenderer
+                        ?.tabbedRenderer
+                        ?.watchNextTabbedResultsRenderer
+                        ?.tabs
+                        ?.firstOrNull()
+                        ?.tabRenderer
+                        ?.content
+                        ?.musicQueueRenderer
+                        ?.content
+                        ?.playlistPanelRenderer
+                        ?.contents
+                        ?.mapNotNull( PlaylistPanelRenderer.Content::playlistPanelVideoRenderer )
+                        ?.map( InnertubeSongImpl::from )
+                        .orEmpty()
         }
 
     fun interface Provider {
