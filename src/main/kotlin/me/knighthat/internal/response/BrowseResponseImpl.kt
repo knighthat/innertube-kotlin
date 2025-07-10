@@ -37,7 +37,8 @@ internal data class BrowseResponseImpl(
     @Serializable
     internal data class HeaderImpl(
         override val musicImmersiveHeaderRenderer: MusicImmersiveHeaderRendererImpl?,
-        override val musicHeaderRenderer: MusicHeaderRendererImpl?
+        override val musicHeaderRenderer: MusicHeaderRendererImpl?,
+        override val musicVisualHeaderRenderer: MusicVisualHeaderRendererImpl?
     ): BrowseResponse.Header {
 
         @Serializable
@@ -54,6 +55,13 @@ internal data class BrowseResponseImpl(
         internal data class MusicHeaderRendererImpl(
             override val title: RunsImpl
         ): BrowseResponse.Header.MusicHeaderRenderer
+
+        @Serializable
+        internal data class MusicVisualHeaderRendererImpl(
+            override val title: RunsImpl,
+            override val thumbnail: ThumbnailImpl,
+            override val foregroundThumbnail: ThumbnailImpl
+        ) : BrowseResponse.Header.MusicVisualHeaderRenderer
     }
 
     @Serializable

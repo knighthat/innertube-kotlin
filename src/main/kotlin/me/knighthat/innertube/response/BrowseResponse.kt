@@ -32,6 +32,7 @@ interface BrowseResponse : InnertubeResponse {
 
         val musicImmersiveHeaderRenderer: MusicImmersiveHeaderRenderer?
         val musicHeaderRenderer: MusicHeaderRenderer?
+        val musicVisualHeaderRenderer: MusicVisualHeaderRenderer?
 
         interface MusicImmersiveHeaderRenderer {
 
@@ -46,6 +47,13 @@ interface BrowseResponse : InnertubeResponse {
         interface MusicHeaderRenderer {
 
             val title: Runs
+        }
+
+        interface MusicVisualHeaderRenderer {
+
+            val title: Runs
+            val thumbnail: Thumbnail
+            val foregroundThumbnail: Thumbnail
         }
     }
 
