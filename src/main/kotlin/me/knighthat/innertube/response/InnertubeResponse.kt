@@ -20,5 +20,11 @@ interface InnertubeResponse {
          * to different playlists.
          */
         val visitorData: String?
+        val serviceTrackingParams: List<ServiceTracking>
+
+        interface ServiceTracking {
+
+            val params: Map<String, String>
+        }
     }
 }
