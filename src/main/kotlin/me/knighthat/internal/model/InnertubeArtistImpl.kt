@@ -25,6 +25,26 @@ internal data class InnertubeArtistImpl(
 
     companion object {
 
+        private fun parse( header: BrowseResponse.Header ): InnertubeItem {
+            val id: String = header.musicImmersiveHeaderRenderer
+                                   ?.subscriptionButton
+                                   ?.subscribeButtonRenderer
+                                   ?.channelId
+                                   .orEmpty()
+            val name = requireNotNull(
+                header.musicImmersiveHeaderRenderer?.title ?: header.musicVisualHeaderRenderer?.title
+            ).firstText
+            val thumbnails = requireNotNull(
+                header.musicImmersiveHeaderRenderer?.thumbnail ?: header.musicVisualHeaderRenderer?.thumbnail
+            ).toThumbnailList()
+
+            return object: InnertubeItem {
+                override val id: String = id
+                override val name: String = name
+                override val thumbnails: List<Thumbnails.Thumbnail> = thumbnails
+            }
+        }
+
         fun from( renderer: MusicTwoRowItemRenderer ): InnertubeArtist {
             val run = renderer.title.runs.first()       // Requires not null to proceed
 
@@ -82,21 +102,26 @@ internal data class InnertubeArtistImpl(
                        ?.also( sections::add )
             }
 
-            val header = requireNotNull(
-                response.header?.musicImmersiveHeaderRenderer
-            )
-            val subscribeButton = requireNotNull(
-                header.subscriptionButton.subscribeButtonRenderer
-            )
+            val item = parse( response.header!! )       // Requires [BrowseResponse.Header] to be a non-null value
+            val channelId = item.id.ifBlank {
+                requireNotNull(
+                    response.responseContext
+                            .serviceTrackingParams
+                            .first()
+                            .params["browse_id"]
+                )
+            }
+            val header = response.header?.musicImmersiveHeaderRenderer
+            val subscribeButton = header?.subscriptionButton?.subscribeButtonRenderer
 
             return InnertubeArtistImpl(
-                subscribeButton.channelId,
-                header.title.firstText,
-                header.thumbnail.toThumbnailList(),
+                channelId,
+                item.name,
+                item.thumbnails,
                 description,
-                subscribeButton.shortSubscriberCountText.firstText,
-                subscribeButton.longSubscriberCountText.firstText,
-                header.monthlyListenerCount?.firstText,
+                subscribeButton?.shortSubscriberCountText?.firstText,
+                subscribeButton?.longSubscriberCountText?.firstText,
+                header?.monthlyListenerCount?.firstText,
                 sections
             )
         }

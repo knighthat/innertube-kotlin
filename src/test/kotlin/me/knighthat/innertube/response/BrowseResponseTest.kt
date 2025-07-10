@@ -14,6 +14,7 @@ class BrowseResponseTest {
     @ParameterizedTest
     @ValueSource(strings = [
         "ytm/browse/endpoint_artist_response.json",
+        "ytm/browse/endpoint_artist_non_music_response.json",
         "ytm/browse/endpoint_playlist_response.json",
         "ytm/browse/playlist_continued_browseResponse.json"
     ])
