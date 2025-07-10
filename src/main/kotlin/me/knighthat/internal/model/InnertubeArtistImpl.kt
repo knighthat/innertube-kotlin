@@ -25,49 +25,6 @@ internal data class InnertubeArtistImpl(
 
     companion object {
 
-        private fun parse( renderer: MusicCarouselShelfRenderer ): InnertubeArtist.Section? {
-            // Skip this section because 1 or all content isn't [MusicTwoRowItemRender]
-            if( renderer.contents.any { it.musicTwoRowItemRenderer == null } )
-                return null
-
-            val sectionHeader = renderer.header.musicCarouselShelfBasicHeaderRenderer
-            val run = sectionHeader.title.runs.firstOrNull()
-            val browse = run?.navigationEndpoint?.browseEndpoint
-
-            return SectionImpl(
-                sectionHeader.title.firstText,
-                browse?.browseId,
-                browse?.params,
-                renderer.contents
-                        .mapNotNull( MusicCarouselShelfRenderer.Content::musicTwoRowItemRenderer )
-                        .mapNotNull { itemRenderer ->
-                            var result: InnertubeItem? = null
-
-                            itemRenderer.navigationEndpoint
-                                        .browseEndpoint
-                                        ?.browseEndpointContextSupportedConfigs
-                                        ?.browseEndpointContextMusicConfig
-                                        ?.pageType
-                                        ?.also { pageType ->
-                                            result = when( pageType ) {
-                                                PageType.ARTIST     -> from( itemRenderer )
-                                                PageType.ALBUM      -> InnertubeAlbumImpl.from( itemRenderer )
-                                                PageType.PLAYLIST   -> InnertubePlaylistImpl.from( itemRenderer )
-                                                else                -> null
-                                            }
-                                        }
-
-                            itemRenderer.navigationEndpoint
-                                        .watchEndpoint
-                                        ?.also {
-                                            result = InnertubeSongImpl.from( itemRenderer )
-                                        }
-
-                            result
-                        }
-            )
-        }
-
         fun from( renderer: MusicTwoRowItemRenderer ): InnertubeArtist {
             val run = renderer.title.runs.first()       // Requires not null to proceed
 
@@ -121,7 +78,7 @@ internal data class InnertubeArtistImpl(
 
                 // This section contains Albums, Single & EPs, related Artists, and Playlists.
                 content.musicCarouselShelfRenderer
-                       ?.let( ::parse )
+                       ?.let( SectionImpl::from )
                        ?.also( sections::add )
             }
 
@@ -157,5 +114,52 @@ internal data class InnertubeArtistImpl(
         override val browseId: String?,
         override val params: String?,
         override val contents: List<InnertubeItem>
-    ): InnertubeArtist.Section
+    ): InnertubeArtist.Section {
+
+        companion object {
+
+            fun from( renderer: MusicCarouselShelfRenderer ): InnertubeArtist.Section? {
+            // Skip this section because 1 or all content isn't [MusicTwoRowItemRender]
+            if( renderer.contents.any { it.musicTwoRowItemRenderer == null } )
+                return null
+
+            val sectionHeader = renderer.header.musicCarouselShelfBasicHeaderRenderer
+            val run = sectionHeader.title.runs.firstOrNull()
+            val browse = run?.navigationEndpoint?.browseEndpoint
+
+            return SectionImpl(
+                sectionHeader.title.firstText,
+                browse?.browseId,
+                browse?.params,
+                renderer.contents
+                        .mapNotNull( MusicCarouselShelfRenderer.Content::musicTwoRowItemRenderer )
+                        .mapNotNull { itemRenderer ->
+                            var result: InnertubeItem? = null
+
+                            itemRenderer.navigationEndpoint
+                                        .browseEndpoint
+                                        ?.browseEndpointContextSupportedConfigs
+                                        ?.browseEndpointContextMusicConfig
+                                        ?.pageType
+                                        ?.also { pageType ->
+                                            result = when( pageType ) {
+                                                PageType.ARTIST     -> from( itemRenderer )
+                                                PageType.ALBUM      -> InnertubeAlbumImpl.from( itemRenderer )
+                                                PageType.PLAYLIST   -> InnertubePlaylistImpl.from( itemRenderer )
+                                                else                -> null
+                                            }
+                                        }
+
+                            itemRenderer.navigationEndpoint
+                                        .watchEndpoint
+                                        ?.also {
+                                            result = InnertubeSongImpl.from( itemRenderer )
+                                        }
+
+                            result
+                        }
+            )
+        }
+        }
+    }
 }
