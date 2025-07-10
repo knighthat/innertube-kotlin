@@ -39,7 +39,7 @@ interface BrowseResponse : InnertubeResponse {
             val description: Runs
             val thumbnail: Thumbnail
             val shareEndpoint: Endpoint?
-            val monthlyListenerCount: Runs
+            val monthlyListenerCount: Runs?
             val subscriptionButton: Button
         }
 

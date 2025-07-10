@@ -46,7 +46,7 @@ internal data class BrowseResponseImpl(
             override val description: RunsImpl,
             override val thumbnail: ThumbnailImpl,
             override val shareEndpoint: EndpointImpl?,
-            override val monthlyListenerCount: RunsImpl,
+            override val monthlyListenerCount: RunsImpl?,
             override val subscriptionButton: ButtonImpl
         ): BrowseResponse.Header.MusicImmersiveHeaderRenderer
 

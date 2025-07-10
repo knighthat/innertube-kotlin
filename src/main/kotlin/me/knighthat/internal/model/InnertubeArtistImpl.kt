@@ -139,7 +139,7 @@ internal data class InnertubeArtistImpl(
                 description,
                 subscribeButton.shortSubscriberCountText.firstText,
                 subscribeButton.longSubscriberCountText.firstText,
-                header.monthlyListenerCount.firstText,
+                header.monthlyListenerCount?.firstText,
                 sections
             )
         }
