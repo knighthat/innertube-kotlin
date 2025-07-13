@@ -13,8 +13,8 @@ group = "me.knighthat"
 version = "0.0.1"
 
 dependencies {
-    compileOnly( libs.kotlinx.coroutines )
-    compileOnly( libs.ktor.serialization.json )
+    implementation( libs.kotlinx.coroutines )
+    implementation( libs.ktor.serialization.json )
 
     testImplementation( kotlin( "test" ) )
     testImplementation( libs.ktor.serialization.json )
