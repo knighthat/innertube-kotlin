@@ -44,7 +44,7 @@ internal data class BrowseResponseImpl(
         @Serializable
         internal data class MusicImmersiveHeaderRendererImpl(
             override val title: RunsImpl,
-            override val description: RunsImpl,
+            override val description: RunsImpl?,
             override val thumbnail: ThumbnailImpl,
             override val shareEndpoint: EndpointImpl?,
             override val monthlyListenerCount: RunsImpl?,

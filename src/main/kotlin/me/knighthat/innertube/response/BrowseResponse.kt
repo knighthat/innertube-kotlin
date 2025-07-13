@@ -37,7 +37,7 @@ interface BrowseResponse : InnertubeResponse {
         interface MusicImmersiveHeaderRenderer {
 
             val title: Runs
-            val description: Runs
+            val description: Runs?
             val thumbnail: Thumbnail
             val shareEndpoint: Endpoint?
             val monthlyListenerCount: Runs?
