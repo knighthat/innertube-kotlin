@@ -52,7 +52,7 @@ internal class NextResponseImpl(
 
                 @Serializable
                 data class BrowserMediaSessionRendererImpl(
-                    override val album: RunsImpl,
+                    override val album: RunsImpl?,
                     override val thumbnailDetails: ThumbnailsImpl
                 ): NextResponse.PlayerOverlays.PlayerOverlayRenderer.BrowserMediaSession.BrowserMediaSessionRenderer
             }

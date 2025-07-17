@@ -43,7 +43,7 @@ interface NextResponse : InnertubeResponse {
 
                 interface BrowserMediaSessionRenderer {
 
-                    val album: Runs
+                    val album: Runs?
                     val thumbnailDetails: Thumbnails
                 }
             }
