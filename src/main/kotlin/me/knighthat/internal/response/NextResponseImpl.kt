@@ -37,24 +37,24 @@ internal class NextResponseImpl(
 
     @Serializable
     data class PlayerOverlaysImpl(
-        override val playerOverlayRenderer: PlayerOverlayRendererImpl
+        override val playerOverlayRenderer: RendererImpl
     ): NextResponse.PlayerOverlays {
 
         @Serializable
-        data class PlayerOverlayRendererImpl(
+        data class RendererImpl(
             override val browserMediaSession: BrowserMediaSessionImpl
-        ): NextResponse.PlayerOverlays.PlayerOverlayRenderer {
+        ): NextResponse.PlayerOverlays.Renderer {
 
             @Serializable
             data class BrowserMediaSessionImpl(
-                override val browserMediaSessionRenderer: BrowserMediaSessionRendererImpl
-            ): NextResponse.PlayerOverlays.PlayerOverlayRenderer.BrowserMediaSession {
+                override val browserMediaSessionRenderer: RendererImpl
+            ): NextResponse.PlayerOverlays.Renderer.BrowserMediaSession {
 
                 @Serializable
-                data class BrowserMediaSessionRendererImpl(
+                data class RendererImpl(
                     override val album: RunsImpl?,
                     override val thumbnailDetails: ThumbnailsImpl
-                ): NextResponse.PlayerOverlays.PlayerOverlayRenderer.BrowserMediaSession.BrowserMediaSessionRenderer
+                ): NextResponse.PlayerOverlays.Renderer.BrowserMediaSession.Renderer
             }
         }
     }

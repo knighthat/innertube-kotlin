@@ -30,18 +30,18 @@ interface NextResponse : InnertubeResponse {
 
     interface PlayerOverlays {
 
-        val playerOverlayRenderer: PlayerOverlayRenderer
+        val playerOverlayRenderer: Renderer
 
-        interface PlayerOverlayRenderer {
+        interface Renderer {
 
             // Missing "actions"
             val browserMediaSession: BrowserMediaSession
 
             interface BrowserMediaSession {
 
-                val browserMediaSessionRenderer: BrowserMediaSessionRenderer
+                val browserMediaSessionRenderer: Renderer
 
-                interface BrowserMediaSessionRenderer {
+                interface Renderer {
 
                     val album: Runs?
                     val thumbnailDetails: Thumbnails
