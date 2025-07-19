@@ -21,7 +21,7 @@ class InnertubeArtistImplTest {
         fun browseResponseProvider(): Stream<Arguments> = Stream.of(
             Arguments.of(
                 "ytm/browse/artist_browseResponse.json",
-                "UC3lBXcrKFnFAFkfVk5WuKcQ",
+                "UCprAFmT0C6O4X0ToEXpeFTQ",
                 "Kendrick Lamar",
                 5,
                 // Due to multiple new lines, triple quotes must be used to preserve all of them
