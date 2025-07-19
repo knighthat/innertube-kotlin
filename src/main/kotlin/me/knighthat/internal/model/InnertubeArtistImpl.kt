@@ -142,47 +142,47 @@ internal data class InnertubeArtistImpl(
         companion object {
 
             fun from( renderer: MusicCarouselShelfRenderer ): InnertubeArtist.Section? {
-            // Skip this section because 1 or all content isn't [MusicTwoRowItemRender]
-            if( renderer.contents.any { it.musicTwoRowItemRenderer == null } )
-                return null
+                // Skip this section because 1 or all content isn't [MusicTwoRowItemRender]
+                if( renderer.contents.any { it.musicTwoRowItemRenderer == null } )
+                    return null
 
-            val sectionHeader = renderer.header.musicCarouselShelfBasicHeaderRenderer
-            val run = sectionHeader.title.runs.firstOrNull()
-            val browse = run?.navigationEndpoint?.browseEndpoint
+                val sectionHeader = renderer.header.musicCarouselShelfBasicHeaderRenderer
+                val run = sectionHeader.title.runs.firstOrNull()
+                val browse = run?.navigationEndpoint?.browseEndpoint
 
-            return SectionImpl(
-                sectionHeader.title.firstText,
-                browse?.browseId,
-                browse?.params,
-                renderer.contents
-                        .mapNotNull( MusicCarouselShelfRenderer.Content::musicTwoRowItemRenderer )
-                        .mapNotNull { itemRenderer ->
-                            var result: InnertubeItem? = null
+                return SectionImpl(
+                    title = sectionHeader.title.firstText,
+                    browseId = browse?.browseId,
+                    params = browse?.params,
+                    contents = renderer.contents
+                                       .mapNotNull( MusicCarouselShelfRenderer.Content::musicTwoRowItemRenderer )
+                                       .mapNotNull { itemRenderer ->
+                                           var result: InnertubeItem? = null
 
-                            itemRenderer.navigationEndpoint
-                                        .browseEndpoint
-                                        ?.browseEndpointContextSupportedConfigs
-                                        ?.browseEndpointContextMusicConfig
-                                        ?.pageType
-                                        ?.also { pageType ->
-                                            result = when( pageType ) {
-                                                PageType.ARTIST     -> from( itemRenderer )
-                                                PageType.ALBUM      -> InnertubeAlbumImpl.from( itemRenderer )
-                                                PageType.PLAYLIST   -> InnertubePlaylistImpl.from( itemRenderer )
-                                                else                -> null
-                                            }
-                                        }
+                                           itemRenderer.navigationEndpoint
+                                                       .browseEndpoint
+                                                       ?.browseEndpointContextSupportedConfigs
+                                                       ?.browseEndpointContextMusicConfig
+                                                       ?.pageType
+                                                       ?.also { pageType ->
+                                                           result = when( pageType ) {
+                                                               PageType.ARTIST     -> from( itemRenderer )
+                                                               PageType.ALBUM      -> InnertubeAlbumImpl.from( itemRenderer )
+                                                               PageType.PLAYLIST   -> InnertubePlaylistImpl.from( itemRenderer )
+                                                               else                -> null
+                                                           }
+                                                       }
 
-                            itemRenderer.navigationEndpoint
-                                        .watchEndpoint
-                                        ?.also {
-                                            result = InnertubeSongImpl.from( itemRenderer )
-                                        }
+                                           itemRenderer.navigationEndpoint
+                                                       .watchEndpoint
+                                                       ?.also {
+                                                           result = InnertubeSongImpl.from( itemRenderer )
+                                                       }
 
-                            result
-                        }
-            )
-        }
+                                           result
+                                       }
+                )
+            }
         }
     }
 }
