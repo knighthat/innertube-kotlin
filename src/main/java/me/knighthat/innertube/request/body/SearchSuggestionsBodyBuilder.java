@@ -1,8 +1,9 @@
 package me.knighthat.innertube.request.body;
 
-import me.knighthat.innertube.request.body.search.suggestions.Builder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import me.knighthat.innertube.request.body.search.suggestions.Builder;
 
 class SearchSuggestionsBodyBuilder implements Builder {
 
@@ -21,6 +22,12 @@ class SearchSuggestionsBodyBuilder implements Builder {
 
     @Override
     public @NotNull SearchSuggestionsBodyBuilder params( @Nullable String params ) {
+        return this;
+    }
+
+
+    @Override
+    public @NotNull Builder formData( @NotNull String... selectedValues ) {
         return this;
     }
 

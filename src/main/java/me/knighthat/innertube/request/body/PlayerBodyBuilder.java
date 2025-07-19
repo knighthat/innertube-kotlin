@@ -1,9 +1,10 @@
 package me.knighthat.innertube.request.body;
 
-import lombok.Getter;
-import me.knighthat.innertube.request.body.player.Builder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import lombok.Getter;
+import me.knighthat.innertube.request.body.player.Builder;
 
 @Getter
 class PlayerBodyBuilder implements Builder {
@@ -48,7 +49,7 @@ class PlayerBodyBuilder implements Builder {
 
     @Override
     public @NotNull Builder poToken( @NotNull String poToken ) {
-        return serviceIntegrityDimensions( new PlayerBody.ServiceIntegrityDimensions( poToken ) );
+        return serviceIntegrityDimensions(new PlayerBody.ServiceIntegrityDimensions(poToken));
     }
 
     @Override
@@ -58,8 +59,13 @@ class PlayerBodyBuilder implements Builder {
     }
 
     @Override
+    public @NotNull Builder formData( @NotNull String... selectedValues ) {
+        return this;
+    }
+
+    @Override
     public @NotNull PlayerBody build() {
         assert videoId != null;
-        return new PlayerBody( videoId, params, racyCheckOk, contentCheckOk, serviceIntegrityDimensions, context );
+        return new PlayerBody(videoId, params, racyCheckOk, contentCheckOk, serviceIntegrityDimensions, context);
     }
 }

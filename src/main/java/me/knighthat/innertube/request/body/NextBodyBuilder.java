@@ -1,9 +1,10 @@
 package me.knighthat.innertube.request.body;
 
-import lombok.Getter;
-import me.knighthat.innertube.request.body.next.Builder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import lombok.Getter;
+import me.knighthat.innertube.request.body.next.Builder;
 
 @Getter
 class NextBodyBuilder implements Builder {
@@ -39,9 +40,14 @@ class NextBodyBuilder implements Builder {
     }
 
     @Override
+    public @NotNull Builder formData( @NotNull String... selectedValues ) {
+        return this;
+    }
+
+    @Override
     public @NotNull NextBody build() {
         // Either of them must be a non-null value
         assert videoId != null || playlistId != null;
-        return new NextBody( videoId, playlistId, params, context );
+        return new NextBody(videoId, playlistId, params, context);
     }
 }
