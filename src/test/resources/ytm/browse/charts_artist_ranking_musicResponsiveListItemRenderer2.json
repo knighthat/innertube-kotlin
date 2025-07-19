@@ -1,0 +1,229 @@
+{
+  "trackingParams": "CLUCEMn0AhgBIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+  "thumbnail": {
+    "musicThumbnailRenderer": {
+      "thumbnail": {
+        "thumbnails": [
+          {
+            "url": "https://lh3.googleusercontent.com/uF517BSTBHbdtHXcX6hs2v5R62Wfx4aBGGI3-yebk6_SE_8W2wVaSfEyL6EvWFpaS22-ioFQd8rQAUc=w60-h60-p-l90-rj",
+            "width": 60,
+            "height": 60
+          },
+          {
+            "url": "https://lh3.googleusercontent.com/uF517BSTBHbdtHXcX6hs2v5R62Wfx4aBGGI3-yebk6_SE_8W2wVaSfEyL6EvWFpaS22-ioFQd8rQAUc=w120-h120-p-l90-rj",
+            "width": 120,
+            "height": 120
+          }
+        ]
+      },
+      "thumbnailCrop": "MUSIC_THUMBNAIL_CROP_CIRCLE",
+      "thumbnailScale": "MUSIC_THUMBNAIL_SCALE_ASPECT_FILL",
+      "trackingParams": "CLwCEIS_AiITCMOCxZW0yI4DFdTGFgkdnuIuwA=="
+    }
+  },
+  "flexColumns": [
+    {
+      "musicResponsiveListItemFlexColumnRenderer": {
+        "text": {
+          "runs": [
+            {
+              "text": "Morgan Wallen"
+            }
+          ]
+        },
+        "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+      }
+    },
+    {
+      "musicResponsiveListItemFlexColumnRenderer": {
+        "text": {
+          "runs": [
+            {
+              "text": "3.62M subscribers"
+            }
+          ]
+        },
+        "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+      }
+    }
+  ],
+  "menu": {
+    "menuRenderer": {
+      "items": [
+        {
+          "menuNavigationItemRenderer": {
+            "text": {
+              "runs": [
+                {
+                  "text": "Shuffle play"
+                }
+              ]
+            },
+            "icon": {
+              "iconType": "MUSIC_SHUFFLE"
+            },
+            "navigationEndpoint": {
+              "clickTrackingParams": "CLsCEJrzBRgAIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+              "watchPlaylistEndpoint": {
+                "playlistId": "RDAOM42whZdHcatZAqliI6w0Vw",
+                "params": "wAEB8gECGAE%3D"
+              }
+            },
+            "trackingParams": "CLsCEJrzBRgAIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+          }
+        },
+        {
+          "menuNavigationItemRenderer": {
+            "text": {
+              "runs": [
+                {
+                  "text": "Start radio"
+                }
+              ]
+            },
+            "icon": {
+              "iconType": "MIX"
+            },
+            "navigationEndpoint": {
+              "clickTrackingParams": "CLoCEJvzBRgBIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+              "watchPlaylistEndpoint": {
+                "playlistId": "RDEMM42whZdHcatZAqliI6w0Vw",
+                "params": "wAEB"
+              }
+            },
+            "trackingParams": "CLoCEJvzBRgBIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+          }
+        },
+        {
+          "toggleMenuServiceItemRenderer": {
+            "defaultText": {
+              "runs": [
+                {
+                  "text": "Subscribe"
+                }
+              ]
+            },
+            "defaultIcon": {
+              "iconType": "SUBSCRIBE"
+            },
+            "defaultServiceEndpoint": {
+              "clickTrackingParams": "CLgCEKicBhgCIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+              "modalEndpoint": {
+                "modal": {
+                  "modalWithTitleAndButtonRenderer": {
+                    "title": {
+                      "runs": [
+                        {
+                          "text": "Subscribe to this artist"
+                        }
+                      ]
+                    },
+                    "content": {
+                      "runs": [
+                        {
+                          "text": "Sign in to subscribe to this artist and never miss a beat"
+                        }
+                      ]
+                    },
+                    "button": {
+                      "buttonRenderer": {
+                        "style": "STYLE_BLUE_TEXT",
+                        "isDisabled": false,
+                        "text": {
+                          "runs": [
+                            {
+                              "text": "Sign in"
+                            }
+                          ]
+                        },
+                        "navigationEndpoint": {
+                          "clickTrackingParams": "CLkCEPBbIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+                          "signInEndpoint": {
+                            "hack": true
+                          }
+                        },
+                        "trackingParams": "CLkCEPBbIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "toggledText": {
+              "runs": [
+                {
+                  "text": "Unsubscribe"
+                }
+              ]
+            },
+            "toggledIcon": {
+              "iconType": "SUBSCRIBE"
+            },
+            "trackingParams": "CLgCEKicBhgCIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+          }
+        },
+        {
+          "menuNavigationItemRenderer": {
+            "text": {
+              "runs": [
+                {
+                  "text": "Share"
+                }
+              ]
+            },
+            "icon": {
+              "iconType": "SHARE"
+            },
+            "navigationEndpoint": {
+              "clickTrackingParams": "CLcCEJH7BRgDIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+              "shareEntityEndpoint": {
+                "serializedShareEntity": "GhhVQzV4YVE2X2RQN0VHRG1HTHpWR1oxT3c%3D",
+                "sharePanelType": "SHARE_PANEL_TYPE_UNIFIED_SHARE_PANEL"
+              }
+            },
+            "trackingParams": "CLcCEJH7BRgDIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+          }
+        }
+      ],
+      "trackingParams": "CLYCEKc7IhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+      "accessibility": {
+        "accessibilityData": {
+          "label": "Action menu"
+        }
+      }
+    }
+  },
+  "flexColumnDisplayStyle": "MUSIC_RESPONSIVE_LIST_ITEM_FLEX_COLUMN_DISPLAY_STYLE_TWO_LINE_STACK",
+  "navigationEndpoint": {
+    "clickTrackingParams": "CLUCEMn0AhgBIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+    "browseEndpoint": {
+      "browseId": "UC5xaQ6_dP7EGDmGLzVGZ1Ow",
+      "browseEndpointContextSupportedConfigs": {
+        "browseEndpointContextMusicConfig": {
+          "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+        }
+      }
+    }
+  },
+  "itemHeight": "MUSIC_RESPONSIVE_LIST_ITEM_HEIGHT_MEDIUM_COMPACT",
+  "customIndexColumn": {
+    "musicCustomIndexColumnRenderer": {
+      "text": {
+        "runs": [
+          {
+            "text": "2"
+          }
+        ]
+      },
+      "icon": {
+        "iconType": "ARROW_DROP_DOWN"
+      },
+      "iconColorStyle": "CUSTOM_INDEX_COLUMN_ICON_COLOR_STYLE_RED",
+      "accessibilityData": {
+        "accessibilityData": {
+          "label": "Rank decreased to 2"
+        }
+      }
+    }
+  }
+}

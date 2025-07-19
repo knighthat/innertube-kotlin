@@ -1,0 +1,229 @@
+{
+  "trackingParams": "CK0CEMn0AhgCIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+  "thumbnail": {
+    "musicThumbnailRenderer": {
+      "thumbnail": {
+        "thumbnails": [
+          {
+            "url": "https://lh3.googleusercontent.com/ez7fIblaQN4o7bYDr3aKPD9nAftIY-z9ZwHu0w6TFWmXnrqOI71l5R1QTur4rvoRKVDr9slXngLaZQ=w60-h60-p-l90-rj",
+            "width": 60,
+            "height": 60
+          },
+          {
+            "url": "https://lh3.googleusercontent.com/ez7fIblaQN4o7bYDr3aKPD9nAftIY-z9ZwHu0w6TFWmXnrqOI71l5R1QTur4rvoRKVDr9slXngLaZQ=w120-h120-p-l90-rj",
+            "width": 120,
+            "height": 120
+          }
+        ]
+      },
+      "thumbnailCrop": "MUSIC_THUMBNAIL_CROP_CIRCLE",
+      "thumbnailScale": "MUSIC_THUMBNAIL_SCALE_ASPECT_FILL",
+      "trackingParams": "CLQCEIS_AiITCMOCxZW0yI4DFdTGFgkdnuIuwA=="
+    }
+  },
+  "flexColumns": [
+    {
+      "musicResponsiveListItemFlexColumnRenderer": {
+        "text": {
+          "runs": [
+            {
+              "text": "Fuerza Regida"
+            }
+          ]
+        },
+        "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+      }
+    },
+    {
+      "musicResponsiveListItemFlexColumnRenderer": {
+        "text": {
+          "runs": [
+            {
+              "text": "5.52M subscribers"
+            }
+          ]
+        },
+        "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+      }
+    }
+  ],
+  "menu": {
+    "menuRenderer": {
+      "items": [
+        {
+          "menuNavigationItemRenderer": {
+            "text": {
+              "runs": [
+                {
+                  "text": "Shuffle play"
+                }
+              ]
+            },
+            "icon": {
+              "iconType": "MUSIC_SHUFFLE"
+            },
+            "navigationEndpoint": {
+              "clickTrackingParams": "CLMCEJrzBRgAIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+              "watchPlaylistEndpoint": {
+                "playlistId": "RDAOIFXLFbaOYVBB5ha_gCcV7g",
+                "params": "wAEB8gECGAE%3D"
+              }
+            },
+            "trackingParams": "CLMCEJrzBRgAIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+          }
+        },
+        {
+          "menuNavigationItemRenderer": {
+            "text": {
+              "runs": [
+                {
+                  "text": "Start radio"
+                }
+              ]
+            },
+            "icon": {
+              "iconType": "MIX"
+            },
+            "navigationEndpoint": {
+              "clickTrackingParams": "CLICEJvzBRgBIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+              "watchPlaylistEndpoint": {
+                "playlistId": "RDEMIFXLFbaOYVBB5ha_gCcV7g",
+                "params": "wAEB"
+              }
+            },
+            "trackingParams": "CLICEJvzBRgBIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+          }
+        },
+        {
+          "toggleMenuServiceItemRenderer": {
+            "defaultText": {
+              "runs": [
+                {
+                  "text": "Subscribe"
+                }
+              ]
+            },
+            "defaultIcon": {
+              "iconType": "SUBSCRIBE"
+            },
+            "defaultServiceEndpoint": {
+              "clickTrackingParams": "CLACEKicBhgCIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+              "modalEndpoint": {
+                "modal": {
+                  "modalWithTitleAndButtonRenderer": {
+                    "title": {
+                      "runs": [
+                        {
+                          "text": "Subscribe to this artist"
+                        }
+                      ]
+                    },
+                    "content": {
+                      "runs": [
+                        {
+                          "text": "Sign in to subscribe to this artist and never miss a beat"
+                        }
+                      ]
+                    },
+                    "button": {
+                      "buttonRenderer": {
+                        "style": "STYLE_BLUE_TEXT",
+                        "isDisabled": false,
+                        "text": {
+                          "runs": [
+                            {
+                              "text": "Sign in"
+                            }
+                          ]
+                        },
+                        "navigationEndpoint": {
+                          "clickTrackingParams": "CLECEPBbIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+                          "signInEndpoint": {
+                            "hack": true
+                          }
+                        },
+                        "trackingParams": "CLECEPBbIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "toggledText": {
+              "runs": [
+                {
+                  "text": "Unsubscribe"
+                }
+              ]
+            },
+            "toggledIcon": {
+              "iconType": "SUBSCRIBE"
+            },
+            "trackingParams": "CLACEKicBhgCIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+          }
+        },
+        {
+          "menuNavigationItemRenderer": {
+            "text": {
+              "runs": [
+                {
+                  "text": "Share"
+                }
+              ]
+            },
+            "icon": {
+              "iconType": "SHARE"
+            },
+            "navigationEndpoint": {
+              "clickTrackingParams": "CK8CEJH7BRgDIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+              "shareEntityEndpoint": {
+                "serializedShareEntity": "GhhVQzBreE54RlFDSzZkMnNwUHo1U21lN1E%3D",
+                "sharePanelType": "SHARE_PANEL_TYPE_UNIFIED_SHARE_PANEL"
+              }
+            },
+            "trackingParams": "CK8CEJH7BRgDIhMIw4LFlbTIjgMV1MYWCR2e4i7A"
+          }
+        }
+      ],
+      "trackingParams": "CK4CEKc7IhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+      "accessibility": {
+        "accessibilityData": {
+          "label": "Action menu"
+        }
+      }
+    }
+  },
+  "flexColumnDisplayStyle": "MUSIC_RESPONSIVE_LIST_ITEM_FLEX_COLUMN_DISPLAY_STYLE_TWO_LINE_STACK",
+  "navigationEndpoint": {
+    "clickTrackingParams": "CK0CEMn0AhgCIhMIw4LFlbTIjgMV1MYWCR2e4i7A",
+    "browseEndpoint": {
+      "browseId": "UC0kxNxFQCK6d2spPz5Sme7Q",
+      "browseEndpointContextSupportedConfigs": {
+        "browseEndpointContextMusicConfig": {
+          "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+        }
+      }
+    }
+  },
+  "itemHeight": "MUSIC_RESPONSIVE_LIST_ITEM_HEIGHT_MEDIUM_COMPACT",
+  "customIndexColumn": {
+    "musicCustomIndexColumnRenderer": {
+      "text": {
+        "runs": [
+          {
+            "text": "3"
+          }
+        ]
+      },
+      "icon": {
+        "iconType": "ARROW_CHART_NEUTRAL"
+      },
+      "iconColorStyle": "CUSTOM_INDEX_COLUMN_ICON_COLOR_STYLE_GREY",
+      "accessibilityData": {
+        "accessibilityData": {
+          "label": "Rank stayed at 3"
+        }
+      }
+    }
+  }
+}
