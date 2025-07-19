@@ -5,6 +5,7 @@ import kotlinx.serialization.json.Json
 import me.knighthat.innertube.model.ContinuedPlaylist
 import me.knighthat.innertube.model.InnertubeAlbum
 import me.knighthat.innertube.model.InnertubeArtist
+import me.knighthat.innertube.model.InnertubeCharts
 import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.request.Localization
@@ -23,6 +24,7 @@ import me.knighthat.innertube.response.Response
 import me.knighthat.internal.model.ContinuedPlaylistImpl
 import me.knighthat.internal.model.InnertubeAlbumImpl
 import me.knighthat.internal.model.InnertubeArtistImpl
+import me.knighthat.internal.model.InnertubeChartsImpl
 import me.knighthat.internal.model.InnertubePlaylistImpl
 import me.knighthat.internal.model.InnertubeSongImpl
 import me.knighthat.internal.response.BrowseResponseImpl
@@ -249,6 +251,28 @@ object Innertube {
                         ?.mapNotNull( PlaylistPanelRenderer.Content::playlistPanelVideoRenderer )
                         ?.map( InnertubeSongImpl::from )
                         .orEmpty()
+        }
+
+    fun charts(
+        localization: Localization,
+        params: String?,
+        selectedValue: String
+    ): Result<InnertubeCharts> =
+        runCatching {
+            val browseResponse = ytmBrowse(localization) {
+                browseId("FEmusic_charts").params(params).formData(selectedValue)
+            }
+            val renderer = requireNotNull(
+                browseResponse.contents
+                    ?.singleColumnBrowseResultsRenderer
+                    ?.tabs
+                    ?.firstOrNull()
+                    ?.tabRenderer
+                    ?.content
+                    ?.sectionListRenderer
+            )
+
+            InnertubeChartsImpl.from(renderer)
         }
 
     fun interface Provider {
