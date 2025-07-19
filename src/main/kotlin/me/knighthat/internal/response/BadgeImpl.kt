@@ -2,6 +2,7 @@ package me.knighthat.internal.response
 
 import kotlinx.serialization.Serializable
 import me.knighthat.innertube.response.Badge
+import me.knighthat.innertube.response.Icon
 
 @Serializable
 internal data class BadgeImpl(
@@ -20,6 +21,6 @@ internal data class BadgeImpl(
         @Serializable
         internal data class IconImpl(
             override val iconType: String
-        ): Badge.Renderer.Icon
+        ): Icon
     }
 }

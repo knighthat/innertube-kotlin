@@ -16,10 +16,5 @@ interface Badge {
         val tooltip: String?
         val accessibilityData: Accessibility?
         val icon: Icon?
-
-        interface Icon {
-
-            val iconType: String
-        }
     }
 }
