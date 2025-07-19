@@ -18,13 +18,13 @@ internal data class MusicResponsiveListItemRendererImpl(
 ): MusicResponsiveListItemRenderer {
 
     @Serializable
-    data class ColumImpl(
+    internal data class ColumImpl(
         override val musicResponsiveListItemFlexColumnRenderer: RendererImpl?,
         override val musicResponsiveListItemFixedColumnRenderer: RendererImpl?
     ): MusicResponsiveListItemRenderer.Colum {
 
         @Serializable
-        data class RendererImpl(
+        internal data class RendererImpl(
             override val text: RunsImpl?,
             override val displayPriority: String,
             override val size: String?
@@ -32,7 +32,7 @@ internal data class MusicResponsiveListItemRendererImpl(
     }
 
     @Serializable
-    data class PlaylistItemDataImpl(
+    internal data class PlaylistItemDataImpl(
         override val playlistSetVideoId: String?,
         override val videoId: String?
     ): MusicResponsiveListItemRenderer.PlaylistItemData
