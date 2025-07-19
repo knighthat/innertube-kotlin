@@ -1,5 +1,6 @@
 package me.knighthat.innertube.response
 
+
 interface MusicShelfRenderer {
 
     val title: Runs?
@@ -29,8 +30,13 @@ interface MusicShelfRenderer {
                 interface MusicSortFilterButtonRenderer {
 
                     val title: Runs
-                    val menu: MusicMultiSelectMenuItemRenderer
+                    val menu: Menu
                     val accessibility: Accessibility
+
+                    interface Menu {
+
+                        val musicMultiSelectMenuRenderer: MusicMultiSelectMenuRenderer
+                    }
                 }
             }
         }

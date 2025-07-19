@@ -36,9 +36,15 @@ internal data class MusicShelfRendererImpl(
                 @Serializable
                 internal data class MusicSortFilterButtonRendererImpl(
                     override val title: RunsImpl,
-                    override val menu: MusicMultiSelectMenuItemRendererImpl,
+                    override val menu: MenuImpl,
                     override val accessibility: AccessibilityImpl
-                ) : MusicShelfRenderer.Subheader.Renderer.Item.MusicSortFilterButtonRenderer
+                ) : MusicShelfRenderer.Subheader.Renderer.Item.MusicSortFilterButtonRenderer {
+
+                    @Serializable
+                    internal data class MenuImpl(
+                        override val musicMultiSelectMenuRenderer: MusicMultiSelectMenuRendererImpl
+                    ) : MusicShelfRenderer.Subheader.Renderer.Item.MusicSortFilterButtonRenderer.Menu
+                }
             }
         }
     }
