@@ -102,15 +102,13 @@ internal data class InnertubeArtistImpl(
                        ?.also( sections::add )
             }
 
+            val channelId = requireNotNull(
+                response.responseContext
+                        .serviceTrackingParams
+                        .first()
+                        .params["browse_id"]
+            )
             val item = parse( response.header!! )       // Requires [BrowseResponse.Header] to be a non-null value
-            val channelId = item.id.ifBlank {
-                requireNotNull(
-                    response.responseContext
-                            .serviceTrackingParams
-                            .first()
-                            .params["browse_id"]
-                )
-            }
             val header = response.header?.musicImmersiveHeaderRenderer
             val subscribeButton = header?.subscriptionButton?.subscribeButtonRenderer
 
