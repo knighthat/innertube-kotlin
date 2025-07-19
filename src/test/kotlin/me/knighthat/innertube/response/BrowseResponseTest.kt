@@ -16,7 +16,8 @@ class BrowseResponseTest {
         "ytm/browse/endpoint_artist_response.json",
         "ytm/browse/endpoint_artist_non_music_response.json",
         "ytm/browse/endpoint_playlist_response.json",
-        "ytm/browse/playlist_continued_browseResponse.json"
+        "ytm/browse/playlist_continued_browseResponse.json",
+        "ytm/browse/endpoint_charts_response.json"
     ])
     fun testParser( fileName: String ) {
         val result = ClassLoader.getSystemResourceAsStream( fileName )?.use { inStream ->
