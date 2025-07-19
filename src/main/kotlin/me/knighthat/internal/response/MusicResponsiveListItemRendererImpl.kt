@@ -14,7 +14,8 @@ internal data class MusicResponsiveListItemRendererImpl(
     override val flexColumnDisplayStyle: String?,
     override val navigationEndpoint: EndpointImpl?,
     override val itemHeight: String?,
-    override val index: RunsImpl?
+    override val index: RunsImpl?,
+    override val customIndexColumn: CustomIndexColumnImpl?
 ): MusicResponsiveListItemRenderer {
 
     @Serializable
@@ -36,4 +37,17 @@ internal data class MusicResponsiveListItemRendererImpl(
         override val playlistSetVideoId: String?,
         override val videoId: String?
     ): MusicResponsiveListItemRenderer.PlaylistItemData
+
+    @Serializable
+    internal data class CustomIndexColumnImpl(
+        override val musicCustomIndexColumnRenderer: RendererImpl
+    ) : MusicResponsiveListItemRenderer.CustomIndexColumn {
+
+        @Serializable
+        internal data class RendererImpl(
+            override val text: RunsImpl,
+            override val icon: IconImpl,
+            override val accessibilityData: AccessibilityImpl
+        ) : MusicResponsiveListItemRenderer.CustomIndexColumn.Renderer
+    }
 }

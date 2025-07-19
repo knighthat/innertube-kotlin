@@ -13,6 +13,7 @@ interface MusicResponsiveListItemRenderer {
     val navigationEndpoint: Endpoint?
     val itemHeight: String?
     val index: Runs?
+    val customIndexColumn: CustomIndexColumn?
 
     interface Colum {
 
@@ -31,5 +32,17 @@ interface MusicResponsiveListItemRenderer {
 
         val playlistSetVideoId: String?
         val videoId: String?
+    }
+
+    interface CustomIndexColumn {
+
+        val musicCustomIndexColumnRenderer: Renderer
+
+        interface Renderer {
+
+            val text: Runs
+            val icon: Icon
+            val accessibilityData: Accessibility
+        }
     }
 }
