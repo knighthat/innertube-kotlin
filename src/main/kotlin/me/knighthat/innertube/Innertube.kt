@@ -2,6 +2,9 @@ package me.knighthat.innertube
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import me.knighthat.innertube.model.ContinuedPlaylist
 import me.knighthat.innertube.model.InnertubeAlbum
 import me.knighthat.innertube.model.InnertubeArtist
@@ -10,6 +13,7 @@ import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.request.Localization
 import me.knighthat.innertube.request.Request
+import me.knighthat.innertube.request.body.AccountMenuBody
 import me.knighthat.innertube.request.body.BrowseBody
 import me.knighthat.innertube.request.body.Builder
 import me.knighthat.innertube.request.body.Context
@@ -21,12 +25,14 @@ import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
 import me.knighthat.innertube.response.NextResponse
 import me.knighthat.innertube.response.PlaylistPanelRenderer
 import me.knighthat.innertube.response.Response
+import me.knighthat.internal.model.AccountInfoImpl
 import me.knighthat.internal.model.ContinuedPlaylistImpl
 import me.knighthat.internal.model.InnertubeAlbumImpl
 import me.knighthat.internal.model.InnertubeArtistImpl
 import me.knighthat.internal.model.InnertubeChartsImpl
 import me.knighthat.internal.model.InnertubePlaylistImpl
 import me.knighthat.internal.model.InnertubeSongImpl
+import me.knighthat.internal.response.ActiveAccountHeaderRendererImpl
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.NextResponseImpl
 import org.intellij.lang.annotations.MagicConstant
@@ -292,6 +298,46 @@ object Innertube {
             )
 
             InnertubeChartsImpl.from(renderer)
+        }
+
+    fun accountInfo(
+        localization: Localization
+    ): Result<AccountInfoImpl> =
+        runCatching {
+            val context = Context(
+                Context.WEB_REMIX_DEFAULT.client.copy(
+                    hl = localization.languageCode,
+                    gl = localization.regionCode,
+                    visitorData = client.visitorData
+                ),
+                Context.User().copy(
+                    onBehalfOfUser = client.dataSyncId
+                )
+            )
+            val response = sendRequest(
+                Request.POST,
+                Constants.YOUTUBE_MUSIC_URL,
+                Endpoints.ACCOUNT_MENU,
+                AccountMenuBody(context),
+                Constants.JSON_HEADERS,
+                true
+            )
+
+            // This response is used here, and only here.
+            // There's no need to make interfaces to parse
+            val renderer = requireNotNull(
+                JSON.parseToJsonElement( response.responseBody )
+                    .jsonObject["actions"]
+                    ?.jsonArray[0]
+                    ?.jsonObject["openPopupAction"]
+                    ?.jsonObject["popup"]
+                    ?.jsonObject["multiPageMenuRenderer"]
+                    ?.jsonObject["header"]
+                    ?.jsonObject["activeAccountHeaderRenderer"]
+            )
+            AccountInfoImpl.from(
+                JSON.decodeFromJsonElement<ActiveAccountHeaderRendererImpl>( renderer )
+            )
         }
 
     interface Provider {
