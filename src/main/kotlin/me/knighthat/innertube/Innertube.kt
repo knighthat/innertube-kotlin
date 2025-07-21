@@ -42,7 +42,7 @@ object Innertube {
         explicitNulls = false
     }
 
-    var client: Provider? = null
+    lateinit var client: Provider
 
     @VisibleForTesting
     @Blocking
@@ -53,8 +53,8 @@ object Innertube {
         @MagicConstant(valuesFromClass = Endpoints::class) endpoint: String,
         requestBody: RequestBody,
         headers: Map<String, List<String>>
-    ): Response = client!!.execute(
         Request(method, headers, "$host/$endpoint", requestBody)
+    ): Response = client.execute(
     )
 
     @VisibleForTesting
