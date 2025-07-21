@@ -83,6 +83,8 @@ class InnertubeTest {
                             HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.BODY )
                         )
                         .build()
+        override val cookies: String = ""
+        override val dataSyncId: String? = null
         override val visitorData: String = Constants.VISITOR_DATA
 
         @Throws(IOException::class)

@@ -296,6 +296,8 @@ object Innertube {
 
     interface Provider {
 
+        val cookies: String
+        val dataSyncId: String?
         val visitorData: String
 
         @Blocking
