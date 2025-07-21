@@ -73,6 +73,7 @@ class InnertubeTest {
                             HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.BODY )
                         )
                         .build()
+        override val visitorData: String = Constants.VISITOR_DATA
 
         @Throws(IOException::class)
         override fun execute( request: Request ): Response {

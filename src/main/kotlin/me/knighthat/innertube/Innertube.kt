@@ -52,16 +52,17 @@ object Innertube {
         host: String,
         @MagicConstant(valuesFromClass = Endpoints::class) endpoint: String,
         requestBody: RequestBody,
-        headers: Map<String, List<String>>
-        Request(method, headers, "$host/$endpoint", requestBody)
+        headers: Map<String, List<String>>,
+        useLogin: Boolean
     ): Response = client.execute(
+        Request(method, headers, "$host/$endpoint", useLogin, requestBody)
     )
 
     @VisibleForTesting
     @Throws(IOException::class)
     internal fun ytmBrowse(
         localization: Localization,
-        visitorData: String = Constants.VISITOR_DATA,
+        visitorData: String = client.visitorData,
         builder: TypeBuilder.() -> Builder<BrowseBody>
     ): BrowseResponse {
         val context = Context(
@@ -83,7 +84,7 @@ object Innertube {
     @Throws(IOException::class)
     internal fun ytmNext(
         localization: Localization,
-        visitorData: String = Constants.VISITOR_DATA,
+        visitorData: String = client.visitorData,
         builder: me.knighthat.innertube.request.body.next.Builder.() -> Builder<NextBody>
     ): NextResponse {
         val context = Context(
@@ -275,10 +276,12 @@ object Innertube {
             InnertubeChartsImpl.from(renderer)
         }
 
-    fun interface Provider {
+    interface Provider {
+
+        val visitorData: String
 
         @Blocking
         @Throws(IOException::class)
-        fun execute(request: Request): Response
+        fun execute( request: Request ): Response
     }
 }
