@@ -63,6 +63,7 @@ object Innertube {
     internal fun ytmBrowse(
         localization: Localization,
         visitorData: String = client.visitorData,
+        useLogin: Boolean = false,
         builder: TypeBuilder.() -> Builder<BrowseBody>
     ): BrowseResponse {
         val context = Context(
@@ -74,7 +75,12 @@ object Innertube {
         )
         val browseBody = BrowseBody.builder( context ).builder().build()
         val response = sendRequest(
-            Request.POST, Constants.YOUTUBE_MUSIC_URL, Endpoints.BROWSE, browseBody, Constants.JSON_HEADERS
+            Request.POST,
+            Constants.YOUTUBE_MUSIC_URL,
+            Endpoints.BROWSE,
+            browseBody,
+            Constants.JSON_HEADERS,
+            useLogin
         )
 
         return JSON.decodeFromString<BrowseResponseImpl>( response.responseBody )
@@ -85,6 +91,7 @@ object Innertube {
     internal fun ytmNext(
         localization: Localization,
         visitorData: String = client.visitorData,
+        useLogin: Boolean = false,
         builder: me.knighthat.innertube.request.body.next.Builder.() -> Builder<NextBody>
     ): NextResponse {
         val context = Context(
@@ -96,7 +103,12 @@ object Innertube {
         )
         val nextBody = NextBody.builder( context ).builder().build()
         val response = sendRequest(
-            Request.POST, Constants.YOUTUBE_MUSIC_URL, Endpoints.NEXT, nextBody, Constants.JSON_HEADERS
+            Request.POST,
+            Constants.YOUTUBE_MUSIC_URL,
+            Endpoints.NEXT,
+            nextBody,
+            Constants.JSON_HEADERS,
+            useLogin
         )
 
         return JSON.decodeFromString<NextResponseImpl>( response.responseBody )

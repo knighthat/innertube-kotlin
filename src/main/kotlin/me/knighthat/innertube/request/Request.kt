@@ -23,6 +23,7 @@ data class Request(
     val httpMethod: String,
     val headers: Map<String, List<String>>,
     val url: String,
+    val useLogin: Boolean,
     val dataToSend: RequestBody?
 ) {
 

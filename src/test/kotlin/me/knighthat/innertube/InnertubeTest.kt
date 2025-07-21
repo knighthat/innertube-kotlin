@@ -39,7 +39,12 @@ class InnertubeTest {
                                          .videoId( "lYBUbBu4W08" )
                                          .build()
             Innertube.sendRequest(
-                Request.POST, Constants.YOUTUBE_URL, Endpoints.NEXT, body, Constants.JSON_HEADERS
+                Request.POST,
+                Constants.YOUTUBE_URL,
+                Endpoints.NEXT,
+                body,
+                Constants.JSON_HEADERS,
+                false
             )
         }
 
@@ -54,7 +59,12 @@ class InnertubeTest {
                                                                    .input( "million dollar baby" )
                                                                    .build()
             Innertube.sendRequest(
-                Request.POST, Constants.YOUTUBE_MUSIC_URL, Endpoints.NEXT, body, Constants.JSON_HEADERS
+                Request.POST,
+                Constants.YOUTUBE_MUSIC_URL,
+                Endpoints.NEXT,
+                body,
+                Constants.JSON_HEADERS,
+                false
             )
         }
 
