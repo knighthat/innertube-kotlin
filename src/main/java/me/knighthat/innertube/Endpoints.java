@@ -1,8 +1,9 @@
 package me.knighthat.innertube;
 
+import org.jetbrains.annotations.NotNull;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Endpoints {
@@ -20,5 +21,7 @@ public class Endpoints {
     public static final  String SEARCH             = YOUTUBEI + "/search";
     @NotNull
     public static final  String SEARCH_SUGGESTIONS = YOUTUBEI + "/music/get_search_suggestions";
+    @NotNull
+    public static final  String ACCOUNT_MENU       =  YOUTUBEI + "/account/account_menu";
     // END: Static fields/functions
 }
