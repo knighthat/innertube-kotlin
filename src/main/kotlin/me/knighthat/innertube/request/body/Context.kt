@@ -6,17 +6,20 @@ import me.knighthat.innertube.UserAgents
 import me.knighthat.innertube.request.Localization
 
 @Serializable
-data class Context(val client: Client) {
+data class Context(
+    val client: Client,
+    val user: User,
+) {
 
     companion object {
         @JvmField
-        val WEB_REMIX_DEFAULT: Context = Context(Client.WEB_REMIX)
+        val WEB_REMIX_DEFAULT: Context = Context(Client.WEB_REMIX, User())
 
         @JvmField
-        val IOS_DEFAULT: Context = Context(Client.IOS)
+        val IOS_DEFAULT: Context = Context(Client.IOS, User())
 
         @JvmField
-        val WEB_DEFAULT: Context = Context(Client.WEB)
+        val WEB_DEFAULT: Context = Context(Client.WEB, User())
     }
 
     /**
@@ -154,4 +157,10 @@ data class Context(val client: Client) {
             androidSdkVersion
         )
     }
+
+    @Serializable
+    data class User(
+        val lockedSafetyMode: Boolean = false,
+        val onBehalfOfUser: String? = null,
+    )
 }

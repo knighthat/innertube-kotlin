@@ -71,6 +71,9 @@ object Innertube {
                 hl = localization.languageCode,
                 gl = localization.regionCode,
                 visitorData = visitorData
+            ),
+            Context.User().copy(
+                onBehalfOfUser = if( useLogin ) client.dataSyncId else null
             )
         )
         val browseBody = BrowseBody.builder( context ).builder().build()
@@ -99,6 +102,9 @@ object Innertube {
                 hl = localization.languageCode,
                 gl = localization.regionCode,
                 visitorData = visitorData
+            ),
+            Context.User().copy(
+                onBehalfOfUser = if( useLogin ) client.dataSyncId else null
             )
         )
         val nextBody = NextBody.builder( context ).builder().build()
