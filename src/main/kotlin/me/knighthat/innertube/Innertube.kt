@@ -129,10 +129,13 @@ object Innertube {
 
     fun browsePlaylist(
         playlistId: String,
-        localization: Localization
+        localization: Localization,
+        useLogin: Boolean = false,
     ): Result<InnertubePlaylist> =
         runCatching {
-            val browseResponse = ytmBrowse( localization ) { browseId( playlistId ) }
+            val browseResponse = ytmBrowse( localization, useLogin = useLogin ) {
+                browseId( playlistId )
+            }
 
             InnertubePlaylistImpl.from(
                 browseResponse.responseContext.visitorData,
@@ -175,10 +178,11 @@ object Innertube {
         visitorData: String,
         continuation: String,
         localization: Localization,
-        params: String?
+        params: String?,
+        useLogin: Boolean = false
     ): Result<ContinuedPlaylist> =
         runCatching {
-            val browseResponse = ytmBrowse( localization, visitorData ) {
+            val browseResponse = ytmBrowse( localization, visitorData, useLogin ) {
                 continuation( continuation ).params( params )
             }
 
