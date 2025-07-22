@@ -134,7 +134,7 @@ object Innertube {
             val browseResponse = ytmBrowse( localization ) { browseId( playlistId ) }
 
             InnertubePlaylistImpl.from(
-                browseResponse.responseContext.visitorData!!,
+                browseResponse.responseContext.visitorData,
                 browseResponse.contents!!.twoColumnBrowseResultsRenderer!!
             )
         }

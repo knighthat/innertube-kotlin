@@ -40,7 +40,7 @@ internal data class InnertubePlaylistImpl(
             )
         }
 
-        fun from( visitorData: String, renderer: TwoColumnBrowseResultsRenderer ): InnertubePlaylist {
+        fun from( visitorData: String?, renderer: TwoColumnBrowseResultsRenderer ): InnertubePlaylist {
             val headerRenderer = requireNotNull(
                 renderer.tabs
                         .first()
