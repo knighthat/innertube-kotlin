@@ -25,6 +25,7 @@ import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
 import me.knighthat.innertube.response.NextResponse
 import me.knighthat.innertube.response.PlaylistPanelRenderer
 import me.knighthat.innertube.response.Response
+import me.knighthat.innertube.response.SectionListRenderer
 import me.knighthat.internal.model.AccountInfoImpl
 import me.knighthat.internal.model.ContinuedPlaylistImpl
 import me.knighthat.internal.model.InnertubeAlbumImpl
@@ -338,6 +339,33 @@ object Innertube {
             AccountInfoImpl.from(
                 JSON.decodeFromJsonElement<ActiveAccountHeaderRendererImpl>( renderer )
             )
+        }
+
+    /**
+     * Get user's saved playlists.
+     *
+     * **This feature requires login**
+     */
+    fun library( localization: Localization ): Result<List<InnertubePlaylist>> =
+        runCatching {
+            val response = ytmBrowse( localization, useLogin = true ) {
+                browseId( "FEmusic_library_landing" )
+            }
+
+            response.contents
+                    ?.singleColumnBrowseResultsRenderer
+                    ?.tabs
+                    ?.firstOrNull()
+                    ?.tabRenderer
+                    ?.content
+                    ?.sectionListRenderer
+                    ?.contents
+                    ?.firstOrNull()
+                    ?.gridRenderer
+                    ?.items
+                    ?.map(SectionListRenderer.Content.GridRenderer.Item::musicTwoRowItemRenderer )
+                    ?.map(InnertubePlaylistImpl::from )
+                    .orEmpty()
         }
 
     interface Provider {
