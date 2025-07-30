@@ -79,9 +79,13 @@ class InnertubeTest {
                         .addInterceptor(
                             HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.HEADERS )
                         )
+                        /*
+                        Temporarily disabled because it throws IOException when response isn't compressed with GZip.
+
                         .addInterceptor(
                             HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.BODY )
                         )
+                        */
                         .build()
         override val cookies: String = ""
         override val dataSyncId: String? = null
