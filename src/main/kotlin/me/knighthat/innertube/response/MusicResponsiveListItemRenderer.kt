@@ -41,7 +41,7 @@ interface MusicResponsiveListItemRenderer {
         interface Renderer {
 
             val text: Runs
-            val icon: Icon
+            val icon: Icon?
             val accessibilityData: Accessibility
         }
     }

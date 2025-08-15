@@ -14,5 +14,5 @@ interface InnertubeRankedArtist: InnertubeArtist {
     val rank: String
 
     @get:MagicConstant(stringValues = [RANK_UP_ICON, RANK_DOWN_ICON, RANK_NEUTRAL])
-    val iconType: String
+    val iconType: String?
 }

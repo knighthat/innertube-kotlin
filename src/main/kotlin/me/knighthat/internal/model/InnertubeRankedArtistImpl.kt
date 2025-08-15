@@ -17,7 +17,7 @@ internal data class InnertubeRankedArtistImpl(
     override val shortNumMonthlyAudience: String?,
     override val sections: List<InnertubeArtist.Section>,
     override val rank: String,
-    override val iconType: String
+    override val iconType: String?
 ): InnertubeRankedArtist {
 
     companion object {
@@ -46,7 +46,7 @@ internal data class InnertubeRankedArtistImpl(
                 null,
                 emptyList(),
                 indexColumn.text.firstText,
-                indexColumn.icon.iconType
+                indexColumn.icon?.iconType
             )
         }
     }

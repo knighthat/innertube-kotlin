@@ -46,7 +46,7 @@ internal data class MusicResponsiveListItemRendererImpl(
         @Serializable
         internal data class RendererImpl(
             override val text: RunsImpl,
-            override val icon: IconImpl,
+            override val icon: IconImpl?,
             override val accessibilityData: AccessibilityImpl
         ) : MusicResponsiveListItemRenderer.CustomIndexColumn.Renderer
     }
