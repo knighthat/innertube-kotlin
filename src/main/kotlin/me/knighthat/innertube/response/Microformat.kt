@@ -7,7 +7,7 @@ interface Microformat {
 
     interface Renderer {
 
-        val urlCanonical: String
+        val urlCanonical: String?
         val title: String?
         val description: String?
         val thumbnail: Thumbnails?

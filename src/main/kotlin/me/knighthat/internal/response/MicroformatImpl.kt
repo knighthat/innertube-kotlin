@@ -10,7 +10,7 @@ data class MicroformatImpl(
 
     @Serializable
     data class RendererImpl(
-        override val urlCanonical: String,
+        override val urlCanonical: String?,
         override val title: String?,
         override val description: String?,
         override val thumbnail: ThumbnailsImpl?,
