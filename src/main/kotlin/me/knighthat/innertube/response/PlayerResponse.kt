@@ -103,7 +103,7 @@ interface PlayerResponse : InnertubeResponse {
         val author: String
         val isPrivate: Boolean
         val isUnpluggedCorpus: Boolean
-        val musicVideoType: String
+        val musicVideoType: String?
         val isLiveContent: Boolean
     }
 
@@ -113,7 +113,7 @@ interface PlayerResponse : InnertubeResponse {
 
         interface AudioConfig {
 
-            val loudnessDb: Float
+            val loudnessDb: Float?
             val perceptualLoudnessDb: Float
             val enablePerFormatLoudness: Boolean?
         }

@@ -81,7 +81,7 @@ internal data class PlayerResponseImpl(
         override val author: String,
         override val isPrivate: Boolean,
         override val isUnpluggedCorpus: Boolean,
-        override val musicVideoType: String,
+        override val musicVideoType: String?,
         override val isLiveContent: Boolean
     ): PlayerResponse.VideoDetails
 
@@ -92,7 +92,7 @@ internal data class PlayerResponseImpl(
 
         @Serializable
         data class AudioConfigImpl(
-            override val loudnessDb: Float,
+            override val loudnessDb: Float?,
             override val perceptualLoudnessDb: Float,
             override val enablePerFormatLoudness: Boolean?
         ): PlayerResponse.PlayerConfig.AudioConfig
