@@ -51,6 +51,28 @@ object Innertube {
 
     lateinit var client: Provider
 
+    private fun randomString(
+        length: Int,
+        allowedCharset: List<Char> = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+    ): String =
+        String(CharArray(length) { allowedCharset.random() })
+
+    private fun getContext(
+        template: Context,
+        localization: Localization,
+        visitorData: String = client.visitorData,
+        useLogin: Boolean = false
+    ) = Context(
+        template.client.copy(
+            hl = localization.languageCode,
+            gl = localization.regionCode,
+            visitorData = visitorData
+        ),
+        Context.User().copy(
+            onBehalfOfUser = if( useLogin ) client.dataSyncId else null
+        )
+    )
+
     @VisibleForTesting
     @Blocking
     @Throws(IOException::class)
@@ -73,16 +95,7 @@ object Innertube {
         useLogin: Boolean = false,
         builder: TypeBuilder.() -> Builder<BrowseBody>
     ): BrowseResponse {
-        val context = Context(
-            Context.WEB_REMIX_DEFAULT.client.copy(
-                hl = localization.languageCode,
-                gl = localization.regionCode,
-                visitorData = visitorData
-            ),
-            Context.User().copy(
-                onBehalfOfUser = if( useLogin ) client.dataSyncId else null
-            )
-        )
+        val context = getContext( Context.WEB_REMIX_DEFAULT, localization, visitorData, useLogin )
         val browseBody = BrowseBody.builder( context ).builder().build()
         val response = sendRequest(
             Request.POST,
@@ -104,16 +117,7 @@ object Innertube {
         useLogin: Boolean = false,
         builder: me.knighthat.innertube.request.body.next.Builder.() -> Builder<NextBody>
     ): NextResponse {
-        val context = Context(
-            Context.WEB_REMIX_DEFAULT.client.copy(
-                hl = localization.languageCode,
-                gl = localization.regionCode,
-                visitorData = visitorData
-            ),
-            Context.User().copy(
-                onBehalfOfUser = if( useLogin ) client.dataSyncId else null
-            )
-        )
+        val context = getContext( Context.WEB_REMIX_DEFAULT, localization, visitorData, useLogin )
         val nextBody = NextBody.builder( context ).builder().build()
         val response = sendRequest(
             Request.POST,
