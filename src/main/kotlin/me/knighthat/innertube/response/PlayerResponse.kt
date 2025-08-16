@@ -13,7 +13,7 @@ interface PlayerResponse : InnertubeResponse {
 
         val status: String
         val reason: String?
-        val playableInEmbed: Boolean
+        val playableInEmbed: Boolean?
         val audioOnlyPlayability: AudioOnlyPlayability?
         val contextParams: String?
 

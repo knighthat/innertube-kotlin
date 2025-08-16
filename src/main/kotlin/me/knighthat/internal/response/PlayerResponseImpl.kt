@@ -17,7 +17,7 @@ internal data class PlayerResponseImpl(
     data class PlayabilityStatusImpl(
         override val status: String,
         override val reason: String?,
-        override val playableInEmbed: Boolean,
+        override val playableInEmbed: Boolean?,
         override val audioOnlyPlayability: AudioOnlyPlayabilityImpl?,
         override val contextParams: String?
     ): PlayerResponse.PlayabilityStatus {
