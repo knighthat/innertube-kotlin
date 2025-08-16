@@ -1,7 +1,8 @@
 package me.knighthat.innertube.request.body.player;
 
-import me.knighthat.innertube.request.body.PlayerBody;
 import org.jetbrains.annotations.NotNull;
+
+import me.knighthat.innertube.request.body.PlayerBody;
 
 public interface Builder extends me.knighthat.innertube.request.body.Builder<PlayerBody> {
 
@@ -43,4 +44,6 @@ public interface Builder extends me.knighthat.innertube.request.body.Builder<Pla
      * @return {@link Builder} for further development
      */
     @NotNull Builder poToken( @NotNull String poToken );
+
+    @NotNull Builder cpn( @NotNull String cpn );
 }

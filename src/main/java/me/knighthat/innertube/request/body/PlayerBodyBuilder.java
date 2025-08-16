@@ -15,6 +15,7 @@ class PlayerBodyBuilder implements Builder {
     private       Boolean                               racyCheckOk;
     private       Boolean                               contentCheckOk;
     private       PlayerBody.ServiceIntegrityDimensions serviceIntegrityDimensions;
+    private       String                                cpn;
 
     PlayerBodyBuilder( @NotNull Context context ) {
         this.context = context;
@@ -50,6 +51,12 @@ class PlayerBodyBuilder implements Builder {
     @Override
     public @NotNull Builder poToken( @NotNull String poToken ) {
         return serviceIntegrityDimensions(new PlayerBody.ServiceIntegrityDimensions(poToken));
+    }
+
+    @Override
+    public @NotNull Builder cpn( @NotNull String cpn ) {
+        this.cpn = cpn;
+        return this;
     }
 
     @Override
