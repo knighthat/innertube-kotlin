@@ -18,11 +18,13 @@ import me.knighthat.innertube.request.body.BrowseBody
 import me.knighthat.innertube.request.body.Builder
 import me.knighthat.innertube.request.body.Context
 import me.knighthat.innertube.request.body.NextBody
+import me.knighthat.innertube.request.body.PlayerBody
 import me.knighthat.innertube.request.body.RequestBody
 import me.knighthat.innertube.request.body.browse.TypeBuilder
 import me.knighthat.innertube.response.BrowseResponse
 import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
 import me.knighthat.innertube.response.NextResponse
+import me.knighthat.innertube.response.PlayerResponse
 import me.knighthat.innertube.response.PlaylistPanelRenderer
 import me.knighthat.innertube.response.Response
 import me.knighthat.innertube.response.SectionListRenderer
@@ -36,6 +38,7 @@ import me.knighthat.internal.model.InnertubeSongImpl
 import me.knighthat.internal.response.ActiveAccountHeaderRendererImpl
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.NextResponseImpl
+import me.knighthat.internal.response.PlayerResponseImpl
 import org.intellij.lang.annotations.MagicConstant
 import org.jetbrains.annotations.Blocking
 import org.jetbrains.annotations.VisibleForTesting
@@ -374,6 +377,37 @@ object Innertube {
                     ?.map(SectionListRenderer.Content.GridRenderer.Item::musicTwoRowItemRenderer )
                     ?.map(InnertubePlaylistImpl::from )
                     .orEmpty()
+        }
+
+    fun ytmIosPlayer(
+        songId: String,
+        localization: Localization,
+        headers: Map<String, List<String>>,
+        cpn: String = randomString( 12 ),
+        visitorData: String = client.visitorData,
+        useLogin: Boolean = false
+    ): Result<PlayerResponse> =
+        runCatching {
+            val context = getContext( Context.IOS_DEFAULT, localization, visitorData, useLogin )
+            val playerBody: PlayerBody = PlayerBody.builder( context )
+                                                   .videoId( songId )
+                                                   .cpn( cpn )
+                                                   .build()
+
+            val token = randomString( 12 )
+            val response = sendRequest(
+                Request.POST,
+                Constants.YOUTUBE_MUSIC_URL,
+                /*
+                    Missing ?key=INNERTUBE_API_KEY
+                */
+                "${Endpoints.PLAYER}?t=$token&id=$songId",
+                playerBody,
+                headers,
+                useLogin
+            )
+
+            JSON.decodeFromString<PlayerResponseImpl>( response.responseBody )
         }
 
     interface Provider {
