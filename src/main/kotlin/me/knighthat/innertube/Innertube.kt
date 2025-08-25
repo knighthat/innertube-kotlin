@@ -9,6 +9,7 @@ import me.knighthat.innertube.model.ContinuedPlaylist
 import me.knighthat.innertube.model.InnertubeAlbum
 import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.innertube.model.InnertubeCharts
+import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.request.Localization
@@ -367,7 +368,7 @@ object Innertube {
      *
      * **This feature requires login**
      */
-    fun library( localization: Localization ): Result<List<InnertubePlaylist>> =
+    fun library( localization: Localization ): Result<List<InnertubeItem>> =
         runCatching {
             val response = ytmBrowse( localization, useLogin = true ) {
                 browseId( "FEmusic_library_landing" )
@@ -385,7 +386,20 @@ object Innertube {
                     ?.gridRenderer
                     ?.items
                     ?.map(SectionListRenderer.Content.GridRenderer.Item::musicTwoRowItemRenderer )
-                    ?.map(InnertubePlaylistImpl::from )
+                    ?.mapNotNull { renderer ->
+                        val pageType: String? = renderer.navigationEndpoint
+                                                        .browseEndpoint
+                                                        ?.browseEndpointContextSupportedConfigs
+                                                        ?.browseEndpointContextMusicConfig
+                                                        ?.pageType
+
+                        when( pageType ) {
+                            PageType.ARTIST   -> InnertubeArtistImpl.from( renderer )
+                            PageType.ALBUM    -> InnertubeAlbumImpl.from( renderer )
+                            PageType.PLAYLIST -> InnertubePlaylistImpl.from( renderer )
+                            else              -> null
+                        }
+                    }
                     .orEmpty()
         }
 
