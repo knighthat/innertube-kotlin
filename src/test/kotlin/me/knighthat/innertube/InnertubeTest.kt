@@ -25,6 +25,12 @@ class InnertubeTest {
 
     companion object {
 
+        private val testHeaders = mapOf(
+            "Content-Type" to listOf( "application/json" ),
+            "Accept-Encoding" to listOf( "gzip", "deflate" ),
+            "User-Agent" to listOf( UserAgents.CHROME_WINDOWS )
+        )
+
         @BeforeAll
         @JvmStatic
         fun setup() { Innertube.client = InnertubeProvider() }
@@ -43,7 +49,7 @@ class InnertubeTest {
                 Constants.YOUTUBE_URL,
                 Endpoints.NEXT,
                 body,
-                Constants.JSON_HEADERS,
+                testHeaders,
                 false
             )
         }
@@ -63,7 +69,7 @@ class InnertubeTest {
                 Constants.YOUTUBE_MUSIC_URL,
                 Endpoints.NEXT,
                 body,
-                Constants.JSON_HEADERS,
+                testHeaders,
                 false
             )
         }
@@ -77,15 +83,8 @@ class InnertubeTest {
         val CLIENT: OkHttpClient =
             OkHttpClient.Builder()
                         .addInterceptor(
-                            HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.HEADERS )
-                        )
-                        /*
-                        Temporarily disabled because it throws IOException when response isn't compressed with GZip.
-
-                        .addInterceptor(
                             HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.BODY )
                         )
-                        */
                         .build()
         override val cookies: String = ""
         override val dataSyncId: String? = null
@@ -128,7 +127,7 @@ class InnertubeTest {
                     response.code,
                     response.message,
                     response.headers.toMultimap(),
-                    GZIPInputStream( response.body!!.byteStream() ).bufferedReader().use(BufferedReader::readText )
+                    GZIPInputStream( response.body.byteStream() ).bufferedReader().use(BufferedReader::readText )
                 )
             }
             return result

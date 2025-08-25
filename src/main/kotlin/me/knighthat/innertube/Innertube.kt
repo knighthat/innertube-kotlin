@@ -76,6 +76,14 @@ object Innertube {
         )
     )
 
+    private fun appendUserAgent(
+        headers: Map<String, List<String>>,
+        userAgent: String = UserAgents.CHROME_WINDOWS
+    ): Map<String, List<String>> =
+        headers.toMutableMap().apply {
+            putIfAbsent( "User-Agent", listOf( userAgent ) )
+        }
+
     @VisibleForTesting
     @Blocking
     @Throws(IOException::class)
@@ -96,6 +104,7 @@ object Innertube {
         localization: Localization,
         visitorData: String = client.visitorData,
         useLogin: Boolean = false,
+        headers: Map<String, List<String>> = emptyMap(),
         builder: TypeBuilder.() -> Builder<BrowseBody>
     ): BrowseResponse {
         val context = getContext( Context.WEB_REMIX_DEFAULT, localization, visitorData, useLogin )
@@ -105,7 +114,7 @@ object Innertube {
             Constants.YOUTUBE_MUSIC_URL,
             Endpoints.BROWSE,
             browseBody,
-            Constants.JSON_HEADERS,
+            appendUserAgent( headers ),
             useLogin
         )
 
@@ -118,6 +127,7 @@ object Innertube {
         localization: Localization,
         visitorData: String = client.visitorData,
         useLogin: Boolean = false,
+        headers: Map<String, List<String>> = emptyMap(),
         builder: me.knighthat.innertube.request.body.next.Builder.() -> Builder<NextBody>
     ): NextResponse {
         val context = getContext( Context.WEB_REMIX_DEFAULT, localization, visitorData, useLogin )
@@ -127,7 +137,7 @@ object Innertube {
             Constants.YOUTUBE_MUSIC_URL,
             Endpoints.NEXT,
             nextBody,
-            Constants.JSON_HEADERS,
+            appendUserAgent( headers ),
             useLogin
         )
 
@@ -331,7 +341,7 @@ object Innertube {
                 Constants.YOUTUBE_MUSIC_URL,
                 Endpoints.ACCOUNT_MENU,
                 AccountMenuBody(context),
-                Constants.JSON_HEADERS,
+                mapOf( "User-Agent" to listOf( UserAgents.CHROME_WINDOWS ) ),
                 true
             )
 
