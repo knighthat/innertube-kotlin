@@ -20,6 +20,15 @@ data class Context(
 
         @JvmField
         val WEB_DEFAULT: Context = Context(Client.WEB, User())
+
+        @JvmField
+        val TVHTML5_EMBEDDED_PLAYER_DEFAULT = Context(Client.TVHTML5_EMBEDDED_PLAYER, User())
+
+        @JvmField
+        val ANDROID_DEFAULT = Context(Client.ANDROID, User())
+
+        @JvmField
+        val ANDROID_VR_DEFAULT = Context(Client.ANDROID_VR, User())
     }
 
     /**
@@ -113,6 +122,60 @@ data class Context(
                 "Windows",
                 "",
                 "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                Constants.ACCEPT_HEADERS,
+                null
+            )
+
+            @JvmField
+            val TVHTML5_EMBEDDED_PLAYER = Client(
+                "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
+                "2.0",
+                Localization.EN_US,
+                Constants.VISITOR_DATA,
+                UserAgents.TVHTML5_SIMPLY_EMBEDDED_PLAYER,
+                Constants.YOUTUBE_MUSIC_URL,
+                85,
+                "",
+                "",
+                "",
+                "",
+                Constants.YOUTUBE_MUSIC_URL,
+                Constants.ACCEPT_HEADERS,
+                null
+            )
+
+            @JvmField
+            val ANDROID = Client(
+                "ANDROID",
+                "20.10.38",
+                Localization.EN_US,
+                Constants.VISITOR_DATA,
+                UserAgents.ANDROID,
+                Constants.YOUTUBE_MUSIC_URL,
+                3,
+                "",
+                "",
+                "",
+                "",
+                Constants.YOUTUBE_MUSIC_URL,
+                Constants.ACCEPT_HEADERS,
+                35
+            )
+
+            @JvmField
+            val ANDROID_VR = Client(
+                "ANDROID_VR",
+                "1.61.48",
+                Localization.EN_US,
+                Constants.VISITOR_DATA,
+                UserAgents.ANDROID_VR,
+                Constants.YOUTUBE_MUSIC_URL,
+                3,
+                "",
+                "",
+                "",
+                "",
+                Constants.YOUTUBE_MUSIC_URL,
                 Constants.ACCEPT_HEADERS,
                 null
             )
