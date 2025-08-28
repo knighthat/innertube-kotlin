@@ -3,13 +3,12 @@ package me.knighthat.internal.model
 import me.knighthat.innertube.Constants
 import me.knighthat.innertube.decode
 import me.knighthat.innertube.model.InnertubePlaylist
-import me.knighthat.innertube.response.BrowseResponse
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.MusicTwoRowItemRendererImpl
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -117,7 +116,7 @@ class InnertubePlaylistImplTest {
                        assertNotNull( renderer )
 
                        assertProperties(
-                           InnertubePlaylistImpl.from( Constants.VISITOR_DATA, renderer ),
+                           InnertubePlaylistImpl.from( Constants.CHROME_WINDOWS_VISITOR_DATA, renderer ),
                            id,
                            name,
                            thumbnailCount,

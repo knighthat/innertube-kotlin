@@ -88,7 +88,7 @@ class InnertubeTest {
                         .build()
         override val cookies: String = ""
         override val dataSyncId: String? = null
-        override val visitorData: String = Constants.VISITOR_DATA
+        override val visitorData: String = Constants.CHROME_WINDOWS_VISITOR_DATA
 
         @Throws(IOException::class)
         override fun execute( request: Request ): Response {

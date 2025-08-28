@@ -79,7 +79,7 @@ data class Context(
                 clientVersion = "1.20250416.01.00",
                 hl = Localization.EN_US.languageCode,
                 gl = Localization.EN_US.regionCode,
-                visitorData = Constants.VISITOR_DATA,
+                visitorData = Constants.CHROME_WINDOWS_VISITOR_DATA,
                 userAgent = UserAgents.CHROME_WINDOWS,
                 xClientName = 67,
                 referer = Constants.YOUTUBE_MUSIC_URL,
@@ -92,7 +92,7 @@ data class Context(
                 clientVersion = "20.14.2",
                 hl = Localization.EN_US.languageCode,
                 gl = Localization.EN_US.regionCode,
-                visitorData = Constants.VISITOR_DATA,
+                visitorData = Constants.IOS_VISITOR_DATA,
                 userAgent = UserAgents.IOS,
                 xClientName = 5,
                 deviceMake = "Apple",
@@ -107,7 +107,7 @@ data class Context(
                 clientVersion = "2.20250523.01.00",
                 hl = Localization.EN_US.languageCode,
                 gl = Localization.EN_US.regionCode,
-                visitorData = Constants.VISITOR_DATA,
+                visitorData = Constants.CHROME_WINDOWS_VISITOR_DATA,
                 userAgent = UserAgents.CHROME_WINDOWS,
                 xClientName = 1,
                 referer = Constants.YOUTUBE_URL,
@@ -120,7 +120,7 @@ data class Context(
                 clientVersion = "2.0",
                 hl = Localization.EN_US.languageCode,
                 gl = Localization.EN_US.regionCode,
-                visitorData = Constants.VISITOR_DATA,
+                visitorData = Constants.TVHTML5_VISITOR_DATA,
                 userAgent = UserAgents.TVHTML5_SIMPLY_EMBEDDED_PLAYER,
                 xClientName = 85
             )
@@ -131,7 +131,7 @@ data class Context(
                 clientVersion = "20.10.38",
                 hl = Localization.EN_US.languageCode,
                 gl = Localization.EN_US.regionCode,
-                visitorData = Constants.VISITOR_DATA,
+                visitorData = Constants.ANDROID_VISITOR_DATA,
                 userAgent = UserAgents.ANDROID,
                 xClientName = 3,
                 androidSdkVersion = 35
@@ -143,7 +143,7 @@ data class Context(
                 clientVersion = "1.61.48",
                 hl = Localization.EN_US.languageCode,
                 gl = Localization.EN_US.regionCode,
-                visitorData = Constants.VISITOR_DATA,
+                visitorData = Constants.ANDROID_VR_VISITOR_DATA,
                 userAgent = UserAgents.ANDROID_VR,
                 xClientName = 3
             )
