@@ -46,7 +46,6 @@ data class Context(
     data class Client(
         val clientName: String,
         val clientVersion: String,
-        val platform: String,
         val hl: String,
         val gl: String,
         val visitorData: String,
@@ -68,7 +67,6 @@ data class Context(
             val WEB_REMIX: Client = Client(
                 "WEB_REMIX",
                 "1.20250416.01.00",
-                "DESKTOP",
                 Localization.EN_US,
                 Constants.VISITOR_DATA,
                 UserAgents.CHROME_WINDOWS,
@@ -87,7 +85,6 @@ data class Context(
             val IOS: Client = Client(
                 "IOS",
                 "20.14.2",
-                "MOBILE",
                 Localization.EN_US,
                 Constants.VISITOR_DATA,
                 UserAgents.IOS,
@@ -106,7 +103,6 @@ data class Context(
             val WEB: Client = Client(
                 "WEB",
                 "2.20250523.01.00",
-                "DESKTOP",
                 Localization.EN_US,
                 Constants.VISITOR_DATA,
                 UserAgents.CHROME_WINDOWS,
@@ -125,7 +121,6 @@ data class Context(
         constructor(
             clientName: String,
             clientVersion: String,
-            platform: String,
             localization: Localization,
             visitorData: String,
             userAgent: String?,
@@ -141,7 +136,6 @@ data class Context(
         ): this(
             clientName,
             clientVersion,
-            platform,
             localization.languageCode,
             localization.regionCode,
             visitorData,
