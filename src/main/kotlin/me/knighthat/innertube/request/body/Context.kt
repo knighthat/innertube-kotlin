@@ -58,161 +58,96 @@ data class Context(
         val hl: String,
         val gl: String,
         val visitorData: String,
-        val userAgent: String?,
-        val referer: String?,
+        val userAgent: String,
         val xClientName: Int,
-        val deviceMake: String,
-        val deviceModel: String,
-        val osName: String,
-        val osVersion: String,
-        val originalUrl: String?,
-        val acceptHeader: String?,
-        val androidSdkVersion: Int?
+        val referer: String? = null,
+        val clientId: String = xClientName.toString(),
+        val deviceMake: String? = null,
+        val deviceModel: String? = null,
+        val osName: String? = null,
+        val osVersion: String? = null,
+        val originalUrl: String? = null,
+        val acceptHeader: String = Constants.ACCEPT_HEADERS,
+        val androidSdkVersion: Int? = null
     ) {
 
         companion object {
 
             @JvmField
             val WEB_REMIX: Client = Client(
-                "WEB_REMIX",
-                "1.20250416.01.00",
-                Localization.EN_US,
-                Constants.VISITOR_DATA,
-                UserAgents.CHROME_WINDOWS,
-                Constants.YOUTUBE_MUSIC_URL,
-                67,
-                "",
-                "",
-                "",
-                "",
-                Constants.YOUTUBE_MUSIC_URL,
-                Constants.ACCEPT_HEADERS,
-                null
+                clientName = "WEB_REMIX",
+                clientVersion = "1.20250416.01.00",
+                hl = Localization.EN_US.languageCode,
+                gl = Localization.EN_US.regionCode,
+                visitorData = Constants.VISITOR_DATA,
+                userAgent = UserAgents.CHROME_WINDOWS,
+                xClientName = 67,
+                referer = Constants.YOUTUBE_MUSIC_URL,
+                clientId = Constants.YOUTUBE_MUSIC_URL
             )
 
             @JvmField
             val IOS: Client = Client(
-                "IOS",
-                "20.14.2",
-                Localization.EN_US,
-                Constants.VISITOR_DATA,
-                UserAgents.IOS,
-                Constants.YOUTUBE_MUSIC_URL,
-                5,
-                "Apple",
-                "iPhone15,4",
-                "iOS",
-                "17.4.1.21E237",
-                "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                Constants.ACCEPT_HEADERS,
-                null
+                clientName = "IOS",
+                clientVersion = "20.14.2",
+                hl = Localization.EN_US.languageCode,
+                gl = Localization.EN_US.regionCode,
+                visitorData = Constants.VISITOR_DATA,
+                userAgent = UserAgents.IOS,
+                xClientName = 5,
+                deviceMake = "Apple",
+                deviceModel = "iPhone15,4",
+                osName = "iOS",
+                osVersion = "17.4.1.21E237"
             )
 
             @JvmField
             val WEB: Client = Client(
-                "WEB",
-                "2.20250523.01.00",
-                Localization.EN_US,
-                Constants.VISITOR_DATA,
-                UserAgents.CHROME_WINDOWS,
-                Constants.YOUTUBE_URL,
-                1,
-                "",
-                "",
-                "Windows",
-                "",
-                "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                Constants.ACCEPT_HEADERS,
-                null
+                clientName = "WEB",
+                clientVersion = "2.20250523.01.00",
+                hl = Localization.EN_US.languageCode,
+                gl = Localization.EN_US.regionCode,
+                visitorData = Constants.VISITOR_DATA,
+                userAgent = UserAgents.CHROME_WINDOWS,
+                xClientName = 1,
+                referer = Constants.YOUTUBE_URL,
+                originalUrl = Constants.YOUTUBE_URL
             )
 
             @JvmField
             val TVHTML5_EMBEDDED_PLAYER = Client(
-                "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
-                "2.0",
-                Localization.EN_US,
-                Constants.VISITOR_DATA,
-                UserAgents.TVHTML5_SIMPLY_EMBEDDED_PLAYER,
-                Constants.YOUTUBE_MUSIC_URL,
-                85,
-                "",
-                "",
-                "",
-                "",
-                Constants.YOUTUBE_MUSIC_URL,
-                Constants.ACCEPT_HEADERS,
-                null
+                clientName = "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
+                clientVersion = "2.0",
+                hl = Localization.EN_US.languageCode,
+                gl = Localization.EN_US.regionCode,
+                visitorData = Constants.VISITOR_DATA,
+                userAgent = UserAgents.TVHTML5_SIMPLY_EMBEDDED_PLAYER,
+                xClientName = 85
             )
 
             @JvmField
             val ANDROID = Client(
-                "ANDROID",
-                "20.10.38",
-                Localization.EN_US,
-                Constants.VISITOR_DATA,
-                UserAgents.ANDROID,
-                Constants.YOUTUBE_MUSIC_URL,
-                3,
-                "",
-                "",
-                "",
-                "",
-                Constants.YOUTUBE_MUSIC_URL,
-                Constants.ACCEPT_HEADERS,
-                35
+                clientName = "ANDROID",
+                clientVersion = "20.10.38",
+                hl = Localization.EN_US.languageCode,
+                gl = Localization.EN_US.regionCode,
+                visitorData = Constants.VISITOR_DATA,
+                userAgent = UserAgents.ANDROID,
+                xClientName = 3,
+                androidSdkVersion = 35
             )
 
             @JvmField
             val ANDROID_VR = Client(
-                "ANDROID_VR",
-                "1.61.48",
-                Localization.EN_US,
-                Constants.VISITOR_DATA,
-                UserAgents.ANDROID_VR,
-                Constants.YOUTUBE_MUSIC_URL,
-                3,
-                "",
-                "",
-                "",
-                "",
-                Constants.YOUTUBE_MUSIC_URL,
-                Constants.ACCEPT_HEADERS,
-                null
+                clientName = "ANDROID_VR",
+                clientVersion = "1.61.48",
+                hl = Localization.EN_US.languageCode,
+                gl = Localization.EN_US.regionCode,
+                visitorData = Constants.VISITOR_DATA,
+                userAgent = UserAgents.ANDROID_VR,
+                xClientName = 3
             )
         }
-
-        constructor(
-            clientName: String,
-            clientVersion: String,
-            localization: Localization,
-            visitorData: String,
-            userAgent: String?,
-            referer: String?,
-            xClientName: Int,
-            deviceMake: String,
-            deviceModel: String,
-            osName: String,
-            osVersion: String,
-            originalUrl: String?,
-            acceptHeader: String?,
-            androidSdkVersion: Int?
-        ): this(
-            clientName,
-            clientVersion,
-            localization.languageCode,
-            localization.regionCode,
-            visitorData,
-            userAgent,
-            referer,
-            xClientName,
-            deviceMake,
-            deviceModel,
-            osName,
-            osVersion,
-            originalUrl,
-            acceptHeader,
-            androidSdkVersion
-        )
     }
 
     @Serializable
