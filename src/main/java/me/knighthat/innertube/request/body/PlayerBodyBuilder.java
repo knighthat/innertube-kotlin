@@ -16,6 +16,7 @@ class PlayerBodyBuilder implements Builder {
     private       Boolean                               contentCheckOk;
     private       PlayerBody.ServiceIntegrityDimensions serviceIntegrityDimensions;
     private       String                                cpn;
+    private       Integer                               signatureTimestamp;
 
     PlayerBodyBuilder( @NotNull Context context ) {
         this.context = context;
@@ -60,6 +61,12 @@ class PlayerBodyBuilder implements Builder {
     }
 
     @Override
+    public @NotNull Builder signatureTimestamp( @Nullable Integer signatureTimestamp ) {
+        this.signatureTimestamp = signatureTimestamp;
+        return this;
+    }
+
+    @Override
     public @NotNull Builder params( @Nullable String params ) {
         this.params = params;
         return this;
@@ -73,6 +80,11 @@ class PlayerBodyBuilder implements Builder {
     @Override
     public @NotNull PlayerBody build() {
         assert videoId != null;
-        return new PlayerBody(videoId, params, racyCheckOk, contentCheckOk, serviceIntegrityDimensions, context);
+
+        PlayerBody.ContentPlaybackContext playbackContext = this.signatureTimestamp != null
+            ? new PlayerBody.ContentPlaybackContext("HTML5_PREF_WANTS", this.signatureTimestamp)
+            : null;
+
+        return new PlayerBody(videoId, params, racyCheckOk, contentCheckOk, serviceIntegrityDimensions, playbackContext, context);
     }
 }

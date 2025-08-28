@@ -1,6 +1,7 @@
 package me.knighthat.innertube.request.body.player;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import me.knighthat.innertube.request.body.PlayerBody;
 
@@ -46,4 +47,6 @@ public interface Builder extends me.knighthat.innertube.request.body.Builder<Pla
     @NotNull Builder poToken( @NotNull String poToken );
 
     @NotNull Builder cpn( @NotNull String cpn );
+
+    @NotNull Builder signatureTimestamp( @Nullable Integer signatureTimestamp );
 }

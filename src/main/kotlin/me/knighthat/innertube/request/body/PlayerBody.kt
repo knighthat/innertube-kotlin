@@ -10,6 +10,7 @@ data class PlayerBody(
     val racyCheckOk: Boolean?,
     val contentCheckOk: Boolean?,
     val serviceIntegrityDimensions: ServiceIntegrityDimensions?,
+    val contentPlaybackContext: ContentPlaybackContext?,
     override val context: Context
 ): RequestBody {
 
@@ -21,4 +22,10 @@ data class PlayerBody(
 
     @Serializable
     data class ServiceIntegrityDimensions( val poToken: String )
+
+    @Serializable
+    data class ContentPlaybackContext(
+        val html5Preference: String,
+        val signatureTimestamp: Int
+    )
 }
