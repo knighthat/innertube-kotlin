@@ -12,7 +12,7 @@ class PlayerResponseTest {
      * Simple test to ensure [me.knighthat.innertube.response.JsonParser.Companion.JSON] can successfully parse a json file
      */
     @ParameterizedTest
-    @ValueSource(strings = ["ytm/player/endpoint_response.json"])
+    @ValueSource(strings = ["ytm/player/endpoint_response1.json", "ytm/player/endpoint_response2.json"])
     fun testParser( fileName: String ) {
         val result = ClassLoader.getSystemResourceAsStream( fileName )?.use { inStream ->
             inStream.decode<PlayerResponseImpl>()
