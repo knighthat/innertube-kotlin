@@ -1,5 +1,7 @@
 package me.knighthat.innertube
 
+import io.ktor.http.formUrlEncode
+import io.ktor.http.parameters
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -403,34 +405,42 @@ object Innertube {
                     .orEmpty()
         }
 
-    fun ytmIosPlayer(
+    fun player(
         songId: String,
+        context: Context,
         localization: Localization,
-        headers: Map<String, List<String>>,
-        cpn: String = randomString( 12 ),
+        signatureTimestamp: Int?,
         visitorData: String = client.visitorData,
         useLogin: Boolean = false
     ): Result<PlayerResponse> =
         runCatching {
-            val context = getContext( Context.IOS_DEFAULT, localization, visitorData, useLogin )
-            val playerBody: PlayerBody = PlayerBody.builder( context )
-                                                   .videoId( songId )
-                                                   .cpn( cpn )
-                                                   .build()
+            var endpoint = Endpoints.PLAYER
 
-            val token = randomString( 12 )
+            val context = getContext( context, localization, visitorData, useLogin )
+            val playerBody = PlayerBody.builder( context )
+                .videoId( songId )
+                .signatureTimestamp( signatureTimestamp )
+                .apply {
+                    if( context.client.xClientName != 5 ) return@apply
+
+                    cpn( randomString( 12 ) )
+
+                    parameters {
+                        append( "t", randomString( 16 ) )
+                        append( "id", songId )
+                        append( "key", Constants.IOS_API_KEY )
+                    }.formUrlEncode().also { endpoint += "?$it" }
+                }
+                .build()
+            
             val response = sendRequest(
-                Request.POST,
-                Constants.YOUTUBE_MUSIC_URL,
-                /*
-                    Missing ?key=INNERTUBE_API_KEY
-                */
-                "${Endpoints.PLAYER}?t=$token&id=$songId",
-                playerBody,
-                headers,
-                useLogin
+                method = Request.POST,
+                host = context.client.originalUrl ?: Constants.YOUTUBE_MUSIC_URL,
+                endpoint = endpoint,
+                requestBody = playerBody,
+                headers = emptyMap(),
+                useLogin = useLogin
             )
-
             JSON.decodeFromString<PlayerResponseImpl>( response.responseBody )
         }
 
