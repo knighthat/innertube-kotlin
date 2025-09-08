@@ -16,11 +16,11 @@ dependencies {
     implementation( libs.kotlinx.coroutines )
     implementation( libs.ktor.serialization.json )
 
+    testImplementation( libs.bundles.junit5 )
+    testRuntimeOnly( libs.junit.platform )
+
     testImplementation( kotlin( "test" ) )
     testImplementation( libs.ktor.serialization.json )
-    testImplementation( libs.junit5.jupiter.api )
-    testImplementation( libs.junit5.jupiter.engine )
-    testImplementation( libs.junit5.jupiter.params )
     testImplementation( libs.okhttp3.okhttp )
     testImplementation( libs.okhttp3.logging.interceptor )
 
