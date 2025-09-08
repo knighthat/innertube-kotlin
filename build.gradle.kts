@@ -20,8 +20,7 @@ dependencies {
     testRuntimeOnly( libs.junit.platform )
 
     testImplementation( kotlin( "test" ) )
-    testImplementation( libs.ktor.serialization.json )
-    testImplementation( libs.okhttp3.okhttp )
+    testImplementation( libs.bundles.ktor )
     testImplementation( libs.okhttp3.logging.interceptor )
 
     compileOnly( libs.lombok )

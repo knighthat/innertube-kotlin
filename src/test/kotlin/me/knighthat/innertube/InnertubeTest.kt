@@ -1,35 +1,33 @@
 package me.knighthat.innertube
 
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.compression.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import me.knighthat.innertube.request.Request
 import me.knighthat.innertube.request.body.Context
 import me.knighthat.innertube.request.body.NextBody
 import me.knighthat.innertube.request.body.SearchSuggestionsBody
 import me.knighthat.innertube.response.Response
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.extension.MediaType
-import java.io.BufferedReader
 import java.io.IOException
-import java.util.zip.GZIPInputStream
 
 
 class InnertubeTest {
 
     companion object {
-
-        private val testHeaders = mapOf(
-            "Content-Type" to listOf( "application/json" ),
-            "Accept-Encoding" to listOf( "gzip", "deflate" ),
-            "User-Agent" to listOf( UserAgents.CHROME_WINDOWS )
-        )
 
         @BeforeAll
         @JvmStatic
@@ -49,7 +47,7 @@ class InnertubeTest {
                 Constants.YOUTUBE_URL,
                 Endpoints.NEXT,
                 body,
-                testHeaders,
+                emptyMap(),
                 false
             )
         }
@@ -69,7 +67,7 @@ class InnertubeTest {
                 Constants.YOUTUBE_MUSIC_URL,
                 Endpoints.NEXT,
                 body,
-                testHeaders,
+                emptyMap(),
                 false
             )
         }
@@ -80,57 +78,67 @@ class InnertubeTest {
 
     class InnertubeProvider: Innertube.Provider {
 
-        val CLIENT: OkHttpClient =
-            OkHttpClient.Builder()
-                        .addInterceptor(
-                            HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.BODY )
-                        )
-                        .build()
+        val client = HttpClient( OkHttp ) {
+            expectSuccess = true
+
+            install(ContentNegotiation ) {
+                json()
+            }
+
+            install( ContentEncoding ) {
+                gzip( 1f )
+                deflate( .1f )
+            }
+
+            engine {
+                val interceptor = HttpLoggingInterceptor().setLevel( HttpLoggingInterceptor.Level.BODY )
+                interceptor.redactHeader( "Cookie" )
+
+                addInterceptor( interceptor )
+            }
+        }
         override val cookies: String = ""
         override val dataSyncId: String? = null
         override val visitorData: String = Constants.CHROME_WINDOWS_VISITOR_DATA
 
         @Throws(IOException::class)
-        override fun execute( request: Request ): Response {
-            val builder = okhttp3.Request.Builder()
+        override fun execute( request: Request ): Response = runBlocking( Dispatchers.IO ) {
+            val result = client.request( request.url ) {
+                accept( ContentType.Application.Json )
+                contentType( ContentType.Application.Json )
+                method = HttpMethod.parse( request.httpMethod )
 
-            // Add headers
-            request.headers
-                   .mapValues { it.value.joinToString() }
-                   .forEach( builder::addHeader )
-
-            // Destination (with prettyPrint turned off)
-            builder.url(
-                url = request.url
-                             .toHttpUrl()
-                             .newBuilder()
-                             .addQueryParameter( "prettyPrint", "false" )
-                             .build()
-            )
-
-            // Add method and payload (body)
-            when ( request.httpMethod ) {
-                Request.GET     -> builder.get()
-                Request.POST    -> {
-                    builder.post(
-                        body = JSON.encodeToString( request.dataToSend )
-                                   .toRequestBody( MediaType.APPLICATION_JSON.toString().toMediaType() )
-                    )
+                // Disable pretty print - potentially save data
+                url {
+                    parameters.append( "prettyPrint", "false" )
                 }
+                // Only setBody when it's not null
+                request.dataToSend?.also( this::setBody )
+                // Add headers
+                request.headers.forEach( headers::appendAll )
 
-                else            -> throw UnsupportedOperationException("Unknown method ${request.httpMethod}")
+                headers {
+                    append( "X-Goog-Api-Format-Version", "1" )
+                    append(
+                        "X-Origin",
+                        request.dataToSend?.context?.client?.originalUrl
+                            ?: "${url.protocol.name}://${url.host}" )
+                    append(
+                        "Referer",
+                        request.dataToSend?.context?.client?.referer
+                            ?: "${url.protocol.name}://${url.host}"
+                    )
+
+                    val context = request.dataToSend?.context ?: Context.WEB_REMIX_DEFAULT
+
+                    append( "X-YouTube-Client-Name", context.client.xClientName.toString() )
+                    append( "X-YouTube-Client-Version", context.client.clientVersion )
+                }
             }
 
-
-            val result = CLIENT.newCall( builder.build() ).execute().use { response ->
-                Response(
-                    response.code,
-                    response.message,
-                    response.headers.toMultimap(),
-                    GZIPInputStream( response.body.byteStream() ).bufferedReader().use(BufferedReader::readText )
-                )
-            }
-            return result
+            Response(
+                result.status.value, "", result.headers.toMap(), result.bodyAsText()
+            )
         }
     }
 }
