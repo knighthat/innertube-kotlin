@@ -6,6 +6,7 @@ import me.knighthat.innertube.request.Localization
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.MusicResponsiveListItemRendererImpl
 import me.knighthat.internal.response.MusicTwoRowItemRendererImpl
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
@@ -13,7 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
-import kotlin.test.assertEquals
 
 class InnertubeAlbumImplTest {
 
