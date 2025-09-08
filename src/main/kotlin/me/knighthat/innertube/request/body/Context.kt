@@ -57,7 +57,7 @@ data class Context(
         val clientVersion: String,
         val hl: String,
         val gl: String,
-        val visitorData: String,
+        val visitorData: String?,
         val userAgent: String,
         val xClientName: Int,
         val referer: String? = null,
