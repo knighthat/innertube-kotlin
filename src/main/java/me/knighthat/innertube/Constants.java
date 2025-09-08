@@ -2,6 +2,11 @@ package me.knighthat.innertube;
 
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Constants {
 
     // START: Static fields/functions
@@ -32,6 +37,4 @@ public class Constants {
     @NotNull
     public static final String ACCEPT_HEADERS = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
     // END: Static fields/functions
-
-    private Constants() {}
 }

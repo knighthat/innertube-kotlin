@@ -2,6 +2,11 @@ package me.knighthat.innertube;
 
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserAgents {
 
 // START: Static fields/functions
@@ -20,6 +25,4 @@ public class UserAgents {
     @NotNull
     public static final String ANDROID_VR = "com.google.android.apps.youtube.vr.oculus/1.61.48 (Linux; U; Android 12; en_US; Oculus Quest 3; Build/SQ3A.220605.009.A1; Cronet/132.0.6808.3)";
 // END: Static fields/functions
-
-    private UserAgents() {}
 }

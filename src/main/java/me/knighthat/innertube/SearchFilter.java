@@ -2,6 +2,11 @@ package me.knighthat.innertube;
 
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SearchFilter {
 
 // START: Static fields/functions
@@ -20,6 +25,4 @@ public final class SearchFilter {
     @NotNull
     public static final String EPISODES            = "EgWKAQJIAWoSEAMQBBAFEAkQDhAKEBAQERAV";
 // END: Static fields/functions
-
-    private SearchFilter() {}
 }

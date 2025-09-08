@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Endpoints {
 
