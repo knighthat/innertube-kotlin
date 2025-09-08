@@ -15,14 +15,17 @@ class PlayerBodyBuilder implements Builder {
     private       Boolean                               racyCheckOk;
     private       Boolean                               contentCheckOk;
     private       PlayerBody.ServiceIntegrityDimensions serviceIntegrityDimensions;
+    private       PlayerBody.ContentPlaybackContext     playbackContext;
     private       String                                cpn;
-    private       Integer                               signatureTimestamp;
 
     PlayerBodyBuilder( @NotNull Context context ) {
         this.context = context;
         this.params = null;
         this.racyCheckOk = true;
         this.contentCheckOk = true;
+        this.serviceIntegrityDimensions = null;
+        this.playbackContext = null;
+        this.cpn = null;
     }
 
     @Override
@@ -50,6 +53,12 @@ class PlayerBodyBuilder implements Builder {
     }
 
     @Override
+    public @NotNull Builder playbackContext( PlayerBody.@Nullable ContentPlaybackContext playbackContext ) {
+        this.playbackContext = playbackContext;
+        return this;
+    }
+
+    @Override
     public @NotNull Builder poToken( @NotNull String poToken ) {
         return serviceIntegrityDimensions(new PlayerBody.ServiceIntegrityDimensions(poToken));
     }
@@ -61,8 +70,8 @@ class PlayerBodyBuilder implements Builder {
     }
 
     @Override
-    public @NotNull Builder signatureTimestamp( @Nullable Integer signatureTimestamp ) {
-        this.signatureTimestamp = signatureTimestamp;
+    public @NotNull Builder signatureTimestamp( int signatureTimestamp ) {
+        this.playbackContext = new PlayerBody.ContentPlaybackContext("HTML5_PREF_WANTS", signatureTimestamp);
         return this;
     }
 
@@ -80,10 +89,6 @@ class PlayerBodyBuilder implements Builder {
     @Override
     public @NotNull PlayerBody build() {
         assert videoId != null;
-
-        PlayerBody.ContentPlaybackContext playbackContext = this.signatureTimestamp != null
-            ? new PlayerBody.ContentPlaybackContext("HTML5_PREF_WANTS", this.signatureTimestamp)
-            : null;
 
         return new PlayerBody(videoId, params, racyCheckOk, contentCheckOk, serviceIntegrityDimensions, playbackContext, context);
     }

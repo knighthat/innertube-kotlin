@@ -419,8 +419,9 @@ object Innertube {
             val context = getContext( context, localization, visitorData, useLogin )
             val playerBody = PlayerBody.builder( context )
                 .videoId( songId )
-                .signatureTimestamp( signatureTimestamp )
                 .apply {
+                    signatureTimestamp?.also( ::signatureTimestamp )
+
                     if( context.client.xClientName != 5 ) return@apply
 
                     cpn( randomString( 12 ) )

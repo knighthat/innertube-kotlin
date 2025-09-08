@@ -38,15 +38,30 @@ public interface Builder extends me.knighthat.innertube.request.body.Builder<Pla
      */
     @NotNull Builder serviceIntegrityDimensions( @NotNull PlayerBody.ServiceIntegrityDimensions serviceIntegrityDimensions );
 
+    @NotNull Builder playbackContext( @Nullable PlayerBody.ContentPlaybackContext playbackContext );
+
     /**
      * Shortcut for {@code serviceIntegrityDimensions}
+     *
      * @param poToken 12-character string
      *
      * @return {@link Builder} for further development
      */
     @NotNull Builder poToken( @NotNull String poToken );
 
+    /**
+     * @param cpn A string of 12 random characters
+     *
+     * @return {@link Builder} for further development
+     */
     @NotNull Builder cpn( @NotNull String cpn );
 
-    @NotNull Builder signatureTimestamp( @Nullable Integer signatureTimestamp );
+    /**
+     * A required parameter for HTML5 requests.
+     *
+     * @param signatureTimestamp the signature timestamp of the base JavaScript player file
+     *
+     * @return {@link Builder} for further development
+     */
+    @NotNull Builder signatureTimestamp( int signatureTimestamp );
 }
