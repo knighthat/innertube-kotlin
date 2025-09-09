@@ -1,0 +1,56 @@
+
+workflow:
+  rules:
+    # This rule is for a pipeline that runs on a direct push to the 'CI_DEFAULT_BRANCH' branch.
+    # It will trigger the 'test' and 'update' stages.
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      variables:
+        TRIGGER_TYPE: "push"
+      when: always
+    # Otherwise, don't run a pipeline.
+    - when: never
+
+
+stages:
+  - setup
+  - test
+  - release
+
+
+setup-env:
+  stage: setup
+
+  # DO NOT put secrets in this job, they are all getting printed out
+  script:
+    - echo "RELEASE_BRANCH=release-planner" >> runtime.env
+    - echo "CURRENT_VERSION=$(sed -nE 's/version = \"(.+)\"/\1/p' build.gradle.kts)" >> runtime.env
+    # `-u` flag tells [date] to use UTC timezone
+    - echo "TODAY_UTC=$(date -u +'%Y.%m.%d')" >> runtime.env
+
+    - echo ""
+    - echo "All runtime environment variables"
+    - cat runtime.env
+    - echo ""
+  artifacts:
+    reports:
+      dotenv: runtime.env
+
+
+run-tests:
+  stage: test
+  image: gradle:jdk21-alpine
+
+  before_script:
+    # [gradle] images start at `/home/gradle`
+    - cd $CI_PROJECT_DIR
+
+  script:
+    - gradle test
+
+  rules:
+    - when: manual
+    # Essentially mean "run this as long as TRIGGER_TYPE isn't empty"
+    - if: $TRIGGER_TYPE == 'push'
+      when: on_success
+      changes:
+      - src/**/*
