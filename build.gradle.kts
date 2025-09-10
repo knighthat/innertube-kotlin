@@ -11,7 +11,7 @@ repositories {
 }
 
 group = "me.knighthat"
-version = "0.0.1"
+version = "2025.09.09"
 
 dependencies {
     implementation( libs.kotlinx.coroutines )
