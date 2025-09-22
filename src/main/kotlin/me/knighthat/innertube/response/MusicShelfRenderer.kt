@@ -12,7 +12,7 @@ interface MusicShelfRenderer {
 
     interface Content {
 
-        val musicResponsiveListItemRenderer: MusicResponsiveListItemRenderer
+        val musicResponsiveListItemRenderer: MusicResponsiveListItemRenderer?
     }
 
     interface Subheader {

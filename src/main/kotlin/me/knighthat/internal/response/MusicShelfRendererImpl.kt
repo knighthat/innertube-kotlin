@@ -15,7 +15,7 @@ internal data class MusicShelfRendererImpl(
 
     @Serializable
     internal data class ContentImpl(
-        override val musicResponsiveListItemRenderer: MusicResponsiveListItemRendererImpl
+        override val musicResponsiveListItemRenderer: MusicResponsiveListItemRendererImpl?
     ): MusicShelfRenderer.Content
 
     @Serializable

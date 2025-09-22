@@ -80,7 +80,7 @@ internal data class InnertubeArtistImpl(
                 content.musicShelfRenderer?.also { musicSection ->
                     val browse = musicSection.bottomEndpoint?.browseEndpoint
                     val songs: List<InnertubeSong> = musicSection.contents
-                                                                 .map( MusicShelfRenderer.Content::musicResponsiveListItemRenderer )
+                                                                 .mapNotNull( MusicShelfRenderer.Content::musicResponsiveListItemRenderer )
                                                                  .map( InnertubeSongImpl::from )
 
                     sections.add(
