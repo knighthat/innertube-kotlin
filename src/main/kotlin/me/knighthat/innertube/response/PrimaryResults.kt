@@ -4,6 +4,7 @@ package me.knighthat.innertube.response
 interface PrimaryResults {
 
     val results: Results
+    // Missing secondaryResults, autoplay
 
     interface Results {
 
@@ -13,6 +14,7 @@ interface PrimaryResults {
 
             val videoPrimaryInfoRenderer: VideoPrimaryInfoRenderer?
             val videoSecondaryInfoRenderer: VideoSecondaryInfoRenderer?
+            // Missing compositeVideoPrimaryInfoRenderer, itemSectionRenderer
 
             interface VideoPrimaryInfoRenderer {
 
@@ -74,6 +76,33 @@ interface PrimaryResults {
                 interface AttributedDescription {
 
                     val content: String?
+                    val styleRuns: List<StyleRun>
+                    val headerRuns: List<HeaderRun>
+
+                    interface StyleRun {
+
+                        val startIndex: UShort
+                        val length: UShort
+                        val styleRunExtensions: Extension
+                        val fontFamilyName: String
+
+                        interface Extension {
+
+                            val styleRunColorMapExtension: MapExtension
+
+                            interface MapExtension {
+
+                                val colorMap: Map<String, Long>
+                            }
+                        }
+                    }
+
+                    interface HeaderRun {
+
+                        val startIndex: UShort
+                        val length: UShort
+                        val headerMapping: String
+                    }
                 }
             }
         }
