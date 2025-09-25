@@ -1,7 +1,9 @@
 package me.knighthat.internal.response
 
 import kotlinx.serialization.Serializable
-import me.knighthat.innertube.response.*
+import me.knighthat.innertube.response.Badge
+import me.knighthat.innertube.response.PrimaryResults
+import me.knighthat.innertube.response.SimpleText
 
 @Serializable
 internal data class PrimaryResultsImpl(
@@ -54,17 +56,17 @@ internal data class PrimaryResultsImpl(
 
                 @Serializable
                 data class OwnerImpl(
-                    override val videoOwnerRenderer: Thumbnail.Renderer?,
-                    override val navigationEndpoint: Endpoint?,
-                    override val subscriberCountText: SimpleText?,
-                    override val badges: List<Badge> = emptyList()
+                    override val videoOwnerRenderer: RendererImpl
                 ): PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer.Owner {
 
                     @Serializable
-                    data class VideoOwnerRendererImpl(
-                        override val thumbnail: Thumbnails?,
-                        override val title: Runs?
-                    ): PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer.Owner.VideoOwnerRenderer
+                    data class RendererImpl(
+                        override val thumbnail: ThumbnailsImpl,
+                        override val title: RunsImpl,
+                        override val navigationEndpoint: EndpointImpl?,
+                        override val subscriberCountText: SimpleTextImpl?,
+                        override val badges: List<Badge> = emptyList()
+                    ): PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer.Owner.Renderer
                 }
 
                 @Serializable

@@ -18,6 +18,7 @@ interface PrimaryResults {
 
                 val title: Runs?
                 val viewCount: ViewCount?
+                // Missing videoActions
                 val dateText: SimpleText?
                 val relativeDateText: SimpleText?
 
@@ -37,24 +38,26 @@ interface PrimaryResults {
             interface VideoSecondaryInfoRenderer {
 
                 val owner: Owner?
+                // Missing subscribeButton
                 val metadataRowContainer: MetadataRowContainer?
                 val showMoreText: SimpleText?
                 val showLessText: SimpleText?
                 val defaultExpanded: Boolean?
                 val descriptionCollapsedLines: Int?
+                // Missing showMoreCommand, showLessCommand
                 val attributedDescription: AttributedDescription?
 
                 interface Owner {
 
-                    val videoOwnerRenderer: Thumbnail.Renderer?
-                    val navigationEndpoint: Endpoint?
-                    val subscriberCountText: SimpleText?
-                    val badges: List<Badge>
+                    val videoOwnerRenderer: Renderer
 
-                    interface VideoOwnerRenderer {
+                    interface Renderer {
 
-                        val thumbnail: Thumbnails?
-                        val title: Runs?
+                        val thumbnail: Thumbnails
+                        val title: Runs
+                        val navigationEndpoint: Endpoint?
+                        val subscriberCountText: SimpleText?
+                        val badges: List<Badge>
                     }
                 }
 
