@@ -25,10 +25,10 @@ internal data class PrimaryResultsImpl(
 
             @Serializable
             data class VideoPrimaryInfoRendererImpl(
-                override val title: RunsImpl?,
-                override val viewCount: ViewCountImpl?,
-                override val dateText: SimpleTextImpl?,
-                override val relativeDateText: SimpleTextImpl?
+                override val title: RunsImpl,
+                override val viewCount: ViewCountImpl,
+                override val dateText: SimpleTextImpl,
+                override val relativeDateText: SimpleTextImpl
             ): PrimaryResults.Results.Contents.VideoPrimaryInfoRenderer {
 
                 @Serializable
@@ -38,8 +38,8 @@ internal data class PrimaryResultsImpl(
 
                     @Serializable
                     data class RendererImpl(
-                        override val viewCount: SimpleText?,
-                        override val shortViewCount: SimpleText?,
+                        override val viewCount: SimpleText,
+                        override val shortViewCount: SimpleText,
                         override val originalViewCount: String?
                     ): PrimaryResults.Results.Contents.VideoPrimaryInfoRenderer.ViewCount.Renderer
                 }
@@ -47,13 +47,13 @@ internal data class PrimaryResultsImpl(
 
             @Serializable
             data class VideoSecondaryInfoRendererImpl(
-                override val owner: OwnerImpl?,
+                override val owner: OwnerImpl,
                 override val metadataRowContainer: MetadataRowContainerImpl?,
                 override val showMoreText: SimpleText?,
                 override val showLessText: SimpleText?,
                 override val defaultExpanded: Boolean?,
                 override val descriptionCollapsedLines: Int?,
-                override val attributedDescription: AttributedDescriptionImpl?
+                override val attributedDescription: AttributedDescriptionImpl
             ): PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer {
 
                 @Serializable
@@ -65,7 +65,7 @@ internal data class PrimaryResultsImpl(
                     data class RendererImpl(
                         override val thumbnail: ThumbnailsImpl,
                         override val title: RunsImpl,
-                        override val navigationEndpoint: EndpointImpl?,
+                        override val navigationEndpoint: EndpointImpl,
                         override val subscriberCountText: SimpleTextImpl?,
                         override val badges: List<Badge> = emptyList()
                     ): PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer.Owner.Renderer
@@ -84,7 +84,7 @@ internal data class PrimaryResultsImpl(
 
                 @Serializable
                 data class AttributedDescriptionImpl(
-                    override val content: String?,
+                    override val content: String,
                     override val styleRuns: List<StyleRunImpl> = emptyList(),
                     override val headerRuns: List<HeaderRunImpl> = emptyList()
                 ): PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer.AttributedDescription {

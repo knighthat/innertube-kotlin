@@ -18,11 +18,11 @@ interface PrimaryResults {
 
             interface VideoPrimaryInfoRenderer {
 
-                val title: Runs?
-                val viewCount: ViewCount?
+                val title: Runs
+                val viewCount: ViewCount
                 // Missing videoActions
-                val dateText: SimpleText?
-                val relativeDateText: SimpleText?
+                val dateText: SimpleText
+                val relativeDateText: SimpleText
 
                 interface ViewCount {
 
@@ -30,8 +30,8 @@ interface PrimaryResults {
 
                     interface Renderer {
 
-                        val viewCount: SimpleText?
-                        val shortViewCount: SimpleText?
+                        val viewCount: SimpleText
+                        val shortViewCount: SimpleText
                         val originalViewCount: String?
                     }
                 }
@@ -39,7 +39,7 @@ interface PrimaryResults {
 
             interface VideoSecondaryInfoRenderer {
 
-                val owner: Owner?
+                val owner: Owner
                 // Missing subscribeButton
                 val metadataRowContainer: MetadataRowContainer?
                 val showMoreText: SimpleText?
@@ -47,7 +47,7 @@ interface PrimaryResults {
                 val defaultExpanded: Boolean?
                 val descriptionCollapsedLines: Int?
                 // Missing showMoreCommand, showLessCommand
-                val attributedDescription: AttributedDescription?
+                val attributedDescription: AttributedDescription
 
                 interface Owner {
 
@@ -57,7 +57,7 @@ interface PrimaryResults {
 
                         val thumbnail: Thumbnails
                         val title: Runs
-                        val navigationEndpoint: Endpoint?
+                        val navigationEndpoint: Endpoint
                         val subscriberCountText: SimpleText?
                         val badges: List<Badge>
                     }
@@ -75,7 +75,7 @@ interface PrimaryResults {
 
                 interface AttributedDescription {
 
-                    val content: String?
+                    val content: String
                     val styleRuns: List<StyleRun>
                     val headerRuns: List<HeaderRun>
 
