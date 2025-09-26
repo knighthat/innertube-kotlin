@@ -14,7 +14,8 @@ class NextResponseTest {
     @ParameterizedTest
     @ValueSource(strings = [
         "ytm/next/endpoint_response.json",
-        "ytm/next/endpoint_video_response.json"
+        "ytm/next/endpoint_video_response.json",
+        "yt/next/endpoint_response.json"
     ])
     fun testParser( fileName: String ) {
         val result = ClassLoader.getSystemResourceAsStream( fileName )?.use { inStream ->
