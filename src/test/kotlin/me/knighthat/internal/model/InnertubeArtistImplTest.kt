@@ -4,7 +4,7 @@ import me.knighthat.innertube.decode
 import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.MusicTwoRowItemRendererImpl
-import me.knighthat.internal.response.PrimaryResultsImpl.ResultsImpl.ContentsImpl.VideoSecondaryInfoRendererImpl.OwnerImpl
+import me.knighthat.internal.response.PrimaryResultsImpl.ResultsImpl.ContentImpl.VideoSecondaryInfoRendererImpl.OwnerImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull

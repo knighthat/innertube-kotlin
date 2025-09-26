@@ -8,9 +8,9 @@ interface PrimaryResults {
 
     interface Results {
 
-        val contents: Contents
+        val contents: List<Content>
 
-        interface Contents {
+        interface Content {
 
             val videoPrimaryInfoRenderer: VideoPrimaryInfoRenderer?
             val videoSecondaryInfoRenderer: VideoSecondaryInfoRenderer?

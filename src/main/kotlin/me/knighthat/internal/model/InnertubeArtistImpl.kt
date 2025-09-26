@@ -9,7 +9,7 @@ import me.knighthat.innertube.response.BrowseResponse
 import me.knighthat.innertube.response.MusicCarouselShelfRenderer
 import me.knighthat.innertube.response.MusicShelfRenderer
 import me.knighthat.innertube.response.MusicTwoRowItemRenderer
-import me.knighthat.innertube.response.PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer.Owner
+import me.knighthat.innertube.response.PrimaryResults.Results.Content.VideoSecondaryInfoRenderer.Owner
 import me.knighthat.innertube.response.Thumbnails
 
 @Serializable
