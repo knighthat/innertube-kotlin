@@ -4,6 +4,7 @@ import me.knighthat.innertube.decode
 import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.MusicTwoRowItemRendererImpl
+import me.knighthat.internal.response.PrimaryResultsImpl.ResultsImpl.ContentsImpl.VideoSecondaryInfoRendererImpl.OwnerImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
@@ -151,6 +152,29 @@ class InnertubeArtistImplTest {
                            longNumSubscribers,
                            shortNumMonthlyAudience,
                            sectionCount
+                       )
+                   }
+    }
+
+    @Test
+    fun testFromVideoOwnerRenderer() {
+        val fileName = "yt/next/artist_videoOwnerRenderer.json"
+        ClassLoader.getSystemResourceAsStream( fileName )
+                   .also( ::assertNotNull )
+                   ?.use { inStream ->
+                       val renderer = inStream.decode<OwnerImpl.RendererImpl>()
+                       assertNotNull( renderer )
+
+                       assertProperties(
+                           InnertubeArtistImpl.from( renderer ),
+                           id = "UCzgxx_DM2Dcb9Y1spb9mUJA",
+                           name = "TWICE",
+                           thumbnailCount = 3,
+                           description = null,
+                           shortNumSubscribers = null,
+                           longNumSubscribers = "18.2M subscribers",
+                           shortNumMonthlyAudience = null,
+                           sectionCount = 0
                        )
                    }
     }

@@ -1,0 +1,85 @@
+{
+  "thumbnail": {
+    "thumbnails": [
+      {
+        "url": "https://yt3.ggpht.com/pfXCf_ao6BGHVzKrCI5B1ob80QesF4lo-x5OA3eYvfl6mxHilPeTJyU9W1pSL64hXq8H8VjmGg=s48-c-k-c0x00ffffff-no-rj",
+        "width": 48,
+        "height": 48
+      },
+      {
+        "url": "https://yt3.ggpht.com/pfXCf_ao6BGHVzKrCI5B1ob80QesF4lo-x5OA3eYvfl6mxHilPeTJyU9W1pSL64hXq8H8VjmGg=s88-c-k-c0x00ffffff-no-rj",
+        "width": 88,
+        "height": 88
+      },
+      {
+        "url": "https://yt3.ggpht.com/pfXCf_ao6BGHVzKrCI5B1ob80QesF4lo-x5OA3eYvfl6mxHilPeTJyU9W1pSL64hXq8H8VjmGg=s176-c-k-c0x00ffffff-no-rj",
+        "width": 176,
+        "height": 176
+      }
+    ]
+  },
+  "title": {
+    "runs": [
+      {
+        "text": "TWICE",
+        "navigationEndpoint": {
+          "clickTrackingParams": "CL4CEOE5IhMI3ZHq0fTgjQMVzpgrBh3bPCtD",
+          "commandMetadata": {
+            "webCommandMetadata": {
+              "url": "/channel/UCzgxx_DM2Dcb9Y1spb9mUJA",
+              "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+              "rootVe": 3611,
+              "apiUrl": "/youtubei/v1/browse"
+            }
+          },
+          "browseEndpoint": {
+            "browseId": "UCzgxx_DM2Dcb9Y1spb9mUJA",
+            "canonicalBaseUrl": "/channel/UCzgxx_DM2Dcb9Y1spb9mUJA"
+          }
+        }
+      }
+    ]
+  },
+  "subscriptionButton": {
+    "type": "FREE"
+  },
+  "navigationEndpoint": {
+    "clickTrackingParams": "CL4CEOE5IhMI3ZHq0fTgjQMVzpgrBh3bPCtD",
+    "commandMetadata": {
+      "webCommandMetadata": {
+        "url": "/channel/UCAq0pFGa2w9SjxOq0ZxKVIw",
+        "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+        "rootVe": 3611,
+        "apiUrl": "/youtubei/v1/browse"
+      }
+    },
+    "browseEndpoint": {
+      "browseId": "UCzgxx_DM2Dcb9Y1spb9mUJA",
+      "canonicalBaseUrl": "/channel/UCAq0pFGa2w9SjxOq0ZxKVIw"
+    }
+  },
+  "subscriberCountText": {
+    "accessibility": {
+      "accessibilityData": {
+        "label": "18.2 million subscribers"
+      }
+    },
+    "simpleText": "18.2M subscribers"
+  },
+  "trackingParams": "CL4CEOE5IhMI3ZHq0fTgjQMVzpgrBh3bPCtD",
+  "badges": [
+    {
+      "metadataBadgeRenderer": {
+        "icon": {
+          "iconType": "AUDIO_BADGE"
+        },
+        "style": "BADGE_STYLE_TYPE_VERIFIED_ARTIST",
+        "tooltip": "Official Artist Channel",
+        "trackingParams": "CL4CEOE5IhMI3ZHq0fTgjQMVzpgrBh3bPCtD",
+        "accessibilityData": {
+          "label": "Official Artist Channel"
+        }
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import me.knighthat.innertube.response.BrowseResponse
 import me.knighthat.innertube.response.MusicCarouselShelfRenderer
 import me.knighthat.innertube.response.MusicShelfRenderer
 import me.knighthat.innertube.response.MusicTwoRowItemRenderer
+import me.knighthat.innertube.response.PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer.Owner
 import me.knighthat.innertube.response.Thumbnails
 
 @Serializable
@@ -121,6 +122,23 @@ internal data class InnertubeArtistImpl(
                 subscribeButton?.longSubscriberCountText?.firstText,
                 header?.monthlyListenerCount?.firstText,
                 sections
+            )
+        }
+
+        fun from( renderer: Owner.Renderer ): InnertubeArtist {
+            val id = requireNotNull(
+                renderer.navigationEndpoint.browseEndpoint?.browseId
+            ) { "Owner doesn't contain browseId" }
+
+            return InnertubeArtistImpl(
+                id = id,
+                name = renderer.title.firstText,
+                thumbnails = renderer.thumbnail.thumbnails,
+                description = null,
+                shortNumSubscribers = null,
+                longNumSubscribers = renderer.subscriberCountText?.simpleText,
+                shortNumMonthlyAudience = null,
+                sections = emptyList()
             )
         }
     }
