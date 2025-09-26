@@ -4,7 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import me.knighthat.innertube.response.PrimaryResults
-import me.knighthat.innertube.response.SimpleText
 
 @Serializable
 internal data class PrimaryResultsImpl(
@@ -37,8 +36,8 @@ internal data class PrimaryResultsImpl(
 
                     @Serializable
                     data class RendererImpl(
-                        override val viewCount: SimpleText,
-                        override val shortViewCount: SimpleText,
+                        override val viewCount: SimpleTextImpl,
+                        override val shortViewCount: SimpleTextImpl,
                         override val originalViewCount: String?
                     ): PrimaryResults.Results.Content.VideoPrimaryInfoRenderer.ViewCount.Renderer
                 }
@@ -48,8 +47,8 @@ internal data class PrimaryResultsImpl(
             data class VideoSecondaryInfoRendererImpl(
                 override val owner: OwnerImpl,
                 override val metadataRowContainer: MetadataRowContainerImpl?,
-                override val showMoreText: SimpleText?,
-                override val showLessText: SimpleText?,
+                override val showMoreText: SimpleTextImpl?,
+                override val showLessText: SimpleTextImpl?,
                 override val defaultExpanded: Boolean?,
                 override val descriptionCollapsedLines: Int?,
                 override val attributedDescription: AttributedDescriptionImpl

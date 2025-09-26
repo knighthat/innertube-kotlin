@@ -2,7 +2,6 @@ package me.knighthat.internal.response
 
 import kotlinx.serialization.Serializable
 import me.knighthat.innertube.response.NextResponse
-import me.knighthat.innertube.response.PrimaryResults
 
 @Serializable
 internal class NextResponseImpl(
@@ -31,7 +30,7 @@ internal class NextResponseImpl(
 
         @Serializable
         data class TwoColumnWatchNextResultsImpl(
-            override val results: PrimaryResults
+            override val results: PrimaryResultsImpl
         ): NextResponse.Contents.TwoColumnWatchNextResults
     }
 
