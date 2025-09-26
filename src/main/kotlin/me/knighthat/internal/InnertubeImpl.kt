@@ -20,6 +20,7 @@ import me.knighthat.innertube.model.InnertubeCharts
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
+import me.knighthat.innertube.model.InnertubeSongDetails
 import me.knighthat.innertube.request.Localization
 import me.knighthat.innertube.request.Request
 import me.knighthat.innertube.request.body.AccountMenuBody
@@ -43,6 +44,7 @@ import me.knighthat.internal.model.InnertubeAlbumImpl
 import me.knighthat.internal.model.InnertubeArtistImpl
 import me.knighthat.internal.model.InnertubeChartsImpl
 import me.knighthat.internal.model.InnertubePlaylistImpl
+import me.knighthat.internal.model.InnertubeSongDetailsImpl
 import me.knighthat.internal.model.InnertubeSongImpl
 import me.knighthat.internal.response.ActiveAccountHeaderRendererImpl
 import me.knighthat.internal.response.BrowseResponseImpl
@@ -247,6 +249,30 @@ internal class InnertubeImpl: Innertube {
             )
 
             InnertubeSongImpl.from( renderer )
+        }
+
+    override fun songInfo( songId: String, localization: Localization ): Result<InnertubeSongDetails> =
+        runCatching {
+            val context = getContext( Context.WEB_DEFAULT, localization, null, false )
+            val nextBody = NextBody.builder( context ).videoId( songId ).build()
+            val response = sendRequest(
+                Request.POST,
+                Constants.YOUTUBE_URL,
+                Endpoints.NEXT,
+                nextBody,
+                emptyMap(),
+                false
+            )
+            val nextResponse = json.decodeFromString<NextResponseImpl>( response.responseBody )
+
+            return@runCatching requireNotNull(
+                nextResponse.contents
+                    .twoColumnWatchNextResults
+                    ?.results
+                    ?.results
+                    ?.contents
+                    ?.let( InnertubeSongDetailsImpl::from )
+            ) { "Failed to fetch details of $songId" }
         }
 
     override fun radio(

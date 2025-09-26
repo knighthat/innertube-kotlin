@@ -7,6 +7,7 @@ import me.knighthat.innertube.model.InnertubeCharts
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
+import me.knighthat.innertube.model.InnertubeSongDetails
 import me.knighthat.innertube.request.Localization
 import me.knighthat.innertube.request.Request
 import me.knighthat.innertube.request.body.Context
@@ -51,6 +52,8 @@ interface Innertube {
     fun browseAlbum( albumId: String, localization: Localization, params: String? = null ): Result<InnertubeAlbum>
 
     fun songBasicInfo( songId: String, localization: Localization, params: String? = null ): Result<InnertubeSong>
+
+    fun songInfo( songId: String, localization: Localization ): Result<InnertubeSongDetails>
 
     fun radio(
         songId: String,
