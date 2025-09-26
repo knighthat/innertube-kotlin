@@ -41,7 +41,7 @@ internal class NextResponseImpl(
 
         @Serializable
         data class RendererImpl(
-            override val browserMediaSession: BrowserMediaSessionImpl
+            override val browserMediaSession: BrowserMediaSessionImpl?
         ): NextResponse.PlayerOverlays.Renderer {
 
             @Serializable

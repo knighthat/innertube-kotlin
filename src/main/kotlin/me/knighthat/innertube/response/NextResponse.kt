@@ -34,8 +34,8 @@ interface NextResponse : InnertubeResponse {
 
         interface Renderer {
 
-            // Missing "actions"
-            val browserMediaSession: BrowserMediaSession
+            // Missing actions, endScreen, autoplay, shareButton, addToMenu, videoDetails, autonavToggle, decoratedPlayerBarRenderer, speedmasterUserEdu
+            val browserMediaSession: BrowserMediaSession?
 
             interface BrowserMediaSession {
 
