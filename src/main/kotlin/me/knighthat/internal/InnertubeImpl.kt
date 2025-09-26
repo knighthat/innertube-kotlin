@@ -93,6 +93,7 @@ internal class InnertubeImpl: Innertube {
         }
 
     @Throws(IOException::class)
+    @JvmName("sendRequest")
     internal fun sendRequest(
         @MagicConstant(valuesFromClass = Request::class) method: String,
         host: String,

@@ -36,7 +36,7 @@ public class InnertubeImplTest {
             NextBody body = NextBody.builder( Context.WEB_DEFAULT )
                                     .videoId( "lYBUbBu4W08" )
                                     .build();
-            return innertube.sendRequest$innertube_kotlin(
+            return innertube.sendRequest(
                     Request.POST,
                     Constants.YOUTUBE_URL,
                     Endpoints.NEXT,
@@ -56,7 +56,7 @@ public class InnertubeImplTest {
             SearchSuggestionsBody body = SearchSuggestionsBody.builder( Context.WEB_REMIX_DEFAULT )
                                                               .input( "million dollar baby" )
                                                               .build();
-            return innertube.sendRequest$innertube_kotlin(
+            return innertube.sendRequest(
                     Request.POST,
                     Constants.YOUTUBE_MUSIC_URL,
                     Endpoints.NEXT,
