@@ -3,7 +3,6 @@ package me.knighthat.internal.response
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import me.knighthat.innertube.response.Badge
 import me.knighthat.innertube.response.PrimaryResults
 import me.knighthat.innertube.response.SimpleText
 
@@ -67,7 +66,7 @@ internal data class PrimaryResultsImpl(
                         override val title: RunsImpl,
                         override val navigationEndpoint: EndpointImpl,
                         override val subscriberCountText: SimpleTextImpl?,
-                        override val badges: List<Badge> = emptyList()
+                        override val badges: List<BadgeImpl> = emptyList()
                     ): PrimaryResults.Results.Contents.VideoSecondaryInfoRenderer.Owner.Renderer
                 }
 
