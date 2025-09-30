@@ -1,5 +1,5 @@
 [versions]
-ktor = "3.2.3"
+ktor = "3.3.0"
 junit5 = "5.13.4"
 junit-platform = "1.13.4"
 okhttp3 = "5.1.0"
