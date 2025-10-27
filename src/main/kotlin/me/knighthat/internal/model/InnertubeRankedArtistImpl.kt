@@ -24,17 +24,17 @@ internal data class InnertubeRankedArtistImpl(
 
         fun from( renderer: MusicResponsiveListItemRenderer ): InnertubeRankedArtist {
             val id = requireNotNull(
-                renderer.navigationEndpoint
-                        ?.browseEndpoint
-                        ?.browseId
-            )
+                value = renderer.navigationEndpoint
+                                ?.browseEndpoint
+                                ?.browseId
+            ) { "missing browseId from MusicResponsiveListItemRenderer" }
             val columns = renderer.flexColumns.mapNotNull(
                 MusicResponsiveListItemRenderer.Colum::musicResponsiveListItemFlexColumnRenderer
             )
             val indexColumn = requireNotNull(
                 renderer.customIndexColumn
                         ?.musicCustomIndexColumnRenderer
-            )
+            ) { "missing musicCustomIndexColumnRenderer while parsing MusicResponsiveListItemRenderer" }
 
             return InnertubeRankedArtistImpl(
                 id,
@@ -52,7 +52,9 @@ internal data class InnertubeRankedArtistImpl(
     }
 
     override fun shareUrl( host: String ): String {
-        require( host.isYouTubeHost )
+        require( host.isYouTubeHost ) {
+            "$host is not a YouTube url"
+        }
 
         return "$host/channel/$id"
     }

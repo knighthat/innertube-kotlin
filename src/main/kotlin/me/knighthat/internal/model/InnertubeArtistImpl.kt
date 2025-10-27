@@ -34,15 +34,15 @@ internal data class InnertubeArtistImpl(
                                    .orEmpty()
             val name = requireNotNull(
                 header.musicImmersiveHeaderRenderer?.title ?: header.musicVisualHeaderRenderer?.title
-            ).firstText
+            ) { "missing title in BrowseResponse.Header" }
             val thumbnails = requireNotNull(
                 header.musicImmersiveHeaderRenderer?.thumbnail ?: header.musicVisualHeaderRenderer?.thumbnail
-            ).toThumbnailList()
+            ) { "missing thumbnails in BrowseResponse.Header" }
 
             return object: InnertubeItem {
                 override val id: String = id
-                override val name: String = name
-                override val thumbnails: List<Thumbnails.Thumbnail> = thumbnails
+                override val name: String = name.firstText
+                override val thumbnails: List<Thumbnails.Thumbnail> = thumbnails.toThumbnailList()
             }
         }
 
@@ -72,7 +72,7 @@ internal data class InnertubeArtistImpl(
                         ?.content
                         ?.sectionListRenderer
                         ?.contents
-            )
+            ) { "missing contents in BrowseResponse" }
 
             // There are (typically) 8 sections, but description is excluded here
             val sections = ArrayList<InnertubeArtist.Section>(7)
@@ -108,7 +108,7 @@ internal data class InnertubeArtistImpl(
                         .serviceTrackingParams
                         .first()
                         .params["browse_id"]
-            )
+            ) { "BrowseResponse doesn't contain channelId" }
             val item = parse( response.header!! )       // Requires [BrowseResponse.Header] to be a non-null value
             val header = response.header?.musicImmersiveHeaderRenderer
             val subscribeButton = header?.subscriptionButton?.subscribeButtonRenderer
@@ -144,7 +144,9 @@ internal data class InnertubeArtistImpl(
     }
 
     override fun shareUrl( host: String ): String {
-        require( host.isYouTubeHost )
+        require( host.isYouTubeHost ) {
+            "$host is not a YouTube url"
+        }
 
         return "$host/channel/$id"
     }

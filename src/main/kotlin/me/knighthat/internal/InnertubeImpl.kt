@@ -246,7 +246,7 @@ internal class InnertubeImpl: Innertube {
                             ?.contents
                             ?.first()
                             ?.playlistPanelVideoRenderer
-            )
+            ) { "missing playlistPanelVideoRenderer while parsing songBasicInfo" }
 
             InnertubeSongImpl.from( renderer )
         }
@@ -320,7 +320,7 @@ internal class InnertubeImpl: Innertube {
                     ?.tabRenderer
                     ?.content
                     ?.sectionListRenderer
-            )
+            ) { "missing sectionListRenderer while parsing charts" }
 
             InnertubeChartsImpl.from(renderer)
         }
@@ -357,7 +357,7 @@ internal class InnertubeImpl: Innertube {
                     ?.jsonObject["multiPageMenuRenderer"]
                     ?.jsonObject["header"]
                     ?.jsonObject["activeAccountHeaderRenderer"]
-            )
+            ) { "missing activeAccountHeaderRenderer while parsing accountInfo" }
             AccountInfoImpl.from(
                 json.decodeFromJsonElement<ActiveAccountHeaderRendererImpl>( renderer )
             )

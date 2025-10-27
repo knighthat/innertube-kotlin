@@ -118,7 +118,7 @@ internal data class InnertubeAlbumImpl(
                               ?.contents
                               ?.firstOrNull()
                               ?.musicResponsiveHeaderRenderer
-            )
+            ) { "missing musicResponsiveHeaderRenderer while parsing twoColumnBrowseResultsRenderer" }
             val thumbnails = renderer.thumbnail.toThumbnailList()
             val artists = renderer.straplineTextOne?.extractArtistAndAlbum()?.artists.orEmpty()
             val description: String? = renderer.description
@@ -157,8 +157,12 @@ internal data class InnertubeAlbumImpl(
     }
 
     override fun shareUrl( host: String ): String {
-        require( host.isYouTubeHost )
-        requireNotNull( this.urlCanonical)
+        require( host.isYouTubeHost ) {
+            "$host is not a YouTube url"
+        }
+        requireNotNull( this.urlCanonical ) {
+            "urlCanonical is null"
+        }
 
         return if( !urlCanonical.startsWith( host ) ) {
             val uri = URI.create( urlCanonical )
