@@ -96,7 +96,7 @@ internal data class InnertubeAlbumImpl(
                 val captured = ALBUM_PLAYLIST_ID_REGEX.find( urlCanonical.orEmpty() )?.groups?.get( 1 )?.value
                 if( captured.isNullOrBlank() ) return@async emptyList()
 
-                val playlistId = "%s$captured".format( if( captured.startsWith( "VL" ) ) "" else "VL" )
+                val playlistId = "%s%s".format( if( captured.startsWith( "VL" ) ) "" else "VL", captured )
                 Innertube.browsePlaylistSongs( playlistId, localization )
                          .fold(
                              onSuccess = { it },
