@@ -52,6 +52,17 @@ class InnertubePlaylistImplTest {
                 1,
                 100,
                 "4qmFsgKNARItVkxSRENMQUs1dXlfblppRzllaHpfTVFvV1F4WTV5RWxzTEhDY0cwdHY5UFJnGi5laFZRVkRwRlozUnZUVVJTUkZORWJGcFhiVTUzVTFHU0FRTUl1Z1R3QVFBJTNEmgIrUkRDTEFLNXV5X25aaUc5ZWh6X01Rb1dReFk1eUVsc0xIQ2NHMHR2OVBSZw%3D%3D"
+            ),
+            Arguments.of(
+                "ytm/browse/playlist_twoColumnBrowseResultsRenderer4.json",
+                "VLPLtILsETdHuj5rynRpGqVfPuiOs9mCZxn4",
+                "",
+                0,
+                null,
+                null,
+                1,
+                74,
+                null
             )
         )
     }

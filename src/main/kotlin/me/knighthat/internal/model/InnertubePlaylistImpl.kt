@@ -7,6 +7,7 @@ import me.knighthat.innertube.response.BrowseResponse.Contents.TwoColumnBrowseRe
 import me.knighthat.innertube.response.Continuation
 import me.knighthat.innertube.response.MusicTwoRowItemRenderer
 import me.knighthat.innertube.response.Runs
+import me.knighthat.innertube.response.SectionListRenderer
 import me.knighthat.innertube.response.Thumbnails
 
 @Serializable
@@ -41,29 +42,30 @@ internal data class InnertubePlaylistImpl(
         }
 
         fun from( visitorData: String?, renderer: TwoColumnBrowseResultsRenderer ): InnertubePlaylist {
-            val headerRenderer = requireNotNull(
+            // FIXME: This part isn't supposed to be nullable at all.
+            //  but it's reported that this part is null when logged in on some accounts
+            val headerRenderer: SectionListRenderer.Content.MusicResponsiveHeaderRenderer? =
                 renderer.tabs
                         .first()
                         .tabRenderer
                         .content
                         ?.sectionListRenderer
                         ?.contents
-                        ?.first()
+                        ?.firstOrNull()
                         ?.musicResponsiveHeaderRenderer
-            )
             val sectionListRenderer = renderer.secondaryContents!!.sectionListRenderer
             val playlistShelfRenderer = sectionListRenderer.contents.first().musicPlaylistShelfRenderer
             val playlistId = playlistShelfRenderer!!.playlistId!!
             val continuedPlaylist = ContinuedPlaylistImpl.from( playlistShelfRenderer.contents )
-            val description = headerRenderer.description?.musicDescriptionShelfRenderer?.description?.firstText
+            val description = headerRenderer?.description?.musicDescriptionShelfRenderer?.description?.firstText
 
             return InnertubePlaylistImpl(
                 // Add "VL" in case it's not there
                 if( playlistId.startsWith("VL") ) playlistId else "VL$playlistId",
-                headerRenderer.title.firstText,
-                headerRenderer.thumbnail.toThumbnailList(),
+                headerRenderer?.title?.firstText.orEmpty(),
+                headerRenderer?.thumbnail.toThumbnailList(),
                 description,
-                headerRenderer.secondSubtitle,      // Contains delimiters by default
+                headerRenderer?.secondSubtitle,      // Contains delimiters by default
                 sectionListRenderer.continuations,
                 continuedPlaylist.songs,
                 continuedPlaylist.continuation,
