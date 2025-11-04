@@ -7,7 +7,6 @@ import me.knighthat.innertube.response.BrowseResponse.Contents.TwoColumnBrowseRe
 import me.knighthat.innertube.response.Continuation
 import me.knighthat.innertube.response.MusicTwoRowItemRenderer
 import me.knighthat.innertube.response.Runs
-import me.knighthat.innertube.response.SectionListRenderer
 import me.knighthat.innertube.response.Thumbnails
 
 @Serializable
@@ -42,34 +41,39 @@ internal data class InnertubePlaylistImpl(
         }
 
         fun from( visitorData: String?, renderer: TwoColumnBrowseResultsRenderer ): InnertubePlaylist {
-            // FIXME: This part isn't supposed to be nullable at all.
-            //  but it's reported that this part is null when logged in on some accounts
-            val headerRenderer: SectionListRenderer.Content.MusicResponsiveHeaderRenderer? =
+            val content = requireNotNull(
                 renderer.tabs
-                        .first()
-                        .tabRenderer
-                        .content
+                        .firstOrNull()
+                        ?.tabRenderer
+                        ?.content
                         ?.sectionListRenderer
                         ?.contents
                         ?.firstOrNull()
-                        ?.musicResponsiveHeaderRenderer
+            ) { "TwoColumnBrowseResultsRenderer doesn't contain SectionListRenderer.Content" }
+            val headerRenderer = requireNotNull(
+                content.musicResponsiveHeaderRenderer
+                        ?: content.musicEditablePlaylistDetailHeaderRenderer
+                                  ?.header
+                                  ?.musicResponsiveHeaderRenderer
+            ) { "Missing MusicResponsiveHeaderRenderer is missing from SectionListRenderer.Content" }
+
             val sectionListRenderer = renderer.secondaryContents!!.sectionListRenderer
             val playlistShelfRenderer = sectionListRenderer.contents.first().musicPlaylistShelfRenderer
             val playlistId = playlistShelfRenderer!!.playlistId!!
             val continuedPlaylist = ContinuedPlaylistImpl.from( playlistShelfRenderer.contents )
-            val description = headerRenderer?.description?.musicDescriptionShelfRenderer?.description?.firstText
+            val description = headerRenderer.description?.musicDescriptionShelfRenderer?.description?.firstText
 
             return InnertubePlaylistImpl(
                 // Add "VL" in case it's not there
                 if( playlistId.startsWith("VL") ) playlistId else "VL$playlistId",
-                headerRenderer?.title?.firstText.orEmpty(),
-                headerRenderer?.thumbnail.toThumbnailList(),
-                description,
-                headerRenderer?.secondSubtitle,      // Contains delimiters by default
-                sectionListRenderer.continuations,
-                continuedPlaylist.songs,
-                continuedPlaylist.continuation,
-                visitorData
+                    headerRenderer.title.firstText,
+                    headerRenderer.thumbnail.toThumbnailList(),
+                                         description,
+                                         headerRenderer.secondSubtitle,      // Contains delimiters by default
+                                         sectionListRenderer.continuations,
+                                         continuedPlaylist.songs,
+                                         continuedPlaylist.continuation,
+                                         visitorData
             )
         }
     }

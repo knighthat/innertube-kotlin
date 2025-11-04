@@ -11,6 +11,7 @@ interface SectionListRenderer {
         val musicDescriptionShelfRenderer: MusicDescriptionShelfRenderer?
         val musicTastebuilderShelfRenderer: MusicTastebuilderShelfRenderer?
         val musicResponsiveHeaderRenderer: MusicResponsiveHeaderRenderer?
+        val musicEditablePlaylistDetailHeaderRenderer: MusicEditablePlaylistDetailHeaderRenderer?
         val musicShelfRenderer: MusicShelfRenderer?
         val musicCarouselShelfRenderer: MusicCarouselShelfRenderer?
         val gridRenderer: GridRenderer?
@@ -55,6 +56,16 @@ interface SectionListRenderer {
             interface Description {
 
                 val musicDescriptionShelfRenderer: MusicDescriptionShelfRenderer
+            }
+        }
+
+
+        interface MusicEditablePlaylistDetailHeaderRenderer {
+            val header: Header
+
+            interface Header {
+
+                val musicResponsiveHeaderRenderer: MusicResponsiveHeaderRenderer
             }
         }
 

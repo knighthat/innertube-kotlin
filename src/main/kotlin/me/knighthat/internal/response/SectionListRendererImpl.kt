@@ -14,6 +14,7 @@ internal data class SectionListRendererImpl(
         override val musicDescriptionShelfRenderer: MusicDescriptionShelfRendererImpl?,
         override val musicTastebuilderShelfRenderer: MusicTastebuilderShelfRendererImpl?,
         override val musicResponsiveHeaderRenderer: MusicResponsiveHeaderRendererImpl?,
+        override val musicEditablePlaylistDetailHeaderRenderer: MusicEditablePlaylistDetailHeaderRendererImpl?,
         override val musicShelfRenderer: MusicShelfRendererImpl?,
         override val musicCarouselShelfRenderer: MusicCarouselShelfRendererImpl?,
         override val gridRenderer: GridRendererImpl?,
@@ -62,6 +63,17 @@ internal data class SectionListRendererImpl(
             internal data class DescriptionImpl(
                 override val musicDescriptionShelfRenderer: MusicDescriptionShelfRendererImpl
             ): SectionListRenderer.Content.MusicResponsiveHeaderRenderer.Description
+        }
+
+        @Serializable
+        internal data class MusicEditablePlaylistDetailHeaderRendererImpl(
+            override val header: HeaderImpl
+        ): SectionListRenderer.Content.MusicEditablePlaylistDetailHeaderRenderer {
+
+            @Serializable
+            internal data class HeaderImpl(
+                override val musicResponsiveHeaderRenderer: MusicResponsiveHeaderRendererImpl
+            ): SectionListRenderer.Content.MusicEditablePlaylistDetailHeaderRenderer.Header
         }
 
         @Serializable
