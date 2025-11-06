@@ -55,14 +55,14 @@ class InnertubePlaylistImplTest {
             ),
             Arguments.of(
                 "ytm/browse/playlist_twoColumnBrowseResultsRenderer4.json",
-                "VLPLtILsETdHuj5rynRpGqVfPuiOs9mCZxn4",
-                "",
-                0,
+                "VLPLOpIT4aZz_neVC-cWJiwkPoA2aogjMHoK",
+                "good songs",
+                3,
                 null,
-                null,
+                "64 views • 186 tracks • 4+ hours",
                 1,
-                74,
-                null
+                100,
+                "4qmFsgKHARIkVkxQTE9wSVQ0YVp6X25lVkMtY1dKaXdrUG9BMmFvZ2pNSG9LGjplaDVRVkRwRFIxRnBSVVZKZUZGNlVUTk9hbXN6VGpCU1JFOVZXa2ROUkVXU0FRTUl1Z1R3QVFFJTNEmgIiUExPcElUNGFael9uZVZDLWNXSml3a1BvQTJhb2dqTUhvSw%3D%3D"
             )
         )
     }
