@@ -1,7 +1,6 @@
 [versions]
 ktor = "3.3.0"
-junit5 = "5.13.4"
-junit-platform = "1.13.4"
+junit5 = "6.0.1"
 okhttp3 = "5.1.0"
 lombok = "1.18.42"
 jetbrains-annotations = "26.0.2-1"
@@ -24,7 +23,7 @@ ktor-content-encoding = { group = "io.ktor", name = "ktor-client-encoding", vers
 junit5-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit5" }
 junit5-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5" }
 junit5-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit5" }
-junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit-platform" }
+junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit5" }
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 
 # OkHttp
