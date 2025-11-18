@@ -1,12 +1,17 @@
 package me.knighthat.internal.model
 
+import me.knighthat.innertube.Innertube
+import me.knighthat.innertube.InnertubeProvider
 import me.knighthat.innertube.decode
 import me.knighthat.innertube.model.InnertubeAlbum
 import me.knighthat.innertube.request.Localization
+import me.knighthat.innertube.response.InnertubeImplTest
+import me.knighthat.internal.InnertubeImpl
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.MusicResponsiveListItemRendererImpl
 import me.knighthat.internal.response.MusicTwoRowItemRendererImpl
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
@@ -18,6 +23,10 @@ import java.util.stream.Stream
 class InnertubeAlbumImplTest {
 
     companion object {
+
+        @BeforeAll
+        @JvmStatic
+        fun setup() = Innertube.setProvider( InnertubeProvider() )
 
         @JvmStatic
         fun musicTwoRowItemRendererProvider(): Stream<Arguments> = Stream.of(
