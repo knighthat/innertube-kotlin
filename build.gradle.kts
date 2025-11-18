@@ -19,6 +19,7 @@ dependencies {
 
     testImplementation( libs.bundles.junit5 )
     testRuntimeOnly( libs.junit.platform )
+    testImplementation( libs.kotlin.reflect )
 
     testImplementation( libs.bundles.ktor )
     testImplementation( libs.okhttp3.logging.interceptor )
