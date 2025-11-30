@@ -5,6 +5,7 @@ interface SectionListRenderer {
 
     val contents: List<Content>
     val continuations: List<Continuation>
+    val header: Header?
 
     interface Content {
 
@@ -78,5 +79,10 @@ interface SectionListRenderer {
                 val musicTwoRowItemRenderer: MusicTwoRowItemRenderer
             }
         }
+    }
+
+    interface Header {
+
+        val chipCloudRenderer: ChipCloudRenderer
     }
 }

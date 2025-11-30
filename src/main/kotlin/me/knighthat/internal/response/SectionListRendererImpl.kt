@@ -5,6 +5,7 @@ import me.knighthat.innertube.response.SectionListRenderer
 
 @Serializable
 internal data class SectionListRendererImpl(
+    override val header: HeaderImpl?,
     override val contents: List<ContentImpl> = emptyList(),
     override val continuations: List<ContinuationImpl> = emptyList()
 ): SectionListRenderer {
@@ -87,4 +88,9 @@ internal data class SectionListRendererImpl(
             ): SectionListRenderer.Content.GridRenderer.Item
         }
     }
+
+    @Serializable
+    internal data class HeaderImpl(
+        override val chipCloudRenderer: ChipCloudRendererImpl
+    ): SectionListRenderer.Header
 }
