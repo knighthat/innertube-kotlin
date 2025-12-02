@@ -1,6 +1,5 @@
 package me.knighthat.innertube.model
 
-import me.knighthat.innertube.Localized
 
 interface InnertubeCharts {
 
@@ -18,13 +17,5 @@ interface InnertubeCharts {
             val countryDisplayName: String
             val countryCode: String
         }
-    }
-
-    interface Section {
-
-        @get:Localized
-        val title: String
-
-        val contents: List<InnertubeItem>
     }
 }

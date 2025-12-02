@@ -1,8 +1,8 @@
 package me.knighthat.internal.model
 
 import kotlinx.serialization.Serializable
-import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.innertube.model.InnertubeRankedArtist
+import me.knighthat.innertube.model.Section
 import me.knighthat.innertube.response.MusicResponsiveListItemRenderer
 import me.knighthat.innertube.response.Thumbnails
 
@@ -15,7 +15,7 @@ internal data class InnertubeRankedArtistImpl(
     override val shortNumSubscribers: String?,
     override val longNumSubscribers: String?,
     override val shortNumMonthlyAudience: String?,
-    override val sections: List<InnertubeArtist.Section>,
+    override val sections: List<Section>,
     override val rank: String,
     override val iconType: String?
 ): InnertubeRankedArtist {

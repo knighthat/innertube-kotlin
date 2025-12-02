@@ -1,6 +1,5 @@
 package me.knighthat.innertube.model
 
-import me.knighthat.innertube.Localized
 import me.knighthat.innertube.response.Runs
 
 
@@ -36,15 +35,4 @@ interface InnertubeAlbum: InnertubeItem, ContentRating, AccessibleViaUrl, Descri
     val songs: List<InnertubeSong>
 
     val sections: List<Section>
-
-    interface Section {
-
-        /**
-         * Can be empty
-         */
-        @get:Localized
-        val title: String?
-
-        val contents: List<InnertubeItem>
-    }
 }

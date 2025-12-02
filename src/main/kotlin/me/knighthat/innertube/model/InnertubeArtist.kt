@@ -37,16 +37,4 @@ interface InnertubeArtist: InnertubeItem, Descriptive, AccessibleViaUrl {
     val shortNumMonthlyAudience: String?
 
     val sections: List<Section>
-
-    interface Section {
-
-        @get:Localized
-        val title: String
-
-        val browseId: String?
-
-        val params: String?
-
-        val contents: List<InnertubeItem>
-    }
 }

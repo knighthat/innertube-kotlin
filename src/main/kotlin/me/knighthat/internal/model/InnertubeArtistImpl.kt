@@ -1,13 +1,10 @@
 package me.knighthat.internal.model
 
 import kotlinx.serialization.Serializable
-import me.knighthat.innertube.PageType
 import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.innertube.model.InnertubeItem
-import me.knighthat.innertube.model.InnertubeSong
+import me.knighthat.innertube.model.Section
 import me.knighthat.innertube.response.BrowseResponse
-import me.knighthat.innertube.response.MusicCarouselShelfRenderer
-import me.knighthat.innertube.response.MusicShelfRenderer
 import me.knighthat.innertube.response.MusicTwoRowItemRenderer
 import me.knighthat.innertube.response.PrimaryResults.Results.Content.VideoSecondaryInfoRenderer.Owner
 import me.knighthat.innertube.response.Thumbnails
@@ -21,7 +18,7 @@ internal data class InnertubeArtistImpl(
     override val shortNumSubscribers: String?,
     override val longNumSubscribers: String?,
     override val shortNumMonthlyAudience: String?,
-    override val sections: List<InnertubeArtist.Section>
+    override val sections: List<Section>
 ): InnertubeArtist {
 
     companion object {
@@ -75,19 +72,12 @@ internal data class InnertubeArtistImpl(
             ) { "missing contents in BrowseResponse" }
 
             // There are (typically) 8 sections, but description is excluded here
-            val sections = ArrayList<InnertubeArtist.Section>(7)
+            val sections = ArrayList<Section>(7)
             var description: String? = response.header?.musicImmersiveHeaderRenderer?.description?.firstText
             for( content in contents ) {
-                content.musicShelfRenderer?.also { musicSection ->
-                    val browse = musicSection.bottomEndpoint?.browseEndpoint
-                    val songs: List<InnertubeSong> = musicSection.contents
-                                                                 .mapNotNull( MusicShelfRenderer.Content::musicResponsiveListItemRenderer )
-                                                                 .map( InnertubeSongImpl::from )
-
-                    sections.add(
-                        SectionImpl(musicSection.title?.firstText.orEmpty(), browse?.browseId, browse?.params, songs)
-                    )
-                }
+                content.musicShelfRenderer
+                       ?.let( ::createModelSectionFrom )
+                       ?.also( sections::add )
 
                 content.musicDescriptionShelfRenderer
                        ?.description
@@ -99,7 +89,7 @@ internal data class InnertubeArtistImpl(
 
                 // This section contains Albums, Single & EPs, related Artists, and Playlists.
                 content.musicCarouselShelfRenderer
-                       ?.let( SectionImpl::from )
+                       ?.let( ::createModelSectionFrom )
                        ?.also( sections::add )
             }
 
@@ -149,60 +139,5 @@ internal data class InnertubeArtistImpl(
         }
 
         return "$host/channel/$id"
-    }
-
-    @Serializable
-    internal data class SectionImpl(
-        override val title: String,
-        override val browseId: String?,
-        override val params: String?,
-        override val contents: List<InnertubeItem>
-    ): InnertubeArtist.Section {
-
-        companion object {
-
-            fun from( renderer: MusicCarouselShelfRenderer ): InnertubeArtist.Section? {
-                // Skip this section because 1 or all content isn't [MusicTwoRowItemRender]
-                if( renderer.contents.any { it.musicTwoRowItemRenderer == null } )
-                    return null
-
-                val sectionHeader = renderer.header.musicCarouselShelfBasicHeaderRenderer
-                val run = sectionHeader.title.runs.firstOrNull()
-                val browse = run?.navigationEndpoint?.browseEndpoint
-
-                return SectionImpl(
-                    title = sectionHeader.title.firstText,
-                    browseId = browse?.browseId,
-                    params = browse?.params,
-                    contents = renderer.contents
-                                       .mapNotNull( MusicCarouselShelfRenderer.Content::musicTwoRowItemRenderer )
-                                       .mapNotNull { itemRenderer ->
-                                           var result: InnertubeItem? = null
-
-                                           itemRenderer.navigationEndpoint
-                                                       .browseEndpoint
-                                                       ?.browseEndpointContextSupportedConfigs
-                                                       ?.browseEndpointContextMusicConfig
-                                                       ?.pageType
-                                                       ?.also { pageType ->
-                                                           result = when( pageType ) {
-                                                               PageType.ARTIST     -> from( itemRenderer )
-                                                               PageType.ALBUM      -> InnertubeAlbumImpl.from( itemRenderer )
-                                                               PageType.PLAYLIST   -> InnertubePlaylistImpl.from( itemRenderer )
-                                                               else                -> null
-                                                           }
-                                                       }
-
-                                           itemRenderer.navigationEndpoint
-                                                       .watchEndpoint
-                                                       ?.also {
-                                                           result = InnertubeSongImpl.from( itemRenderer )
-                                                       }
-
-                                           result
-                                       }
-                )
-            }
-        }
     }
 }
