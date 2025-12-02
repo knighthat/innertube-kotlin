@@ -14,6 +14,7 @@ import me.knighthat.innertube.Innertube
 import me.knighthat.innertube.PageType
 import me.knighthat.innertube.UserAgents
 import me.knighthat.innertube.model.ContinuedPlaylist
+import me.knighthat.innertube.model.HomePage
 import me.knighthat.innertube.model.InnertubeAlbum
 import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.innertube.model.InnertubeCharts
@@ -40,6 +41,7 @@ import me.knighthat.innertube.response.Response
 import me.knighthat.innertube.response.SectionListRenderer
 import me.knighthat.internal.model.AccountInfoImpl
 import me.knighthat.internal.model.ContinuedPlaylistImpl
+import me.knighthat.internal.model.HomePageImpl
 import me.knighthat.internal.model.InnertubeAlbumImpl
 import me.knighthat.internal.model.InnertubeArtistImpl
 import me.knighthat.internal.model.InnertubeChartsImpl
@@ -436,5 +438,14 @@ internal class InnertubeImpl: Innertube {
                 useLogin = useLogin
             )
             json.decodeFromString<PlayerResponseImpl>( response.responseBody )
+        }
+
+    override fun homePage( localization: Localization ): Result<HomePage> =
+        runCatching {
+            val response = ytmBrowse( localization ) {
+                browseId( "FEmusic_home" )
+            }
+
+            return@runCatching HomePageImpl.from( response )
         }
 }
