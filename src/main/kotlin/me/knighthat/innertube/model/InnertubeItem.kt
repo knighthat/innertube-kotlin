@@ -1,9 +1,8 @@
 package me.knighthat.innertube.model
 
 import me.knighthat.innertube.Localized
-import me.knighthat.innertube.response.Thumbnails
 
-interface InnertubeItem {
+interface InnertubeItem: Visualized {
 
     /**
      * Unique identifier used to distinguish it from other items in a database
@@ -15,9 +14,4 @@ interface InnertubeItem {
      */
     @get:Localized
     val name: String
-
-    /**
-     * A set of thumbnails, variable in sizes
-     */
-    val thumbnails: List<Thumbnails.Thumbnail>
 }
