@@ -9,6 +9,7 @@ interface BrowseResponse : InnertubeResponse {
     val microformat: Microformat?
     val background: Thumbnail?
     val onResponseReceivedActions: List<ResponseReceivedAction>
+    val continuationContents: ContinuationContents?
 
     interface Contents {
 
@@ -65,5 +66,10 @@ interface BrowseResponse : InnertubeResponse {
 
             val continuationItems: List<MusicPlaylistShelfRenderer.Content>
         }
+    }
+
+    interface ContinuationContents {
+
+        val sectionListContinuation: SectionListRenderer
     }
 }

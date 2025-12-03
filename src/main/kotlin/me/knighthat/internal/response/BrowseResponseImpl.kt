@@ -11,7 +11,8 @@ internal data class BrowseResponseImpl(
     override val microformat: MicroformatImpl?,
     override val background: ThumbnailImpl?,
     override val onResponseReceivedActions: List<ResponseReceivedActionImpl> = emptyList(),
-    override val responseContext: InnertubeResponseImpl.ContextImpl
+    override val responseContext: InnertubeResponseImpl.ContextImpl,
+    override val continuationContents: ContinuationContentsImpl?
 ): BrowseResponse {
 
     @Serializable
@@ -74,4 +75,9 @@ internal data class BrowseResponseImpl(
             override val continuationItems: List<MusicPlaylistShelfRendererImpl.ContentImpl> = emptyList()
         ): BrowseResponse.ResponseReceivedAction.AppendContinuationItemsAction
     }
+
+    @Serializable
+    internal data class ContinuationContentsImpl(
+        override val sectionListContinuation: SectionListRendererImpl
+    ) : BrowseResponse.ContinuationContents
 }
