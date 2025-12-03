@@ -1,11 +1,10 @@
 package me.knighthat.innertube.model
 
 
-interface InnertubeCharts {
+interface InnertubeCharts: MultiContent {
 
     val selectedCountryName: String
     val menu: Menu
-    val sections: List<Section>
 
     interface Menu {
 

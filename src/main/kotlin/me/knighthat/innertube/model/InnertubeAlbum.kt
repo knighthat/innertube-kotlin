@@ -3,7 +3,7 @@ package me.knighthat.innertube.model
 import me.knighthat.innertube.response.Runs
 
 
-interface InnertubeAlbum: InnertubeItem, ContentRating, AccessibleViaUrl, Descriptive {
+interface InnertubeAlbum: InnertubeItem, ContentRating, AccessibleViaUrl, Descriptive, MultiContent {
 
     /**
      * Artists featured in this album
@@ -33,6 +33,4 @@ interface InnertubeAlbum: InnertubeItem, ContentRating, AccessibleViaUrl, Descri
     val subtitle: String?
 
     val songs: List<InnertubeSong>
-
-    val sections: List<Section>
 }

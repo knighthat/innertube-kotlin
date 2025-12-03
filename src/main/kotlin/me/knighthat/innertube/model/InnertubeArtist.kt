@@ -3,7 +3,7 @@ package me.knighthat.innertube.model
 import me.knighthat.innertube.Localized
 
 
-interface InnertubeArtist: InnertubeItem, Descriptive, AccessibleViaUrl {
+interface InnertubeArtist: InnertubeItem, Descriptive, AccessibleViaUrl, MultiContent {
 
     /**
      * Number of subscribers in **short** format:
@@ -35,6 +35,4 @@ interface InnertubeArtist: InnertubeItem, Descriptive, AccessibleViaUrl {
      */
     @get:Localized
     val shortNumMonthlyAudience: String?
-
-    val sections: List<Section>
 }
