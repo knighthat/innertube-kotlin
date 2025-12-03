@@ -18,10 +18,12 @@ import me.knighthat.innertube.model.HomePage
 import me.knighthat.innertube.model.InnertubeAlbum
 import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.innertube.model.InnertubeCharts
+import me.knighthat.innertube.model.InnertubeContinuation
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.model.InnertubeSongDetails
+import me.knighthat.innertube.model.Section
 import me.knighthat.innertube.request.Localization
 import me.knighthat.innertube.request.Request
 import me.knighthat.innertube.request.body.AccountMenuBody
@@ -33,6 +35,7 @@ import me.knighthat.innertube.request.body.PlayerBody
 import me.knighthat.innertube.request.body.RequestBody
 import me.knighthat.innertube.request.body.browse.TypeBuilder
 import me.knighthat.innertube.response.BrowseResponse
+import me.knighthat.innertube.response.Continuation
 import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
 import me.knighthat.innertube.response.NextResponse
 import me.knighthat.innertube.response.PlayerResponse
@@ -48,6 +51,7 @@ import me.knighthat.internal.model.InnertubeChartsImpl
 import me.knighthat.internal.model.InnertubePlaylistImpl
 import me.knighthat.internal.model.InnertubeSongDetailsImpl
 import me.knighthat.internal.model.InnertubeSongImpl
+import me.knighthat.internal.model.createModelSectionFrom
 import me.knighthat.internal.response.ActiveAccountHeaderRendererImpl
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.NextResponseImpl
@@ -448,4 +452,31 @@ internal class InnertubeImpl: Innertube {
 
             return@runCatching HomePageImpl.from( response )
         }
+
+    override fun continuation(
+        localization: Localization,
+        visitorData: String?,
+        continuation: String,
+        params: String?
+    ): Result<InnertubeContinuation> = runCatching {
+        val response = ytmBrowse( localization, visitorData ) {
+            continuation( continuation ).params( params )
+        }
+
+        val content = requireNotNull(
+            response.continuationContents?.sectionListContinuation
+        ) { "continuation doesn't contain any content" }
+        val sections = requireNotNull(
+            content.contents
+                        .mapNotNull(SectionListRenderer.Content::musicCarouselShelfRenderer)
+                        .map( ::createModelSectionFrom )
+        ) { "failed to convert content to sections" }
+        val continuation = content.continuations
+
+        object : InnertubeContinuation {
+            override val sections: List<Section> = sections
+            override val continuations: List<Continuation> = continuation
+            override val visitorData: String? = visitorData
+        }
+    }
 }

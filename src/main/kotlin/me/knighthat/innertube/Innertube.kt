@@ -5,6 +5,7 @@ import me.knighthat.innertube.model.HomePage
 import me.knighthat.innertube.model.InnertubeAlbum
 import me.knighthat.innertube.model.InnertubeArtist
 import me.knighthat.innertube.model.InnertubeCharts
+import me.knighthat.innertube.model.InnertubeContinuation
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
@@ -88,6 +89,13 @@ interface Innertube {
     ): Result<PlayerResponse>
 
     fun homePage( localization: Localization ): Result<HomePage>
+
+    fun continuation(
+        localization: Localization,
+        visitorData: String?,
+        continuation: String,
+        params: String?
+    ): Result<InnertubeContinuation>
 
     interface Provider {
 
