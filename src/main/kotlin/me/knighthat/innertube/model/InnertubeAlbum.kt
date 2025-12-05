@@ -30,7 +30,7 @@ interface InnertubeAlbum: InnertubeItem, ContentRating, AccessibleViaUrl, Descri
      * - Total duration
      * - Or both
      */
-    val subtitle: String?
+    val subtitle: Runs?
 
     val songs: List<InnertubeSong>
 }

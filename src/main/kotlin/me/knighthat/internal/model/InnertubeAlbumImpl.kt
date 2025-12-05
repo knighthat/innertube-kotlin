@@ -26,7 +26,7 @@ internal data class InnertubeAlbumImpl(
     override val year: String,
     override val urlCanonical: String?,
     override val description: String?,
-    override val subtitle: String?,
+    override val subtitle: Runs?,
     override val songs: List<InnertubeSong>,
     override val sections: List<Section>
 ): InnertubeAlbum {
@@ -76,7 +76,7 @@ internal data class InnertubeAlbumImpl(
                 flexColumns.year,
                 null,
                 null,
-                null,
+                flexColumns,
                 emptyList(),
                 emptyList()
             )
@@ -123,9 +123,6 @@ internal data class InnertubeAlbumImpl(
                                                ?.description
                                                ?.runs
                                                ?.joinToString( "" ) { it.text }
-            val subtitle: String? = renderer.secondSubtitle
-                                            ?.runs
-                                            ?.joinToString( "" ) { it.text }
             val sections: List<Section> =  browseResponse.contents
                                                          ?.twoColumnBrowseResultsRenderer
                                                          ?.secondaryContents
@@ -146,7 +143,7 @@ internal data class InnertubeAlbumImpl(
                 year = renderer.subtitle.year,
                 urlCanonical = urlCanonical,
                 description = description,
-                subtitle = subtitle,
+                subtitle = renderer.secondSubtitle,
                 songs = fetchSongsJob.await(),
                 sections = sections
             )
