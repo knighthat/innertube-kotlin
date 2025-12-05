@@ -21,6 +21,7 @@ import me.knighthat.innertube.model.InnertubeCharts
 import me.knighthat.innertube.model.InnertubeContinuation
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
+import me.knighthat.innertube.model.InnertubeSearchSuggestion
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.model.InnertubeSongDetails
 import me.knighthat.innertube.model.Section
@@ -33,6 +34,7 @@ import me.knighthat.innertube.request.body.Context
 import me.knighthat.innertube.request.body.NextBody
 import me.knighthat.innertube.request.body.PlayerBody
 import me.knighthat.innertube.request.body.RequestBody
+import me.knighthat.innertube.request.body.SearchSuggestionsBody
 import me.knighthat.innertube.request.body.browse.TypeBuilder
 import me.knighthat.innertube.response.BrowseResponse
 import me.knighthat.innertube.response.Continuation
@@ -49,6 +51,7 @@ import me.knighthat.internal.model.InnertubeAlbumImpl
 import me.knighthat.internal.model.InnertubeArtistImpl
 import me.knighthat.internal.model.InnertubeChartsImpl
 import me.knighthat.internal.model.InnertubePlaylistImpl
+import me.knighthat.internal.model.InnertubeSearchSuggestionImpl
 import me.knighthat.internal.model.InnertubeSongDetailsImpl
 import me.knighthat.internal.model.InnertubeSongImpl
 import me.knighthat.internal.model.createModelSectionFrom
@@ -56,6 +59,7 @@ import me.knighthat.internal.response.ActiveAccountHeaderRendererImpl
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.NextResponseImpl
 import me.knighthat.internal.response.PlayerResponseImpl
+import me.knighthat.internal.response.SearchSuggestionsResponseImpl
 import org.intellij.lang.annotations.MagicConstant
 import me.knighthat.innertube.request.body.next.Builder as NextBodyBuilder
 
@@ -479,4 +483,24 @@ internal class InnertubeImpl: Innertube {
             override val visitorData: String? = visitorData
         }
     }
+
+    override fun searchSuggestion(
+        localization: Localization,
+        input: String
+    ): Result<InnertubeSearchSuggestion> =
+        runCatching {
+            val context = getContext( Context.WEB_REMIX_DEFAULT, localization, null, false )
+            val searchSuggestionBody = SearchSuggestionsBody.builder( context ).input( input ).build()
+            val response = sendRequest(
+                Request.POST,
+                Constants.YOUTUBE_MUSIC_URL,
+                Endpoints.SEARCH_SUGGESTIONS,
+                searchSuggestionBody,
+                appendUserAgent( emptyMap() ),
+                false
+            )
+            val result = json.decodeFromString<SearchSuggestionsResponseImpl>( response.responseBody )
+
+            InnertubeSearchSuggestionImpl.from( result )
+        }
 }

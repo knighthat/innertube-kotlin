@@ -4,6 +4,7 @@ import me.knighthat.innertube.PageType
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.Section
 import me.knighthat.innertube.response.MusicCarouselShelfRenderer
+import me.knighthat.innertube.response.MusicResponsiveListItemRenderer
 import me.knighthat.innertube.response.MusicShelfRenderer
 
 
@@ -57,5 +58,17 @@ internal fun createModelSectionFrom( renderer: MusicShelfRenderer ): Section {
         override val browseId: String? = browseEndpoint?.browseId
         override val params: String? = browseEndpoint?.params
         override val contents: List<InnertubeItem> = content.toList()
+    }
+}
+
+internal fun createInnertubeItemFrom( renderer: MusicResponsiveListItemRenderer ): InnertubeItem? {
+    if( renderer.navigationEndpoint?.watchEndpoint != null )
+        return InnertubeSongImpl.from( renderer )
+
+    return when( renderer.navigationEndpoint.pageType ) {
+        PageType.ARTIST     -> InnertubeArtistImpl.from( renderer )
+        PageType.ALBUM      -> InnertubeAlbumImpl.from( renderer )
+        // Ignore items with unknown page type (have no parser for it)
+        else                -> null
     }
 }

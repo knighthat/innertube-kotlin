@@ -8,6 +8,7 @@ import me.knighthat.innertube.model.InnertubeCharts
 import me.knighthat.innertube.model.InnertubeContinuation
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
+import me.knighthat.innertube.model.InnertubeSearchSuggestion
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.model.InnertubeSongDetails
 import me.knighthat.innertube.request.Localization
@@ -96,6 +97,11 @@ interface Innertube {
         continuation: String,
         params: String?
     ): Result<InnertubeContinuation>
+
+    fun searchSuggestion(
+        localization: Localization,
+        input: String
+    ): Result<InnertubeSearchSuggestion>
 
     interface Provider {
 
