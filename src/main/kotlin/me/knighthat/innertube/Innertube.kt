@@ -9,6 +9,7 @@ import me.knighthat.innertube.model.InnertubeCharts
 import me.knighthat.innertube.model.InnertubeContinuation
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
+import me.knighthat.innertube.model.InnertubeSearch
 import me.knighthat.innertube.model.InnertubeSearchSuggestion
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.model.InnertubeSongDetails
@@ -99,6 +100,18 @@ interface Innertube {
         localization: Localization,
         input: String
     ): Result<InnertubeSearchSuggestion>
+
+    suspend fun search(
+        localization: Localization,
+        query: String,
+        params: String?
+    ): Result<InnertubeSearch>
+
+    suspend fun searchContinuation(
+        localization: Localization,
+        visitorData: String?,
+        continuation: String,
+    ): Result<InnertubeContinuation>
 
     interface KtorProvider {
 

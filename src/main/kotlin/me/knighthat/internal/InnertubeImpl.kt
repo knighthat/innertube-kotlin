@@ -31,6 +31,7 @@ import me.knighthat.innertube.model.InnertubeCharts
 import me.knighthat.innertube.model.InnertubeContinuation
 import me.knighthat.innertube.model.InnertubeItem
 import me.knighthat.innertube.model.InnertubePlaylist
+import me.knighthat.innertube.model.InnertubeSearch
 import me.knighthat.innertube.model.InnertubeSearchSuggestion
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.model.InnertubeSongDetails
@@ -43,6 +44,7 @@ import me.knighthat.innertube.request.body.Context
 import me.knighthat.innertube.request.body.NextBody
 import me.knighthat.innertube.request.body.PlayerBody
 import me.knighthat.innertube.request.body.RequestBody
+import me.knighthat.innertube.request.body.SearchBody
 import me.knighthat.innertube.request.body.SearchSuggestionsBody
 import me.knighthat.innertube.request.body.browse.TypeBuilder
 import me.knighthat.innertube.response.BrowseResponse
@@ -60,14 +62,17 @@ import me.knighthat.internal.model.InnertubeAlbumImpl
 import me.knighthat.internal.model.InnertubeArtistImpl
 import me.knighthat.internal.model.InnertubeChartsImpl
 import me.knighthat.internal.model.InnertubePlaylistImpl
+import me.knighthat.internal.model.InnertubeSearchImpl
 import me.knighthat.internal.model.InnertubeSearchSuggestionImpl
 import me.knighthat.internal.model.InnertubeSongDetailsImpl
 import me.knighthat.internal.model.InnertubeSongImpl
+import me.knighthat.internal.model.createInnertubeItemFrom
 import me.knighthat.internal.model.createModelSectionFrom
 import me.knighthat.internal.response.ActiveAccountHeaderRendererImpl
 import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.NextResponseImpl
 import me.knighthat.internal.response.PlayerResponseImpl
+import me.knighthat.internal.response.SearchResponseImpl
 import me.knighthat.internal.response.SearchSuggestionsResponseImpl
 import me.knighthat.internal.util.getContext
 import me.knighthat.internal.util.getSapisidHash
@@ -458,5 +463,59 @@ internal class InnertubeImpl: Innertube {
             val response = post( Endpoints.SEARCH_SUGGESTIONS, body ).body<SearchSuggestionsResponseImpl>()
 
             InnertubeSearchSuggestionImpl.from( response )
+        }
+
+    override suspend fun search(
+        localization: Localization,
+        query: String,
+        params: String?
+    ): Result<InnertubeSearch> =
+        runCatching {
+            val context = getContext( Context.WEB_REMIX_DEFAULT, localization, null, false )
+            val body: SearchBody = SearchBody.builder( context )
+                                             .query( query )
+                                             .params( params )
+                                             .build()
+            val response = post( Endpoints.SEARCH, body ).body<SearchResponseImpl>()
+
+            InnertubeSearchImpl.from( response )
+        }
+
+    override suspend fun searchContinuation(
+        localization: Localization,
+        visitorData: String?,
+        continuation: String
+    ): Result<InnertubeContinuation> =
+        runCatching {
+            val context = getContext( Context.WEB_REMIX_DEFAULT, localization, null, false )
+            val body: SearchBody = SearchBody.builder( context )
+                                             .continuation( continuation )
+                                             .build()
+            val response = post( Endpoints.SEARCH, body ).body<BrowseResponseImpl>()
+
+            val content = requireNotNull(
+                response.continuationContents?.musicShelfContinuation
+            ) { "continuation doesn't contain any content" }
+            val section = requireNotNull(
+                content.contents
+                    .mapNotNull {
+                        it.musicResponsiveListItemRenderer?.let( ::createInnertubeItemFrom )
+                    }.let {
+                        object : Section {
+                            override val title: String? = null
+                            override val accessibilityLabel: String? = null
+                            override val browseId: String? = null
+                            override val params: String? = null
+                            override val contents: List<InnertubeItem> = it
+                        }
+                    }
+            ) { "failed to convert content to sections" }
+            val continuation = content.continuations
+
+            object : InnertubeContinuation {
+                override val sections: List<Section> = listOf( section )
+                override val continuations: List<Continuation> = continuation
+                override val visitorData: String? = visitorData
+            }
         }
 }

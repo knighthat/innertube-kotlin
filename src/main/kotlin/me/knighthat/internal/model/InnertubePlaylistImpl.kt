@@ -5,6 +5,7 @@ import me.knighthat.innertube.model.InnertubePlaylist
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.response.BrowseResponse.Contents.TwoColumnBrowseResultsRenderer
 import me.knighthat.innertube.response.Continuation
+import me.knighthat.innertube.response.MusicResponsiveListItemRenderer
 import me.knighthat.innertube.response.MusicTwoRowItemRenderer
 import me.knighthat.innertube.response.Runs
 import me.knighthat.innertube.response.Thumbnails
@@ -74,6 +75,28 @@ internal data class InnertubePlaylistImpl(
                                          continuedPlaylist.songs,
                                          continuedPlaylist.continuation,
                                          visitorData
+            )
+        }
+
+        fun from( renderer: MusicResponsiveListItemRenderer): InnertubePlaylist {
+            val id = requireNotNull(
+                renderer.navigationEndpoint?.browseEndpoint?.browseId
+            ) { "MusicResponsiveListItemRenderer doesn't contain id" }
+
+            val info = renderer.flexColumns
+            require( info.isNotEmpty() ) { "Playlist doesn't contain any information" }
+            val name = info.first().musicResponsiveListItemFlexColumnRenderer?.text?.firstText.orEmpty()
+
+            return InnertubePlaylistImpl(
+                id = id,
+                name = name,
+                thumbnails = renderer.thumbnail.toThumbnailList(),
+                description = null,
+                subtitle = info.getOrNull( 1 )?.musicResponsiveListItemFlexColumnRenderer?.text,
+                continuations = emptyList(),
+                songs = emptyList(),
+                songContinuation = null,
+                visitorData = null
             )
         }
     }

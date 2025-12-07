@@ -69,6 +69,7 @@ internal fun createInnertubeItemFrom( renderer: MusicResponsiveListItemRenderer 
     return when( renderer.navigationEndpoint.pageType ) {
         PageType.ARTIST     -> InnertubeArtistImpl.from( renderer )
         PageType.ALBUM      -> InnertubeAlbumImpl.from( renderer )
+        PageType.PLAYLIST   -> InnertubePlaylistImpl.from( renderer )
         // Ignore items with unknown page type (have no parser for it)
         else                -> null
     }
