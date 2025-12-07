@@ -7,9 +7,10 @@ import org.intellij.lang.annotations.MagicConstant
 
 @Serializable
 data class SearchBody(
-    val query: String,
-    @MagicConstant(valuesFromClass = SearchFilter::class)
+    val query: String?,
+    @param:MagicConstant(valuesFromClass = SearchFilter::class)
     val params: String?,
+    val continuation: String?,
     override val context: Context
 ): RequestBody {
 

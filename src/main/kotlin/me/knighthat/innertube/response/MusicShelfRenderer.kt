@@ -9,6 +9,7 @@ interface MusicShelfRenderer {
     val bottomEndpoint: Endpoint?
     val contentsMultiSelectable: Boolean?
     val subheaders: List<Subheader>
+    val continuations: List<Continuation>
 
     interface Content {
 

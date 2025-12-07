@@ -1,10 +1,11 @@
 package me.knighthat.innertube.request.body.search;
 
-import me.knighthat.innertube.SearchFilter;
-import me.knighthat.innertube.request.body.SearchBody;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import me.knighthat.innertube.SearchFilter;
+import me.knighthat.innertube.request.body.SearchBody;
 
 public interface Builder {
 
@@ -26,6 +27,8 @@ public interface Builder {
      * @see SearchFilter
      */
     @NotNull Builder params( @MagicConstant(valuesFromClass = SearchFilter.class) @Nullable String params );
+
+    @NotNull Builder continuation( String continuation );
 
     /**
      * Finalize all values.

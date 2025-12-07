@@ -10,7 +10,8 @@ internal data class MusicShelfRendererImpl(
     override val bottomText: RunsImpl?,
     override val bottomEndpoint: EndpointImpl?,
     override val contentsMultiSelectable: Boolean?,
-    override val subheaders: List<SubheaderImpl> = emptyList()
+    override val subheaders: List<SubheaderImpl> = emptyList(),
+    override val continuations: List<ContinuationImpl> = emptyList()
 ): MusicShelfRenderer {
 
     @Serializable
