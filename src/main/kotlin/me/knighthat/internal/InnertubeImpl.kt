@@ -1,10 +1,21 @@
 package me.knighthat.internal
 
+import io.ktor.client.call.body
+import io.ktor.client.request.accept
+import io.ktor.client.request.headers
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.contentType
 import io.ktor.http.formUrlEncode
 import io.ktor.http.parameters
-import kotlinx.coroutines.runBlocking
+import io.ktor.http.userAgent
+import io.ktor.util.appendAll
 import kotlinx.io.IOException
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -12,7 +23,6 @@ import me.knighthat.innertube.Constants
 import me.knighthat.innertube.Endpoints
 import me.knighthat.innertube.Innertube
 import me.knighthat.innertube.PageType
-import me.knighthat.innertube.UserAgents
 import me.knighthat.innertube.model.ContinuedPlaylist
 import me.knighthat.innertube.model.HomePage
 import me.knighthat.innertube.model.InnertubeAlbum
@@ -26,7 +36,6 @@ import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.model.InnertubeSongDetails
 import me.knighthat.innertube.model.Section
 import me.knighthat.innertube.request.Localization
-import me.knighthat.innertube.request.Request
 import me.knighthat.innertube.request.body.AccountMenuBody
 import me.knighthat.innertube.request.body.BrowseBody
 import me.knighthat.innertube.request.body.Builder
@@ -42,8 +51,8 @@ import me.knighthat.innertube.response.MusicPlaylistShelfRenderer
 import me.knighthat.innertube.response.NextResponse
 import me.knighthat.innertube.response.PlayerResponse
 import me.knighthat.innertube.response.PlaylistPanelRenderer
-import me.knighthat.innertube.response.Response
 import me.knighthat.innertube.response.SectionListRenderer
+import me.knighthat.innertube.util.InnertubeUtils
 import me.knighthat.internal.model.AccountInfoImpl
 import me.knighthat.internal.model.ContinuedPlaylistImpl
 import me.knighthat.internal.model.HomePageImpl
@@ -60,122 +69,107 @@ import me.knighthat.internal.response.BrowseResponseImpl
 import me.knighthat.internal.response.NextResponseImpl
 import me.knighthat.internal.response.PlayerResponseImpl
 import me.knighthat.internal.response.SearchSuggestionsResponseImpl
+import me.knighthat.internal.util.getContext
+import me.knighthat.internal.util.getSapisidHash
 import org.intellij.lang.annotations.MagicConstant
 import me.knighthat.innertube.request.body.next.Builder as NextBodyBuilder
 
 internal class InnertubeImpl: Innertube {
 
-    private val json = Json {
-        ignoreUnknownKeys = true
-        explicitNulls = false
-    }
+    internal lateinit var provider: Innertube.KtorProvider
 
-    lateinit var client: Innertube.Provider
+    internal suspend fun post(
+        @MagicConstant(valuesFromClass = Endpoints::class)
+        endpoint: String,
+        request: RequestBody,
+        headers: Map<String, List<String>> = emptyMap(),
+        useLogin: Boolean = false
+    ): HttpResponse {
+        val client = request.context.client
+        val host = client.originalUrl ?: Constants.YOUTUBE_MUSIC_URL
 
-    private fun randomString(
-        length: Int,
-        allowedCharset: List<Char> = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-    ): String =
-        String(CharArray(length) { allowedCharset.random() })
+        return provider.client.post( "$host/$endpoint" ) {
+            accept( ContentType.Application.Json )
+            contentType( ContentType.Application.Json )
 
-    private fun getContext( template: Context, localization: Localization, visitorData: String?, useLogin: Boolean ): Context {
-        val visitorData = if( useLogin )
-            client.visitorData
-        else visitorData ?: template.client.userAgent
+            // Disable pretty print - potentially save data
+            url {
+                parameters.append( "prettyPrint", "false" )
+            }
 
-        return Context(
-            template.client.copy(
-                hl = localization.languageCode,
-                gl = localization.regionCode,
-                visitorData = visitorData
-            ),
-            Context.User().copy(
-                onBehalfOfUser = if( useLogin ) client.dataSyncId else null
-            )
-        )
-    }
+            setBody( request )
+            headers {
+                userAgent( request.context.client.userAgent )
 
+                append( "X-Origin", host )
+                append( HttpHeaders.Referrer, "$host/" )
 
-    private fun appendUserAgent(
-        headers: Map<String, List<String>>,
-        userAgent: String = UserAgents.CHROME_WINDOWS
-    ): Map<String, List<String>> =
-        headers.toMutableMap().apply {
-            putIfAbsent( "User-Agent", listOf( userAgent ) )
+                append( "X-YouTube-Client-Name", client.xClientName.toString() )
+                append( "X-YouTube-Client-Version", client.clientVersion )
+
+                if( useLogin && "SAPISID" in provider.cookies ) {
+                    val sapisidHash = getSapisidHash( provider.cookies, host )
+                    if( sapisidHash.isNotBlank() ) {
+                        append( HttpHeaders.Cookie, provider.cookies )
+                        append(
+                            name = HttpHeaders.Authorization,
+                            value = "SAPISIDHASH $sapisidHash SAPISID1PHASH $sapisidHash SAPISID3PHASH $sapisidHash"
+                        )
+                    }
+                }
+
+                appendAll( headers )
+            }
         }
+    }
 
     @Throws(IOException::class)
-    @JvmName("sendRequest")
-    internal fun sendRequest(
-        @MagicConstant(valuesFromClass = Request::class) method: String,
-        host: String,
-        @MagicConstant(valuesFromClass = Endpoints::class) endpoint: String,
-        requestBody: RequestBody,
-        headers: Map<String, List<String>>,
-        useLogin: Boolean
-    ): Response = client.execute(
-        Request(method, headers, "$host/$endpoint", useLogin, requestBody)
-    )
-
-    @Throws(IOException::class)
-    internal fun ytmBrowse(
+    internal suspend fun ytmBrowse(
         localization: Localization,
         visitorData: String? = null,
         useLogin: Boolean = false,
-        headers: Map<String, List<String>> = emptyMap(),
         builder: TypeBuilder.() -> Builder<BrowseBody>
     ): BrowseResponse {
         val context = getContext( Context.WEB_REMIX_DEFAULT, localization, visitorData, useLogin )
-        val browseBody = BrowseBody.builder( context ).builder().build()
-        val response = sendRequest(
-            Request.POST,
-            Constants.YOUTUBE_MUSIC_URL,
-            Endpoints.BROWSE,
-            browseBody,
-            appendUserAgent( headers ),
-            useLogin
-        )
+        val body = BrowseBody.builder( context ).builder().build()
 
-        return json.decodeFromString<BrowseResponseImpl>( response.responseBody )
+        return post( Endpoints.BROWSE, body ).body<BrowseResponseImpl>()
     }
 
     @Throws(IOException::class)
-    internal fun ytmNext(
+    internal suspend fun ytmNext(
         localization: Localization,
+        template: Context = Context.WEB_REMIX_DEFAULT,
         visitorData: String? = null,
         useLogin: Boolean = false,
-        headers: Map<String, List<String>> = emptyMap(),
         builder: NextBodyBuilder.() -> Builder<NextBody>
     ): NextResponse {
-        val context = getContext( Context.WEB_REMIX_DEFAULT, localization, visitorData, useLogin )
-        val nextBody = NextBody.builder( context ).builder().build()
-        val response = sendRequest(
-            Request.POST,
-            Constants.YOUTUBE_MUSIC_URL,
-            Endpoints.NEXT,
-            nextBody,
-            appendUserAgent( headers ),
-            useLogin
-        )
+        val context = getContext( template, localization, visitorData, useLogin )
+        val body = NextBody.builder( context ).builder().build()
 
-        return json.decodeFromString<NextResponseImpl>( response.responseBody )
+        return post( Endpoints.NEXT , body ).body<NextResponseImpl>()
     }
 
-    override fun setProvider( provider: Innertube.Provider ) { this.client = provider }
+    override fun setProvider( provider: Innertube.KtorProvider ) {
+        this.provider = provider
+    }
 
-    override fun browsePlaylist( playlistId: String, localization: Localization, useLogin: Boolean): Result<InnertubePlaylist> =
-        runCatching {
-            val browseResponse = ytmBrowse( localization, useLogin = useLogin ) {
-                browseId( playlistId )
-            }
-
-            InnertubePlaylistImpl.from(
-                browseResponse.responseContext.visitorData,
-                browseResponse.contents!!.twoColumnBrowseResultsRenderer!!
-            )
+    override suspend fun browsePlaylist(
+        playlistId: String,
+        localization: Localization,
+        useLogin: Boolean
+    ): Result<InnertubePlaylist> = runCatching {
+        val browseResponse = ytmBrowse( localization, useLogin = useLogin ) {
+            browseId( playlistId )
         }
 
-    override fun browsePlaylistSongs( playlistId: String, localization: Localization ): Result<List<InnertubeSong>> =
+        InnertubePlaylistImpl.from(
+            browseResponse.responseContext.visitorData,
+            browseResponse.contents!!.twoColumnBrowseResultsRenderer!!
+        )
+    }
+
+    override suspend fun browsePlaylistSongs( playlistId: String, localization: Localization ): Result<List<InnertubeSong>> =
         runCatching {
             val browseResponse = ytmBrowse( localization ) { browseId( playlistId ) }
 
@@ -192,7 +186,7 @@ internal class InnertubeImpl: Innertube {
                           .orEmpty()
         }
 
-    override fun playlistContinued(
+    override suspend fun playlistContinued(
         visitorData: String?,
         continuation: String,
         localization: Localization,
@@ -212,7 +206,7 @@ internal class InnertubeImpl: Innertube {
             )
         }
 
-    override fun browseArtist( artistId: String, localization: Localization, params: String? ): Result<InnertubeArtist> =
+    override suspend fun browseArtist( artistId: String, localization: Localization, params: String? ): Result<InnertubeArtist> =
         runCatching {
             val browseResponse = ytmBrowse( localization ) {
                 browseId( artistId ).params( params )
@@ -221,7 +215,7 @@ internal class InnertubeImpl: Innertube {
             InnertubeArtistImpl.from( browseResponse )
         }
 
-    override fun browseAlbum(
+    override suspend fun browseAlbum(
         albumId: String,
         localization: Localization,
         params: String?
@@ -231,12 +225,10 @@ internal class InnertubeImpl: Innertube {
                 browseId( albumId ).params( params )
             }
 
-            runBlocking {
-                InnertubeAlbumImpl.from( albumId, localization, browseResponse )
-            }
+            InnertubeAlbumImpl.from( albumId, localization, browseResponse )
         }
 
-    override fun songBasicInfo( songId: String, localization: Localization, params: String? ): Result<InnertubeSong> =
+    override suspend fun songBasicInfo( songId: String, localization: Localization, params: String? ): Result<InnertubeSong> =
         runCatching {
             val nextResponse = ytmNext( localization ) {
                 videoId( songId ).params( params )
@@ -261,19 +253,11 @@ internal class InnertubeImpl: Innertube {
             InnertubeSongImpl.from( renderer )
         }
 
-    override fun songInfo( songId: String, localization: Localization ): Result<InnertubeSongDetails> =
+    override suspend fun songInfo( songId: String, localization: Localization ): Result<InnertubeSongDetails> =
         runCatching {
-            val context = getContext( Context.WEB_DEFAULT, localization, null, false )
-            val nextBody = NextBody.builder( context ).videoId( songId ).build()
-            val response = sendRequest(
-                Request.POST,
-                Constants.YOUTUBE_URL,
-                Endpoints.NEXT,
-                nextBody,
-                emptyMap(),
-                false
-            )
-            val nextResponse = json.decodeFromString<NextResponseImpl>( response.responseBody )
+            val nextResponse = ytmNext( localization, Context.WEB_DEFAULT, null, false ) {
+                videoId( songId )
+            }
 
             return@runCatching requireNotNull(
                 nextResponse.contents
@@ -285,7 +269,7 @@ internal class InnertubeImpl: Innertube {
             ) { "Failed to fetch details of $songId" }
         }
 
-    override fun radio(
+    override suspend fun radio(
         songId: String,
         localization: Localization,
         playlistId: String,
@@ -317,7 +301,7 @@ internal class InnertubeImpl: Innertube {
                         .orEmpty()
         }
 
-    override fun charts( localization: Localization, selectedValue: String, params: String? ): Result<InnertubeCharts> =
+    override suspend fun charts( localization: Localization, selectedValue: String, params: String? ): Result<InnertubeCharts> =
         runCatching {
             val browseResponse = ytmBrowse(localization) {
                 browseId("FEmusic_charts").params(params).formData(selectedValue)
@@ -335,45 +319,33 @@ internal class InnertubeImpl: Innertube {
             InnertubeChartsImpl.from(renderer)
         }
 
-    override fun accountInfo( localization: Localization ): Result<AccountInfoImpl> =
+    override suspend fun accountInfo( localization: Localization ): Result<AccountInfoImpl> =
         runCatching {
-            val context = Context(
-                Context.WEB_REMIX_DEFAULT.client.copy(
-                    hl = localization.languageCode,
-                    gl = localization.regionCode,
-                    visitorData = client.visitorData
-                ),
-                Context.User().copy(
-                    onBehalfOfUser = client.dataSyncId
-                )
-            )
-            val response = sendRequest(
-                Request.POST,
-                Constants.YOUTUBE_MUSIC_URL,
-                Endpoints.ACCOUNT_MENU,
-                AccountMenuBody(context),
-                mapOf( "User-Agent" to listOf( UserAgents.CHROME_WINDOWS ) ),
-                true
-            )
+            val context = getContext( Context.WEB_REMIX_DEFAULT, localization, provider.visitorData, true )
+            val response = post( Endpoints.ACCOUNT_MENU, AccountMenuBody(context), useLogin = true ).body<JsonElement>()
 
             // This response is used here, and only here.
             // There's no need to make interfaces to parse
             val renderer = requireNotNull(
-                json.parseToJsonElement( response.responseBody )
-                    .jsonObject["actions"]
-                    ?.jsonArray[0]
-                    ?.jsonObject["openPopupAction"]
-                    ?.jsonObject["popup"]
-                    ?.jsonObject["multiPageMenuRenderer"]
-                    ?.jsonObject["header"]
-                    ?.jsonObject["activeAccountHeaderRenderer"]
+                response.jsonObject["actions"]
+                        ?.jsonArray[0]
+                        ?.jsonObject["openPopupAction"]
+                        ?.jsonObject["popup"]
+                        ?.jsonObject["multiPageMenuRenderer"]
+                        ?.jsonObject["header"]
+                        ?.jsonObject["activeAccountHeaderRenderer"]
             ) { "missing activeAccountHeaderRenderer while parsing accountInfo" }
+
+            val json = Json {
+                ignoreUnknownKeys = true
+                explicitNulls = false
+            }
             AccountInfoImpl.from(
                 json.decodeFromJsonElement<ActiveAccountHeaderRendererImpl>( renderer )
             )
         }
 
-    override fun library( localization: Localization ): Result<List<InnertubeItem>> =
+    override suspend fun library( localization: Localization ): Result<List<InnertubeItem>> =
         runCatching {
             val response = ytmBrowse( localization, useLogin = true ) {
                 browseId( "FEmusic_library_landing" )
@@ -408,7 +380,7 @@ internal class InnertubeImpl: Innertube {
                     .orEmpty()
         }
 
-    override fun player(
+    override suspend fun player(
         songId: String,
         context: Context,
         localization: Localization,
@@ -420,7 +392,7 @@ internal class InnertubeImpl: Innertube {
             var endpoint = Endpoints.PLAYER
 
             val context = getContext( context, localization, visitorData, useLogin )
-            val playerBody = PlayerBody.builder( context )
+            val body = PlayerBody.builder( context )
                 .videoId( songId )
                 .apply {
                     signatureTimestamp?.also( ::signatureTimestamp )
@@ -437,18 +409,10 @@ internal class InnertubeImpl: Innertube {
                 }
                 .build()
 
-            val response = sendRequest(
-                method = Request.POST,
-                host = context.client.originalUrl ?: Constants.YOUTUBE_MUSIC_URL,
-                endpoint = endpoint,
-                requestBody = playerBody,
-                headers = emptyMap(),
-                useLogin = useLogin
-            )
-            json.decodeFromString<PlayerResponseImpl>( response.responseBody )
+            post( Endpoints.PLAYER, body, useLogin = useLogin ).body<PlayerResponseImpl>()
         }
 
-    override fun homePage( localization: Localization ): Result<HomePage> =
+    override suspend fun homePage( localization: Localization ): Result<HomePage> =
         runCatching {
             val response = ytmBrowse( localization ) {
                 browseId( "FEmusic_home" )
@@ -457,7 +421,7 @@ internal class InnertubeImpl: Innertube {
             return@runCatching HomePageImpl.from( response )
         }
 
-    override fun continuation(
+    override suspend fun continuation(
         localization: Localization,
         visitorData: String?,
         continuation: String,
@@ -484,23 +448,15 @@ internal class InnertubeImpl: Innertube {
         }
     }
 
-    override fun searchSuggestion(
+    override suspend fun searchSuggestion(
         localization: Localization,
         input: String
     ): Result<InnertubeSearchSuggestion> =
         runCatching {
             val context = getContext( Context.WEB_REMIX_DEFAULT, localization, null, false )
-            val searchSuggestionBody = SearchSuggestionsBody.builder( context ).input( input ).build()
-            val response = sendRequest(
-                Request.POST,
-                Constants.YOUTUBE_MUSIC_URL,
-                Endpoints.SEARCH_SUGGESTIONS,
-                searchSuggestionBody,
-                appendUserAgent( emptyMap() ),
-                false
-            )
-            val result = json.decodeFromString<SearchSuggestionsResponseImpl>( response.responseBody )
+            val body = SearchSuggestionsBody.builder( context ).input( input ).build()
+            val response = post( Endpoints.SEARCH_SUGGESTIONS, body ).body<SearchSuggestionsResponseImpl>()
 
-            InnertubeSearchSuggestionImpl.from( result )
+            InnertubeSearchSuggestionImpl.from( response )
         }
 }

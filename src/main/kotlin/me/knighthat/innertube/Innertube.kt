@@ -1,5 +1,6 @@
 package me.knighthat.innertube
 
+import io.ktor.client.HttpClient
 import me.knighthat.innertube.model.ContinuedPlaylist
 import me.knighthat.innertube.model.HomePage
 import me.knighthat.innertube.model.InnertubeAlbum
@@ -12,24 +13,20 @@ import me.knighthat.innertube.model.InnertubeSearchSuggestion
 import me.knighthat.innertube.model.InnertubeSong
 import me.knighthat.innertube.model.InnertubeSongDetails
 import me.knighthat.innertube.request.Localization
-import me.knighthat.innertube.request.Request
 import me.knighthat.innertube.request.body.Context
 import me.knighthat.innertube.response.PlayerResponse
-import me.knighthat.innertube.response.Response
 import me.knighthat.internal.InnertubeImpl
 import me.knighthat.internal.model.AccountInfoImpl
-import org.jetbrains.annotations.Blocking
-import java.io.IOException
 
 interface Innertube {
 
     companion object: Innertube by InnertubeImpl()
 
-    fun setProvider( provider: Provider )
+    fun setProvider( provider: KtorProvider )
 
-    fun browsePlaylist( playlistId: String, localization: Localization, useLogin: Boolean = true ): Result<InnertubePlaylist>
+    suspend fun browsePlaylist( playlistId: String, localization: Localization, useLogin: Boolean = true ): Result<InnertubePlaylist>
 
-    fun browsePlaylistSongs( playlistId: String, localization: Localization ): Result<List<InnertubeSong>>
+    suspend fun browsePlaylistSongs( playlistId: String, localization: Localization ): Result<List<InnertubeSong>>
 
     /**
      * Request for more songs in a playlist.
@@ -42,7 +39,7 @@ interface Innertube {
      * @param continuation unique string of playlist to get next songs
      * @param params additional parameters (optional)
      */
-    fun playlistContinued(
+    suspend fun playlistContinued(
         visitorData: String?,
         continuation: String,
         localization: Localization,
@@ -50,15 +47,15 @@ interface Innertube {
         useLogin: Boolean = false
     ): Result<ContinuedPlaylist>
 
-    fun browseArtist( artistId: String, localization: Localization, params: String? = null ): Result<InnertubeArtist>
+    suspend fun browseArtist( artistId: String, localization: Localization, params: String? = null ): Result<InnertubeArtist>
 
-    fun browseAlbum( albumId: String, localization: Localization, params: String? = null ): Result<InnertubeAlbum>
+    suspend fun browseAlbum( albumId: String, localization: Localization, params: String? = null ): Result<InnertubeAlbum>
 
-    fun songBasicInfo( songId: String, localization: Localization, params: String? = null ): Result<InnertubeSong>
+    suspend fun songBasicInfo( songId: String, localization: Localization, params: String? = null ): Result<InnertubeSong>
 
-    fun songInfo( songId: String, localization: Localization ): Result<InnertubeSongDetails>
+    suspend fun songInfo( songId: String, localization: Localization ): Result<InnertubeSongDetails>
 
-    fun radio(
+    suspend fun radio(
         songId: String,
         localization: Localization,
         playlistId: String = "RDAMVM$songId",
@@ -66,21 +63,21 @@ interface Innertube {
         includeProvidedSong: Boolean = false
     ): Result<List<InnertubeSong>>
 
-    fun charts( localization: Localization, selectedValue: String, params: String? = null ): Result<InnertubeCharts>
+    suspend fun charts( localization: Localization, selectedValue: String, params: String? = null ): Result<InnertubeCharts>
 
     /**
      * **This call explicitly require login credentials.**
      */
-    fun accountInfo( localization: Localization ): Result<AccountInfoImpl>
+    suspend fun accountInfo( localization: Localization ): Result<AccountInfoImpl>
 
     /**
      * Get user's saved playlists.
      *
      * **This call explicitly require login credentials.**
      */
-    fun library( localization: Localization ): Result<List<InnertubeItem>>
+    suspend fun library( localization: Localization ): Result<List<InnertubeItem>>
 
-    fun player(
+    suspend fun player(
         songId: String,
         context: Context,
         localization: Localization,
@@ -89,28 +86,25 @@ interface Innertube {
         useLogin: Boolean = false
     ): Result<PlayerResponse>
 
-    fun homePage( localization: Localization ): Result<HomePage>
+    suspend fun homePage( localization: Localization ): Result<HomePage>
 
-    fun continuation(
+    suspend fun continuation(
         localization: Localization,
         visitorData: String?,
         continuation: String,
         params: String?
     ): Result<InnertubeContinuation>
 
-    fun searchSuggestion(
+    suspend fun searchSuggestion(
         localization: Localization,
         input: String
     ): Result<InnertubeSearchSuggestion>
 
-    interface Provider {
+    interface KtorProvider {
 
+        val client: HttpClient
         val cookies: String
         val dataSyncId: String?
         val visitorData: String
-
-        @Blocking
-        @Throws(IOException::class)
-        fun execute( request: Request ): Response
     }
 }

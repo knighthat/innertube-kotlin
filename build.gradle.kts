@@ -14,8 +14,8 @@ group = "me.knighthat"
 version = "2025.11.04"
 
 dependencies {
-    implementation( libs.kotlinx.coroutines )
-    implementation( libs.ktor.serialization.json )
+    api( libs.ktor.core )
+    implementation( libs.kotlinx.serialization.json )
 
     testImplementation( libs.bundles.junit5 )
     testRuntimeOnly( libs.junit.platform )
