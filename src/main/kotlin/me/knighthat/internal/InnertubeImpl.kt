@@ -427,10 +427,10 @@ internal class InnertubeImpl: Innertube {
 
                     if( context.client.xClientName != 5 ) return@apply
 
-                    cpn( randomString( 12 ) )
+                    cpn(InnertubeUtils.randomString( 12 ) )
 
                     parameters {
-                        append( "t", randomString( 16 ) )
+                        append( "t", InnertubeUtils.randomString( 16 ) )
                         append( "id", songId )
                         append( "key", Constants.IOS_API_KEY )
                     }.formUrlEncode().also { endpoint += "?$it" }
