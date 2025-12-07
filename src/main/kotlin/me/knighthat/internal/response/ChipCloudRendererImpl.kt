@@ -15,9 +15,9 @@ internal data class ChipCloudRendererImpl(
 
         @Serializable
         internal data class RendererImpl(
-            override val text: RunsImpl,
+            override val text: RunsImpl?,
             override val navigationEndpoint: EndpointImpl,
-            override val onDeselectedCommand: EndpointImpl
+            override val onDeselectedCommand: EndpointImpl?
         ): ChipCloudRenderer.Chip.Renderer
     }
 }

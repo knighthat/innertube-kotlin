@@ -10,9 +10,9 @@ interface ChipCloudRenderer {
 
         interface Renderer {
 
-            val text: Runs
+            val text: Runs?
             val navigationEndpoint: Endpoint
-            val onDeselectedCommand: Endpoint
+            val onDeselectedCommand: Endpoint?
         }
     }
 }
