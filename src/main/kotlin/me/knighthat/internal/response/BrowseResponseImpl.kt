@@ -54,7 +54,8 @@ internal data class BrowseResponseImpl(
 
         @Serializable
         internal data class MusicHeaderRendererImpl(
-            override val title: RunsImpl
+            override val title: RunsImpl?,
+            override val chipCloudRenderer: ChipCloudRendererImpl?
         ): BrowseResponse.Header.MusicHeaderRenderer
 
         @Serializable
@@ -78,6 +79,7 @@ internal data class BrowseResponseImpl(
 
     @Serializable
     internal data class ContinuationContentsImpl(
-        override val sectionListContinuation: SectionListRendererImpl
+        override val sectionListContinuation: SectionListRendererImpl?,
+        override val musicShelfContinuation: MusicShelfRendererImpl?
     ) : BrowseResponse.ContinuationContents
 }

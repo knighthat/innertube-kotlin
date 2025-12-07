@@ -47,7 +47,8 @@ interface BrowseResponse : InnertubeResponse {
 
         interface MusicHeaderRenderer {
 
-            val title: Runs
+            val title: Runs?
+            val chipCloudRenderer: ChipCloudRenderer?
         }
 
         interface MusicVisualHeaderRenderer {
@@ -70,6 +71,7 @@ interface BrowseResponse : InnertubeResponse {
 
     interface ContinuationContents {
 
-        val sectionListContinuation: SectionListRenderer
+        val sectionListContinuation: SectionListRenderer?
+        val musicShelfContinuation: MusicShelfRenderer?
     }
 }
