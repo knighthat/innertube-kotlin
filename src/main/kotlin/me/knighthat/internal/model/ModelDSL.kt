@@ -62,7 +62,8 @@ internal fun createModelSectionFrom( renderer: MusicShelfRenderer ): Section {
 }
 
 internal fun createInnertubeItemFrom( renderer: MusicResponsiveListItemRenderer ): InnertubeItem? {
-    if( renderer.navigationEndpoint?.watchEndpoint != null )
+    if( renderer.navigationEndpoint?.watchEndpoint != null
+        || renderer.playlistItemData?.videoId != null )
         return InnertubeSongImpl.from( renderer )
 
     return when( renderer.navigationEndpoint.pageType ) {
